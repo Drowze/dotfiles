@@ -1,0 +1,12 @@
+# Randomize wallpapers from ~/.wallpaper folder
+feh --randomize --bg-fill ~/.wallpaper/* &
+
+# Make desktops in a grid of 2x2
+# https://superuser.com/questions/347528/openbox-make-4-desktops-2x2
+setlayout 0 2 2 0
+
+# Start tint2
+tint2 &
+
+# Volumeicon
+volumeicon &
