@@ -17,6 +17,7 @@ alias top vtop
 alias vim="nvim"
 alias oldtop /usr/bin/top
 alias config "/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias restart-network "sudo service network-manager restart"
 
 #########
 # $PATH #
