@@ -4,6 +4,9 @@ noremap <UP> :echo 'hjkl'<CR>
 noremap <DOWN> :echo 'hjkl'<CR>
 noremap <RIGHT> :echo 'hjkl'<CR>
 
+" ESC delay wtf check johnhawthorn.com/2012/09/vi-escape-delays
+set timeoutlen=1000 ttimeoutlen=0
+
 " Toggle listchars
 noremap <F12> :set list!<CR>
 
@@ -14,6 +17,9 @@ noremap <F12> :set list!<CR>
 " Show line numbers
 set number
 set relativenumber
+
+" 5 lines before EOF
+set scrolloff=5
 
 " Show ruler
 set colorcolumn=80
