@@ -1,3 +1,5 @@
+" TODO: Fix delete behaviour on a MacOS
+
 " Disable arrow keys on normal mode
 noremap <LEFT> :echo 'hjkl'<CR>
 noremap <UP> :echo 'hjkl'<CR>
@@ -18,12 +20,8 @@ noremap <F12> :set list!<CR>
 set number
 set relativenumber
 
-" 5 lines before EOF
-set scrolloff=5
-
 " Show ruler
 set colorcolumn=80
-highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " Tabs should be spaces
 set tabstop=2
@@ -51,15 +49,17 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'maxmellon/vim-jsx-pretty'
   Plug 'posva/vim-vue'
   Plug 'dracula/vim', { 'as': 'dracula' }
+  Plug 'tpope/vim-fugitive'
 call plug#end()
 
 " Ignore node_modules on ctrlp
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
-" If on doubt, "syntax on vs enable" @google
+" If on doubt, 'syntax on vs enable' @google
 if !exists("g:syntax_on")
-    syntax enable
+  syntax enable
 endif
 
 let g:dracula_italic = 0
+let g:dracula_colorterm = 0
 color dracula
