@@ -42,3 +42,5 @@ end
 set -x VISUAL vim
 set -x EDITOR $VISUAL
 set -x HOMEBREW_NO_AUTO_UPDATE 1
+set -x LC_CTYPE en_US.UTF-8
+set -x LC_ALL en_US.UTF-8
