@@ -30,10 +30,10 @@ alias restart-network "sudo service network-manager restart"
 #########
 
 if test -d $HOME/.config/yarn/global/node_modules/.bin
-  set -gx PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
+  set -x PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
 end
 if test -d $HOME/.yarn/bin
-  set -gx PATH $HOME/.yarn/bin $PATH
+  set -x PATH $HOME/.yarn/bin $PATH
 end
 
 ############
@@ -41,3 +41,4 @@ end
 ############
 set -x VISUAL vim
 set -x EDITOR $VISUAL
+set -x HOMEBREW_NO_AUTO_UPDATE 1
