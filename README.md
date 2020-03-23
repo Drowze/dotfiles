@@ -1,8 +1,9 @@
 # mah . files
 
 my setup:  
-* shell: fish (with oh-my-fish)
-* multiplexer: tmux (with tpm)
+* shell: fish (+fisher)
+* multiplexer: tmux (+tpm)
+* editor: vim (+vim-plug)
 * versioning tool (ruby, node, etc): asdf
 * irc client: weechat
 * file manager: ranger
@@ -10,8 +11,7 @@ my setup:
 (n)vim plugin manager:  
 * [vim-plug](https://github.com/junegunn/vim-plug)
 
-working on:  
-* vim
+working on more support for:
 * openbox
 * weechat
 
