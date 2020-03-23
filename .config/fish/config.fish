@@ -1,23 +1,40 @@
 # ctrl-left and ctrl-right should navigate words
 # may be required in some terminal emulators (e.g.: terminator)
-function fish_user_key_bindings
-  bind \cleft forward-word
-  bind \cleft backward-word
-end
+#function fish_user_key_bindings
+#  bind \cleft forward-word
+#  bind \cleft backward-word
+#end
 
 # Source asdf files
-source ~/.asdf/asdf.fish
+if test -e ~/.asdf/asdf.fish
+  source ~/.asdf/asdf.fish
+end
 
 ###########
 # ALIASES #
 ###########
-if type vtop >/dev/null ^/dev/null; alias top vtop; alias oldtop /usr/bin/top; end
-# alias restart-network "sudo service network-manager restart"
+if type -q vtop
+  alias top vtop
+  alias oldtop /usr/bin/top
+end
+
+if type -q pry && test -e ~/.asdf/shims/irb
+  alias _irb ~/.asdf/shims/irb
+  alias irb pry
+end
+
+alias restart-network "sudo service network-manager restart"
 
 #########
 # $PATH #
 #########
 
+if test -d $HOME/.config/yarn/global/node_modules/.bin
+  set -gx PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
+end
+if test -d $HOME/.yarn/bin
+  set -gx PATH $HOME/.yarn/bin $PATH
+end
 
 ############
 # ENV VARS #
