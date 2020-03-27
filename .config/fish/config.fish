@@ -10,6 +10,11 @@ if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
 end
 
+# Source default database authentication details
+if test -e ~/.mssql-cli/default.fish
+  source ~/.mssql-cli/default.fish
+end
+
 ###########
 # ALIASES #
 ###########
