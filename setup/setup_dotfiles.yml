@@ -8,6 +8,11 @@
   vars_files: [vars.yml]
 
   tasks:
+    - name: Setup .gitconfig
+      template:
+        src: ../git_files/.gitconfig.j2
+        dest: ../git_files/.gitconfig
+
     - name: Symlinks $HOME dotfiles
       file:
         src: "{{ dotfiles_path }}/{{ item.src }}"
@@ -20,12 +25,9 @@
         - { src: .tmux-osx.conf, dest: .tmux-osx.conf }
         - { src: git_files/.gitmessage, dest: .gitmessage }
         - { src: git_files/.gitignore, dest: .gitignore }
+        - { src: git_files/.gitconfig, dest: .gitconfig }
         - { src: .config/fish/config.fish, dest: .config/fish/config.fish }
         - { src: .config/fish/fishfile, dest: .config/fish/fishfile }
         - { src: .config/fish/functions/fish_prompt.fish, dest: .config/fish/functions/fish_prompt.fish }
         - { src: .config/fish/functions/fish_right_prompt.fish, dest: .config/fish/functions/fish_right_prompt.fish }
 
-    - name: Setup .gitconfig
-      template:
-        src: ../git_files/.gitconfig.j2
-        dest: $HOME/.gitconfig
