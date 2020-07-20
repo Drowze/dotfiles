@@ -40,6 +40,15 @@ end
 if test -d $HOME/.yarn/bin
   set -x PATH $HOME/.yarn/bin $PATH
 end
+if test -d $HOME/.android/cmdline-tools
+  set -x PATH $HOME/.android/cmdline-tools/tools/bin $PATH
+  set -x ANDROID_SDK_ROOT $HOME/.android
+  set -x ANDROID_HOME $HOME/.android
+end
+if test -d $HOME/.android/emulator
+  set -x PATH $HOME/.android/emulator $PATH
+  set -x PATH $HOME/.android/platform-tools $PATH
+end
 
 ############
 # ENV VARS #
