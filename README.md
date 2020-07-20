@@ -1,6 +1,7 @@
 # mah . files
 
 my setup:  
+* terminal: termite
 * shell: fish (+fisher)
 * multiplexer: tmux (+tpm)
 * editor: vim (+vim-plug)
@@ -8,15 +9,9 @@ my setup:
 * irc client: weechat
 * file manager: ranger
 
-(n)vim plugin manager:  
-* [vim-plug](https://github.com/junegunn/vim-plug)
-
-working on more support for:
-* openbox
+todo:
 * weechat
-
-planned:  
-* urxvt
 * i3
+* alacritty
 
 Hopefully I'll not stage anything private :|
