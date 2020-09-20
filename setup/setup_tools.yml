@@ -10,6 +10,10 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     dmenu_version: '5.0'
+    asdf_versions_wanted:
+      - { plugin: ruby, version: 2.7.1, global: yes }
+      - { plugin: python, version: 3.8.2, global: yes }
+      - { plugin: rust, version: 1.46.0, global: yes }
 
   tasks:
     - name: Enable restricted repos
@@ -50,6 +54,8 @@
         name:
           - fish
           - tmux
+
+    - include_tasks: tooling_tasks/install_asdf.yml
 
     - name: Register installed dmenu version
       command: dmenu -v

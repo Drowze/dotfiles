@@ -1,0 +1,54 @@
+---
+- name: Clone repo
+  git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: $HOME/.asdf
+    version: v0.8.0
+
+- name: Install ruby compile depedencies
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  apt:
+    name:
+      - autoconf
+      - bison
+      - build-essential
+      - libssl-dev
+      - libyaml-dev
+      - libreadline6-dev
+      - zlib1g-dev
+      - libncurses5-dev
+      - libffi-dev
+      - libgdbm6
+      - libgdbm-dev
+      - libdb-dev
+
+- command: asdf plugin list
+  register: asdf_installed_plugins
+  changed_when: no
+
+- set_fact:
+    plugins_used: "{{ asdf_versions_wanted | map(attribute='plugin') | list | unique }}"
+
+- name: Install missing plugins
+  command: "asdf plugin-add {{ item }}"
+  when: item not in asdf_installed_plugins.stdout_lines
+  with_items: "{{ plugins_used }}"
+
+- name: Register versions install locations
+  command: "asdf where {{ item.plugin }} {{ item.version }}"
+  register: asdf_install_locations
+  with_items: "{{ asdf_versions_wanted }}"
+  ignore_errors: yes
+  changed_when: no
+
+- name: Install wanted versions
+  command: "asdf install {{ item.item.plugin }} {{ item.item.version }}"
+  when: item.rc != 0
+  with_items: "{{ asdf_install_locations.results }}"
+
+- name: Set global versions
+  command: "asdf global {{ item.plugin }} {{ item.version }}"
+  when: item.global
+  with_items: "{{ asdf_versions_wanted }}"
