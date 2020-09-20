@@ -85,3 +85,6 @@ endif
 let g:dracula_italic = 0
 let g:dracula_colorterm = 0
 color dracula
+
+" Needs to go after colorscheme definition
+highlight Comment cterm=italic
