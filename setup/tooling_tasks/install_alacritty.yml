@@ -1,0 +1,40 @@
+---
+- name: Ensure last rust compiler version
+  shell: |
+    rustup override set stable 
+    rustup update stable
+
+- name: Install Alacritty depedencies
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  apt:
+    name:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+
+- name: Download Alacritty
+  unarchive:
+    src: "https://github.com/alacritty/alacritty/archive/v{{ alacritty_version }}.zip"
+    dest: /tmp
+    remote_src: yes
+
+- name: Build Alacritty
+  command:
+    cmd: cargo build --release
+    chdir: "/tmp/alacritty-{{ alacritty_version }}"
+
+- name: Install Alacritty
+  become: yes
+  shell: |
+    mv /tmp/alacritty-{{ alacritty_version }}/target/release/alacritty /usr/local/bin/alacritty
+    chown root:root /usr/local/bin/alacritty
+
+- name: Install Alacritty terminfo
+  become: yes
+  shell:
+    cmd: tic -xe alacritty,alacritty-direct extra/alacritty.info
+    chdir: "/tmp/alacritty-{{ alacritty_version }}"
