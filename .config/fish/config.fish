@@ -1,9 +1,6 @@
-# ctrl-left and ctrl-right should navigate words
-# may be required in some terminal emulators (e.g.: terminator)
-#function fish_user_key_bindings
-#  bind \cleft forward-word
-#  bind \cleft backward-word
-#end
+function fish_greeting
+  fish_logo
+end
 
 # Source asdf files
 if test -e ~/.asdf/asdf.fish
@@ -59,3 +56,4 @@ set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x MSSQL_CLI_TELEMETRY_OPTOUT 1
 set -x LC_CTYPE en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
+set -x FZF_DEFAULT_COMMAND 'rg --files'
