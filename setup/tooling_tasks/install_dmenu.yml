@@ -1,0 +1,54 @@
+---
+- name: Install depedency
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  apt:
+    name:
+      - libx11-dev
+
+- name: Download dmenu
+  unarchive:
+    src: "https://dl.suckless.org/tools/dmenu-{{ dmenu_version }}.tar.gz"
+    dest: /tmp
+    remote_src: yes
+
+- name: Create dmenu patches directory
+  file:
+    path: "/tmp/dmenu-{{ dmenu_version }}/patches"
+    state: directory
+
+- name: Get dmenu patches
+  get_url:
+    url: "{{ item }}"
+    dest: "/tmp/dmenu-{{ dmenu_version }}/patches"
+  with_items:
+    - https://tools.suckless.org/dmenu/patches/line-height/dmenu-lineheight-4.9.diff
+    - https://tools.suckless.org/dmenu/patches/fuzzymatch/dmenu-fuzzymatch-4.9.diff
+    - https://tools.suckless.org/dmenu/patches/fuzzyhighlight/dmenu-fuzzyhighlight-4.9.diff
+
+- name: Fix conflict between lineheigth and fuzzyhighlight
+  lineinfile:
+    path: "/tmp/dmenu-{{ dmenu_version }}/patches/dmenu-fuzzyhighlight-4.9.diff"
+    line: '	      "             [-h height]\n"'
+    insertafter: '^\s+fputs\('
+
+- name: Apply dmenu patches
+  patch:
+    src: "/tmp/dmenu-{{ dmenu_version }}/patches/{{ item }}"
+    basedir: "/tmp/dmenu-{{ dmenu_version }}"
+    strip: 1
+  with_items:
+    - dmenu-lineheight-4.9.diff
+    - dmenu-fuzzymatch-4.9.diff
+    - dmenu-fuzzyhighlight-4.9.diff
+
+- name: Make dmenu
+  make:
+    chdir: "/tmp/dmenu-{{ dmenu_version }}"
+
+- name: Install dmenu
+  become: yes
+  make:
+    chdir: "/tmp/dmenu-{{ dmenu_version }}"
+    target: install

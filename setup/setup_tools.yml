@@ -9,6 +9,7 @@
   # Ansible python interpreter.
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    dmenu_version: '5.0'
 
   tasks:
     - name: Enable restricted repos
@@ -49,3 +50,12 @@
         name:
           - fish
           - tmux
+
+    - name: Register installed dmenu version
+      command: dmenu -v
+      register: installed_dmenu_version
+      ignore_errors: yes
+      changed_when: no
+
+    - include_tasks: tooling_tasks/install_dmenu.yml
+      when: installed_dmenu_version.failed or dmenu_version not in installed_dmenu_version.stdout
