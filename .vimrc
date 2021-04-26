@@ -1,5 +1,3 @@
-" TODO: Fix delete behaviour on a MacOS
-
 " Disable arrow keys on normal mode
 noremap <LEFT> :echo 'hjkl'<CR>
 noremap <UP> :echo 'hjkl'<CR>
@@ -12,6 +10,10 @@ set timeoutlen=1000 ttimeoutlen=0
 " Toggle listchars
 noremap <F12> :set list!<CR>
 
+" Toggle pastemode (for pasting without breaking formatting)
+inoremap <F3> <esc>:set paste!<cr>i
+nnoremap <F3> :set paste!<cr>
+
 " Select text again after indenting
 :vnoremap < <gv
 :vnoremap > >gv
@@ -22,6 +24,9 @@ set relativenumber
 
 " Show ruler
 set colorcolumn=80
+
+" Powerful backspacing
+set backspace=indent,eol,start
 
 " Tabs should be spaces
 set tabstop=2
@@ -63,6 +68,13 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+function! SetupPython()
+  setlocal softtabstop=2
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+endfunction
+command! -bar SetupPython call SetupPython()
 
 call plug#begin('~/.vim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'

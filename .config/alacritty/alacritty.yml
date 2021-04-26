@@ -1,5 +1,9 @@
 background_opacity: 0.75
 
+mouse:
+  url:
+    launcher: firefox
+
 font:
   size: 15
   normal:
@@ -62,3 +66,6 @@ colors:
 
 key_bindings:
   - { key: Key3, mods: Alt, chars: "#" } # required on mac with UK keyboard
+  - { key: H,    mods: Alt,     chars: "\x1b" }
+  - { key: Left,     mods: Alt,     chars: "\x1bb"                       }
+  - { key: Right,    mods: Alt,     chars: "\x1bf"                       }

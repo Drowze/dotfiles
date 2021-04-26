@@ -2,6 +2,8 @@ function fish_greeting
   fish_logo
 end
 
+source ~/.config/fish/functions/shorthands.fish
+
 # Source asdf files
 if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
@@ -24,6 +26,8 @@ if type -q pry && test -e ~/.asdf/shims/irb
   alias _irb ~/.asdf/shims/irb
   alias irb pry
 end
+
+alias be "bundle exec"
 
 alias restart-network "sudo service network-manager restart"
 
@@ -57,3 +61,4 @@ set -x MSSQL_CLI_TELEMETRY_OPTOUT 1
 set -x LC_CTYPE en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 set -x FZF_DEFAULT_COMMAND 'rg --files'
+set -x DISABLE_SPRING true
