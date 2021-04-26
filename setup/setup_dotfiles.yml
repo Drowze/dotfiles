@@ -10,8 +10,11 @@
   tasks:
     - name: Create required directories
       file:
-        path: $HOME/.config/alacritty
+        path: "{{ item }}"
         state: directory
+      with_items:
+        - $HOME/.config/alacritty
+        - $HOME/.config/fish/functions
 
     - name: Setup .gitconfig
       template:

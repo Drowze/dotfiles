@@ -2,8 +2,6 @@ function fish_greeting
   fish_logo
 end
 
-source ~/.config/fish/functions/shorthands.fish
-
 # Source asdf files
 if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
