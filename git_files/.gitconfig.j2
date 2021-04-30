@@ -1,6 +1,7 @@
 [user]
   name = {{ git_user }}
   email = {{ git_email }}
+  signingkey = {{ git_signingkey }}
 [alias]
   st = status
   co = checkout
@@ -8,6 +9,7 @@
   show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 [commit]
   template = ~/.gitmessage
+  gpgsign = true
 [filter "gitignore"]
   # On ruby files, end the file with "#gitignore" to ignore it
   clean = "sed '/#gitignore$/'d"
