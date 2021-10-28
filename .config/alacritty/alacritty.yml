@@ -1,8 +1,7 @@
 background_opacity: 0.75
 
-mouse:
-  url:
-    launcher: firefox
+hints:
+  launcher: firefox
 
 font:
   size: 15
@@ -65,7 +64,7 @@ colors:
   indexed_colors: []
 
 key_bindings:
-  - { key: Key3, mods: Alt, chars: "#" } # required on mac with UK keyboard
-  - { key: H,    mods: Alt,     chars: "\x1b" }
-  - { key: Left,     mods: Alt,     chars: "\x1bb"                       }
-  - { key: Right,    mods: Alt,     chars: "\x1bf"                       }
+  - { key: Key3, mods: Alt, chars: "#" } # required to use '#' on mac with UK keyboard
+  - { key: H, mods: Alt, chars: "\x1b" } # I don't remember why I have this lol
+  - { key: Left, mods: Alt, chars: "\x1bb" } # Jump to previous word
+  - { key: Right, mods: Alt, chars: "\x1bf" } # Jump to next word

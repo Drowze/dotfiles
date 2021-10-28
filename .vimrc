@@ -1,3 +1,7 @@
+" Fix groovy syntax
+" https://github.com/vim/vim/issues/7280
+set regexpengine=0
+
 " Disable arrow keys on normal mode
 noremap <LEFT> :echo 'hjkl'<CR>
 noremap <UP> :echo 'hjkl'<CR>
@@ -25,6 +29,9 @@ set relativenumber
 " Show ruler
 set colorcolumn=80
 
+" Highlight search results
+set hlsearch
+
 " Powerful backspacing
 set backspace=indent,eol,start
 
@@ -47,6 +54,22 @@ set statusline+=%-40f\                    " path
 set statusline+=%=%1*%y%*%*\              " file type
 set statusline+=%10((%l,%c)%)\            " line and column
 set statusline+=%P                        " percentage of file
+
+" Show [ N / Y ] (i.e. current cursor position) when searching
+set shortmess-=S
+
+" Use rg for grepping
+set grepprg=rg\ --vimgrep
+set grepformat^=%f:%l:%c:%m
+
+" Fzf
+nnoremap <C-p> :Files<Cr>
+let g:fzf_layout = { 'down': '40%' }
+
+" vim-test
+let test#strategy = "vimterminal"
+let test#vim#term_position = "belowright 10"
+map <Leader>t :TestFile<CR>
 
 " Cursor shape
 " Insert - 5 - blinking vertical bar
@@ -77,13 +100,16 @@ endfunction
 command! -bar SetupPython call SetupPython()
 
 call plug#begin('~/.vim/plugged')
-  Plug 'ctrlpvim/ctrlp.vim'
   Plug 'ap/vim-css-color'
   Plug 'pangloss/vim-javascript'
   Plug 'maxmellon/vim-jsx-pretty'
   Plug 'posva/vim-vue'
   Plug 'dracula/vim', { 'as': 'dracula' }
   Plug 'tpope/vim-fugitive'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  Plug 'vim-test/vim-test'
+  Plug 'junegunn/vim-slash'
 call plug#end()
 
 " Ignore node_modules on ctrlp
