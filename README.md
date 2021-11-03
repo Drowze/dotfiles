@@ -1,7 +1,7 @@
 # mah . files
 
 my setup:  
-* terminal: termite
+* terminal: alacritty
 * shell: fish (+fisher)
 * multiplexer: tmux (+tpm)
 * editor: vim (+vim-plug)
@@ -9,9 +9,11 @@ my setup:
 * irc client: weechat
 * file manager: ranger
 
-todo:
+dropped:
+* termite
+
+todo (not actively using but want to):
 * weechat
-* i3
-* alacritty
+* ranger
 
 Hopefully I'll not stage anything private :|
