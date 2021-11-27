@@ -4,13 +4,7 @@
 
 function fish_prompt
   set -l last_command_status $status
-  set -l cwd
-
-  if test "$theme_short_path" = 'yes'
-    set cwd (basename (prompt_pwd))
-  else
-    set cwd (prompt_pwd)
-  end
+  set -l cwd (prompt_pwd)
 
   set -l fish     "⋊>"
   set -l ahead    "↑"
@@ -32,12 +26,6 @@ function fish_prompt
   end
 
   if git_is_repo
-    if test "$theme_short_path" = 'yes'
-      set root_folder (command git rev-parse --show-toplevel 2> /dev/null)
-      set parent_root_folder (dirname $root_folder)
-      set cwd (echo $PWD | sed -e "s|$parent_root_folder/||")
-    end
-
     echo -n -s " " $directory_color $cwd $normal_color
     echo -n -s " on " $repository_color (git_branch_name) $normal_color " "
 
