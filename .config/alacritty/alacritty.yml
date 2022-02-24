@@ -1,4 +1,4 @@
-background_opacity: 0.75
+background_opacity: 0.95
 
 hints:
   launcher: firefox
@@ -7,7 +7,6 @@ font:
   size: 15
   normal:
     family: Hack
-    style: Bold
 
   bold:
     family: Hack
@@ -65,6 +64,12 @@ colors:
 
 key_bindings:
   - { key: Key3, mods: Alt, chars: "#" } # required to use '#' on mac with UK keyboard
-  - { key: H, mods: Alt, chars: "\x1b" } # I don't remember why I have this lol
+  - { key: B, mods: Alt, chars: "\x1bb" } # Jump to previous word
+  - { key: F, mods: Alt, chars: "\x1bf" } # Jump to next word
   - { key: Left, mods: Alt, chars: "\x1bb" } # Jump to previous word
   - { key: Right, mods: Alt, chars: "\x1bf" } # Jump to next word
+  - { key: Left,  mods: Command, chars: "\x1bOH", mode: AppCursor } # Home
+  - { key: Right, mods: Command, chars: "\x1bOF", mode: AppCursor } # End
+    #  - { key: H, mods: Alt, chars: "\x1b" } # I don't remember this
+    #  - { key: Up, mods: Shift,   chars: "\x1b[1;2A" } # I don't remember this
+    #  - { key: Down, mods: Shift,   chars: "\x1b[1;2B" } # I don't remember this

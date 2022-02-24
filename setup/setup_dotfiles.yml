@@ -15,6 +15,7 @@
       with_items:
         - $HOME/.config/alacritty
         - $HOME/.config/fish/functions
+        - $HOME/.tmux
 
     - name: Setup .gitconfig
       template:
@@ -31,6 +32,7 @@
         - { src: .vimrc, dest: .vimrc }
         - { src: .tmux.conf, dest: .tmux.conf }
         - { src: .tmux-osx.conf, dest: .tmux-osx.conf }
+        - { src: .tmux/scripts, dest: .tmux/scripts }
         - { src: git_files/.gitmessage, dest: .gitmessage }
         - { src: git_files/.gitignore, dest: .gitignore }
         - { src: git_files/.gitconfig, dest: .gitconfig }
@@ -40,4 +42,3 @@
         - { src: .config/fish/functions/fish_right_prompt.fish, dest: .config/fish/functions/fish_right_prompt.fish }
         - { src: .config/termite/config, dest: .config/termite/config }
         - { src: .config/alacritty/alacritty.yml, dest: .config/alacritty/alacritty.yml }
-

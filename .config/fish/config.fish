@@ -27,8 +27,6 @@ end
 
 alias be "bundle exec"
 
-alias restart-network "sudo service network-manager restart"
-
 #########
 # $PATH #
 #########
@@ -62,9 +60,9 @@ set -gx LC_ALL en_US.UTF-8
 set -gx MSSQL_CLI_TELEMETRY_OPTOUT 1
 set -gx DISABLE_SPRING true
 # fzf.vim cmd
-set -gx FZF_DEFAULT_COMMAND "rg --files --hidden"
+set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore -g '!.git/' -g '!/public/' -g '!node_modules/' -g '!tmp/' -g '!*.swp'"
 set -gx FZF_LEGACY_KEYBINDINGS 0
 # fzf fish cmd
-set -gx FZF_FIND_FILE_COMMAND "rg --files --hidden"
+set -gx FZF_FIND_FILE_COMMAND "rg --files --hidden --no-ignore -g '!.git/' -g '!/public/' -g '!node_modules/' -g '!tmp/'"
 # mac specific
 set -gx HOMEBREW_NO_AUTO_UPDATE 1

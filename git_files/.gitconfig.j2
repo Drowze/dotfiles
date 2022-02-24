@@ -12,10 +12,6 @@
 [commit]
   template = ~/.gitmessage
   gpgsign = true
-[filter "gitignore"]
-  # On ruby files, end the file with "#gitignore" to ignore it
-  clean = "sed '/#gitignore$/'d"
-  smudge = cat
 [core]
   excludesfile = ~/.gitignore
 [rebase]

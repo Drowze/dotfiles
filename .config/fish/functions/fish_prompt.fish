@@ -31,8 +31,6 @@ function fish_prompt
 
     if git_is_touched
       echo -n -s $dirty
-    else
-      echo -n -s (git_ahead $ahead $behind $diverged $none)
     end
   else
     echo -n -s " " $directory_color $cwd $normal_color
