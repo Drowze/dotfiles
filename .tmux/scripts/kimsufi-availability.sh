@@ -28,7 +28,7 @@ function is_cache_valid {
 if is_cache_valid; then
   response="$(cat $TMP_FILE | jq -r '.response')"
 else
-  response="$(curl -s 'https://www.ovh.com/engine/api/dedicated/server/availabilities')"
+  response="$(curl -s 'https://www.ovh.com/engine/api/dedicated/server/availabilities?country=ie')"
   echo "$response" | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
 fi
 
@@ -36,6 +36,11 @@ for hardware in ${HARDWARES[@]}; do
   availability="$(echo "$response" | jq ".[] | select(.hardware==\"$hardware\") | select(.datacenters[].availability != \"unavailable\")")"
 
   if [[ ! -z "$availability" ]]; then
-    echo -n "KIMSUFI: $hardware "
+    pretty_hardware="$hardware"
+    # hardware codes for cheapest hardwares
+    [ "${pretty_hardware}" == 2201sk010 ] && pretty_hardware="KS-1"
+    [ "${pretty_hardware}" == 2201sk011 ] && pretty_hardware="KS-2"
+    [ "${pretty_hardware}" == 2201sk012 ] && pretty_hardware="KS-3"
+    echo -n "KIMSUFI: $pretty_hardware "
   fi
 done

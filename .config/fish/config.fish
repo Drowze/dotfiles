@@ -66,3 +66,4 @@ set -gx FZF_LEGACY_KEYBINDINGS 0
 set -gx FZF_FIND_FILE_COMMAND "rg --files --hidden --no-ignore -g '!.git/' -g '!/public/' -g '!node_modules/' -g '!tmp/'"
 # mac specific
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
+set -gx HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK 1

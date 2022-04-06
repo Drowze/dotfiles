@@ -22,11 +22,18 @@ set timeoutlen=1000 ttimeoutlen=0
 " Disable help banner on file browser
 let g:netrw_banner = 0
 
+" tree view on netrw
+let g:netrw_liststyle = 3
+
 " show sign column
 set signcolumn=yes
 
 " remap super
 let mapleader = " "
+
+" wraps text correctly
+set wrap
+set linebreak
 
 " adds padding to scrolling
 set scrolloff=4
@@ -51,7 +58,7 @@ set incsearch
 set splitright
 set splitbelow
 
-" Show line numbers
+" Show 'hybrid' line numbers
 set number
 set relativenumber
 
@@ -127,6 +134,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'posva/vim-vue'
   Plug 'dracula/vim', { 'as': 'dracula' }
   Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rhubarb'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-slash'
