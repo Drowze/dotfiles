@@ -1,19 +1,21 @@
 # Setup
 
 1. If MacOS: install homebrew
-```
+```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
-2. Install keepassxc, gpg
-```
-brew install --cask keepassxc gpg
+2. Install keepassxc, gpg, rg, fd, fzf, font-hack, jq, alacritty
+```bash
+brew tap homebrew/cask-fonts
+brew install gpg rg fd fzf font-hack, jq
+brew install --cask keepassxc alacritty
 ```
 
 3. Download keepass db to ~/database.kdbx
 
 4. Setup ssh and gpg
-```
+```bash
 database=$HOME/database.kdbx
 ssh_entry="SSH"
 gpg_entry="GPG"
@@ -27,7 +29,7 @@ rm backupkeys.pgp
 ```
 
 5. Install fish
-```
+```bash
 brew install fish
 chsh -s $(which fish)
 which fish | sudo tee -a /etc/shells
@@ -36,7 +38,7 @@ which fish | sudo tee -a /etc/shells
 6. Install fisher
 ```bash
 fish
-curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
 7. Install asdf, asdf-python, latest python, ansible
@@ -59,7 +61,7 @@ asdf reshim python
 8. Create valid setup/vars.yml according setup/vars.yml.sample
 
 9. Install dotfiles
-```
+```bash
 git clone git@github.com:Drowze/dotfiles.git ~/dotfiles
 cd dotfiles
 ansible-playbook setup/setup_dotfiles.yml
