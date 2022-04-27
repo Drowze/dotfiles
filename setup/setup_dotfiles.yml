@@ -37,8 +37,7 @@
         - { src: git_files/.gitignore, dest: .gitignore }
         - { src: git_files/.gitconfig, dest: .gitconfig }
         - { src: .config/fish/config.fish, dest: .config/fish/config.fish }
-        - { src: .config/fish/fishfile, dest: .config/fish/fishfile }
+        - { src: .config/fish/fish_plugins, dest: .config/fish/fish_plugins }
         - { src: .config/fish/functions/fish_prompt.fish, dest: .config/fish/functions/fish_prompt.fish }
         - { src: .config/fish/functions/fish_right_prompt.fish, dest: .config/fish/functions/fish_right_prompt.fish }
-        - { src: .config/termite/config, dest: .config/termite/config }
         - { src: .config/alacritty/alacritty.yml, dest: .config/alacritty/alacritty.yml }

@@ -65,4 +65,5 @@ asdf reshim python
 git clone git@github.com:Drowze/dotfiles.git ~/dotfiles
 cd dotfiles
 ansible-playbook setup/setup_dotfiles.yml
+fisher update
 ```
