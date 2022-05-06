@@ -126,6 +126,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" plugin-injected noteworthy keybindings:
+"   vim-windowswap:
+"   - `<leader>ww` swap windows
 call plug#begin('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'ap/vim-css-color'
@@ -140,6 +143,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/vim-slash'
   Plug 'vim-test/vim-test'
   Plug 'wsdjeg/vim-fetch'
+  Plug 'chrisbra/Colorizer'
+  Plug 'wesQ3/vim-windowswap'
 call plug#end()
 
 " <plugin options section>

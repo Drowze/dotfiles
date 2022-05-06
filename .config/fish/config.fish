@@ -50,6 +50,14 @@ if test -d /usr/local/opt/mongodb-community@4.2/bin
   fish_add_path "/usr/local/opt/mongodb-community@4.2/bin"
 end
 
+###########
+# PLUGINS #
+###########
+# fzf fish; keybindings: ctrl-s, ctrl-g, ctrl-o, ctrl-r ctrl-alt-p
+fzf_configure_bindings --git_status=\cs --git_log=\cg --variables --directory=\co
+set -gx FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=40% --preview-window=wrap --marker="*" --bind "ctrl-j:preview-down,ctrl-k:preview-up"'
+set fzf_fd_opts --hidden --no-ignore --exclude '.git' --exclude 'node_modules' --exclude '/public/' --exclude '/tmp/' --exclude '/coverage/'
+
 ############
 # ENV VARS #
 ############
@@ -60,10 +68,11 @@ set -gx LC_ALL en_US.UTF-8
 set -gx MSSQL_CLI_TELEMETRY_OPTOUT 1
 set -gx DISABLE_SPRING true
 # fzf.vim cmd
-set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore -g '!.git/' -g '!/public/' -g '!node_modules/' -g '!tmp/' -g '!*.swp'"
-set -gx FZF_LEGACY_KEYBINDINGS 0
-# fzf fish cmd
-set -gx FZF_FIND_FILE_COMMAND "rg --files --hidden --no-ignore -g '!.git/' -g '!/public/' -g '!node_modules/' -g '!tmp/'"
+set -gx FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK 1
+# build rubies
+if test -e /usr/local/opt/openssl@1.1
+  set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=/usr/local/opt/openssl@1.1
+end

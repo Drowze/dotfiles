@@ -5,11 +5,16 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
-2. Install keepassxc, gpg, rg, fd, fzf, font-hack, jq, alacritty
+2. Install utilities
 ```bash
+# if on MacOS
 brew tap homebrew/cask-fonts
-brew install gpg rg fd fzf font-hack, jq
-brew install --cask keepassxc alacritty
+brew install gpg rg fd fzf font-hack jq gh htop bat tree axel tig wget
+brew install saml2aws awscli # work specific
+brew install --cask keepassxc alacritty spotify slack zoom rectangle alt-tab vscodium docker
+
+# if on Ubuntu
+# TODO
 ```
 
 3. Download keepass db to ~/database.kdbx
@@ -26,6 +31,11 @@ keepassxc-cli attachment-export $database $ssh_entry id_ed25519.pub ~/.ssh/id_ed
 keepassxc-cli attachment-export $database $gpg_entry backupkeys.pgp backupkeys.pgp
 gpg --import-options restore --import backupkeys.pgp
 rm backupkeys.pgp
+
+# if on macos:
+brew install pinentry-mac
+echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
 ```
 
 5. Install fish
@@ -35,9 +45,10 @@ chsh -s $(which fish)
 which fish | sudo tee -a /etc/shells
 ```
 
-6. Install fisher
+6. Enable early features in fish and install fisher
 ```bash
 fish
+set -U fish_features ampersand-nobg-in-token,qmark-noglob
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
