@@ -67,6 +67,7 @@ set -gx LC_CTYPE en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
 set -gx MSSQL_CLI_TELEMETRY_OPTOUT 1
 set -gx DISABLE_SPRING true
+set -gx BAT_THEME Dracula
 # fzf.vim cmd
 set -gx FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
