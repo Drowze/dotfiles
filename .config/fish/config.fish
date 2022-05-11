@@ -2,14 +2,17 @@ function fish_greeting
   fish_logo
 end
 
+# Direnv
+if type -q direnv
+  direnv hook fish | source
+
+  # direnv is too verbose... this should suppress all logging
+  set -gx DIRENV_LOG_FORMAT ""
+end
+
 # Source asdf files
 if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
-end
-
-# Source default database authentication details
-if test -e ~/.mssql-cli/default.fish
-  source ~/.mssql-cli/default.fish
 end
 
 ###########
@@ -54,7 +57,9 @@ end
 # PLUGINS #
 ###########
 # fzf fish; keybindings: ctrl-s, ctrl-g, ctrl-o, ctrl-r ctrl-alt-p
-fzf_configure_bindings --git_status=\cs --git_log=\cg --variables --directory=\co
+if type -q fzf_configure_bindings
+  fzf_configure_bindings --git_status=\cs --git_log=\cg --variables --directory=\co
+end
 set -gx FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=40% --preview-window=wrap --marker="*" --bind "ctrl-j:preview-down,ctrl-k:preview-up"'
 set fzf_fd_opts --hidden --no-ignore --exclude '.git' --exclude 'node_modules' --exclude '/public/' --exclude '/tmp/' --exclude '/coverage/'
 
@@ -65,7 +70,9 @@ set -gx VISUAL vim
 set -gx EDITOR $VISUAL
 set -gx LC_CTYPE en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
+# mssql-cli
 set -gx MSSQL_CLI_TELEMETRY_OPTOUT 1
+# ruby/rails
 set -gx DISABLE_SPRING true
 set -gx BAT_THEME Dracula
 # fzf.vim cmd
