@@ -29,6 +29,7 @@ if type -q pry && test -e $HOME/asdf/shims/irb
 end
 
 alias be "bundle exec"
+alias k kubectl
 
 #########
 # $PATH #
@@ -79,7 +80,6 @@ set -gx BAT_THEME Dracula
 set -gx FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
-set -gx HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK 1
 # build rubies
 if test -e /usr/local/opt/openssl@1.1
   set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=/usr/local/opt/openssl@1.1

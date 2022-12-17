@@ -22,6 +22,10 @@ set timeoutlen=1000 ttimeoutlen=0
 " Disable help banner on file browser
 let g:netrw_banner = 0
 
+" Buggy copy files on macosx
+" https://stackoverflow.com/questions/31811335/copying-files-with-vims-netrw-on-mac-os-x-is-broken
+let g:netrw_keepdir = 0
+
 " tree view on netrw
 let g:netrw_liststyle = 3
 
@@ -30,6 +34,9 @@ set signcolumn=yes
 
 " remap super
 let mapleader = " "
+
+" shows 'partial' command
+set showcmd
 
 " wraps text correctly
 set wrap
@@ -130,29 +137,51 @@ endif
 "   vim-windowswap:
 "   - `<leader>ww` swap windows
 call plug#begin('~/.vim/plugged')
-  Plug 'itchyny/lightline.vim'
+  Plug 'airblade/vim-gitgutter'
   Plug 'ap/vim-css-color'
-  Plug 'pangloss/vim-javascript'
-  Plug 'maxmellon/vim-jsx-pretty'
-  Plug 'posva/vim-vue'
+  Plug 'chrisbra/Colorizer'
   Plug 'dracula/vim', { 'as': 'dracula' }
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-rhubarb'
+  Plug 'itchyny/lightline.vim'
+  Plug 'jiangmiao/auto-pairs'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-slash'
+  Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'pangloss/vim-javascript'
+  Plug 'posva/vim-vue'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-projectionist'
+  Plug 'tpope/vim-rhubarb'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-vinegar'
   Plug 'vim-test/vim-test'
-  Plug 'wsdjeg/vim-fetch'
-  Plug 'chrisbra/Colorizer'
   Plug 'wesQ3/vim-windowswap'
+  Plug 'wsdjeg/vim-fetch'
 call plug#end()
+
+" custom filetypes. Has to be after plugins for some reason
+autocmd BufNewFile,BufRead *.jbuilder setfiletype ruby
+autocmd BufNewFile,BufRead *.sc setfiletype scala
 
 " <plugin options section>
 
+" auto-pairs
+au FileType ruby let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'})
+
+" Projectionist
+" quickly toggle to spec file with :A (or :AV, :AS, :AT for splits/tabs)
+let g:projectionist_heuristics = {
+\ 'app/*': {
+\   'app/*.rb': { 'alternate': 'spec/{}_spec.rb' },
+\   'spec/*_spec.rb': { 'alternate': 'app/{}.rb' }
+\ },
+\ 'lib/*': {
+\   'lib/*.rb': { 'alternate': 'spec/{}_spec.rb' },
+\   'spec/*_spec.rb': { 'alternate': 'lib/{}.rb' }
+\ }}
+
 " Fzf
 nnoremap <C-p> :Files<Cr>
-nnoremap <Leader><C-h> :History<Cr>
-nnoremap <Leader><C-b> :Buffers<Cr>
 let g:fzf_layout = { 'down': '40%' }
 
 " Fzf+rg
@@ -171,14 +200,15 @@ set laststatus=2 " show status bar
 set noshowmode " hide mode under status bar
 let g:lightline = {
 \ 'colorscheme': 'dracula',
-\   'active': {
-\     'left': [ [ 'mode', 'paste' ],
-\               [ 'buffno', 'readonly', 'filename', 'modified' ] ]
-\   },
-\   'component': {
-\     'buffno': '%1.3n'
-\   },
-\ }
+\ 'active': {
+\   'left': [
+\     [ 'mode', 'paste' ],
+\     [ 'buffno', 'readonly', 'filename', 'modified' ]
+\   ]
+\ },
+\ 'component': {
+\   'buffno': '%1.3n'
+\ }}
 
 " vim-test
 " custom function to delete buffers instead of minimizing
@@ -201,7 +231,7 @@ let test#vim#term_position = "belowright 10"
 nnoremap <Leader>t :TestFile<CR>
 nnoremap <Leader>T :TestNearest<CR>
 let test#ruby#rspec#options = {
-\ 'nearest': '--backtrace',
+\ 'file': '--order defined',
 \ }
 " <plugin options section>
 

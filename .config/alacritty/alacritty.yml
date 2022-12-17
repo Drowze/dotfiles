@@ -1,5 +1,5 @@
 window:
-  opacity: 0.95
+  opacity: 1
 
 hints:
   launcher: firefox
@@ -71,6 +71,4 @@ key_bindings:
   - { key: Right, mods: Alt, chars: "\x1bf" } # Jump to next word
   - { key: Left,  mods: Command, chars: "\x1bOH", mode: AppCursor } # Home
   - { key: Right, mods: Command, chars: "\x1bOF", mode: AppCursor } # End
-    #  - { key: H, mods: Alt, chars: "\x1b" } # I don't remember this
-    #  - { key: Up, mods: Shift,   chars: "\x1b[1;2A" } # I don't remember this
-    #  - { key: Down, mods: Shift,   chars: "\x1b[1;2B" } # I don't remember this
+  - { key: Q,        mods: Command, action: SpawnNewInstance }
