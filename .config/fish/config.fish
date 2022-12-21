@@ -28,6 +28,10 @@ if type -q pry && test -e $HOME/asdf/shims/irb
   alias irb pry
 end
 
+if type -q nvim
+  alias vi nvim
+end
+
 alias be "bundle exec"
 alias k kubectl
 

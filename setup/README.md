@@ -9,7 +9,7 @@
 ```bash
 # if on MacOS
 brew tap homebrew/cask-fonts
-brew install gpg rg fd fzf font-hack jq gh htop bat tree axel tig wget
+brew install gpg rg fd fzf font-hack-nerd-font jq gh htop bat tree axel tig wget nvim
 brew install saml2aws awscli # work specific
 brew install --cask --no-quarantine keepassxc alacritty spotify slack zoom rectangle alt-tab vscodium docker via
 

@@ -1,2 +1,3 @@
 setup/vars.yml
 git_files/.gitconfig
+.config/nvim/plugin/packer_compiled.lua

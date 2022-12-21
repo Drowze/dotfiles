@@ -7,10 +7,10 @@ hints:
 font:
   size: 15
   normal:
-    family: Hack
+    family: Hack Nerd Font Mono
 
   bold:
-    family: Hack
+    family: Hack Nerd Font Mono
     style: Bold Italic
 
   offset:
