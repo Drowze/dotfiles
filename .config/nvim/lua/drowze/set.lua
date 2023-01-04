@@ -1,7 +1,8 @@
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 
--- show partial command
+-- hide current mode, show partial command
+vim.opt.showmode = false
 vim.opt.showcmd = true
 
 -- decent wrapping/scrolling
@@ -31,8 +32,19 @@ vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
+-- invisible characters
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = '▸ ',
+  eol = '↲',
+  trail= '·'
+}
+
 -- we use undotree and have a ~permanent~ history
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 vim.opt.undofile = true
+
+-- speeds up dramatically opening python files
+vim.g['python3_host_prog'] = '$HOME/.asdf/shims/python3'

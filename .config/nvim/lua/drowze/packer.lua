@@ -12,6 +12,7 @@ return require('packer').startup(function(use)
   use('nvim-treesitter/nvim-treesitter-textobjects')
   use{ 'nvim-treesitter/playground', opt = true, cmd = 'TSPlayground' }
   use('mbbill/undotree')
+  use { 'lewis6991/gitsigns.nvim', tag = 'release', config = function() require'gitsigns'.setup() end }
   use('tpope/vim-fugitive')
   use { 'tpope/vim-projectionist', ft = { 'ruby' } }
   use { 'kylechui/nvim-surround', tag = '*', config = function() require'nvim-surround'.setup() end, event = 'CursorMoved' }
