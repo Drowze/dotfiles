@@ -6,7 +6,7 @@ return require('packer').startup(function(use)
   use('ThePrimeagen/harpoon')
   use('nvim-tree/nvim-web-devicons')
   use { 'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end }
-  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { {'nvim-lua/plenary.nvim'} } }
+  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { { 'nvim-lua/plenary.nvim' } } }
   use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use('nvim-treesitter/nvim-treesitter-textobjects')
@@ -43,4 +43,9 @@ return require('packer').startup(function(use)
 
   -- lsp functions for status bar
   use('nvim-lua/lsp-status.nvim')
+
+  -- let there be DAP... --
+  use('mfussenegger/nvim-dap')
+  use('mfussenegger/nvim-dap-python')
+  use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
 end)
