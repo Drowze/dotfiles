@@ -5,7 +5,8 @@ hints:
   launcher: firefox
 
 font:
-  size: 15
+  size: 14
+  # size: 12 # macbook
   normal:
     family: Hack Nerd Font Mono
 

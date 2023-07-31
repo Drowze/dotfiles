@@ -1,7 +1,7 @@
 -- custom vim-test strategy, derivated from neovim strategy
 -- - disable line numbers
 -- - map enter to delete the buffer, so we can scroll the buffer or press enter to close it
--- - map ctrl-c to send ctrl-c to the running job, buffer, we can kill the test on normal mode
+-- - map ctrl-c to send ctrl-c to the running job, so we can kill the test on normal mode
 -- - switch back to last window after creating the buffer
 local neovim_enhanced = function (cmd)
   local open_split_cmd = (vim.g['test#neovim#term_position'] or 'botright') .. ' new'
@@ -23,7 +23,7 @@ end
 vim.g['test#custom_strategies'] = { neovim_enhanced = neovim_enhanced }
 
 vim.g['test#strategy'] = 'neovim_enhanced'
-vim.g['test#neovim#term_position'] = 'botright 10'
+vim.g['test#neovim#term_position'] = 'belowright 15'
 
 vim.keymap.set('n', '<leader>t', vim.cmd.TestFile, { desc = 'vim-test: Test file' })
 vim.keymap.set('n', '<leader>T', vim.cmd.TestNearest, { desc = 'vim-test: Test nearest' })

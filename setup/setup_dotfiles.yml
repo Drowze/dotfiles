@@ -39,3 +39,4 @@
         - { src: .config/fish/config.fish, dest: .config/fish/config.fish }
         - { src: .config/fish/fish_plugins, dest: .config/fish/fish_plugins }
         - { src: .config/alacritty/alacritty.yml, dest: .config/alacritty/alacritty.yml }
+        - { src: .config/nvim, dest: .config/.nvim }

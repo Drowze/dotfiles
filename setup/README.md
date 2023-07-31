@@ -9,9 +9,12 @@
 ```bash
 # if on MacOS
 brew tap homebrew/cask-fonts
-brew install gpg rg fd fzf font-hack-nerd-font jq gh htop bat tree axel tig wget nvim
+brew install gpg rg fd fzf font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima
 brew install saml2aws awscli # work specific
-brew install --cask --no-quarantine keepassxc alacritty spotify slack zoom rectangle alt-tab vscodium docker via
+brew install --cask --no-quarantine keepassxc alacritty spotify slack zoom rectangle alt-tab vscodium docker
+
+mkdir -p ~/.docker/cli-plugins
+ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/docker-compose
 
 # if on Ubuntu
 # TODO
@@ -21,6 +24,12 @@ brew install --cask --no-quarantine keepassxc alacritty spotify slack zoom recta
 
 4. Setup ssh and gpg
 ```bash
+# if on macos:
+brew install pinentry-mac
+echo "pinentry-program $(brew --prefix pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
+
+# then
 database=$HOME/database.kdbx
 ssh_entry="SSH"
 gpg_entry="GPG"
@@ -31,11 +40,6 @@ keepassxc-cli attachment-export $database $ssh_entry id_ed25519.pub ~/.ssh/id_ed
 keepassxc-cli attachment-export $database $gpg_entry backupkeys.pgp backupkeys.pgp
 gpg --import-options restore --import backupkeys.pgp
 rm backupkeys.pgp
-
-# if on macos:
-brew install pinentry-mac
-echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
-killall gpg-agent
 ```
 
 5. Install fish
@@ -55,7 +59,7 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 7. Install asdf, asdf-python, latest python, ansible
 ```bash
 # asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
 echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish
 mkdir -p ~/.config/fish/completions
 ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions

@@ -3,7 +3,7 @@ local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
 lsp.ensure_installed({
-  'sumneko_lua',
+  'lua_ls',
   'solargraph'
 })
 
@@ -24,17 +24,41 @@ lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
 
-lsp.setup_servers({ 'ruby' })
+-- TODO: can this be lazy? e.g. only cat Gemfile.lock on ruby files
+local solargraph_cmd = function()
+  local ret_code = nil
+  local jid = vim.fn.jobstart("cat Gemfile.lock | grep solargraph", { on_exit = function(_, data) ret_code = data end })
+  vim.fn.jobwait({ jid }, 5000)
+  if ret_code == 0 then
+    return { "bundle", "exec", "solargraph", "stdio" }
+  end
+  return { "solargraph", "stdio" }
+end
+
+lsp.configure('solargraph', { cmd = solargraph_cmd() })
 lsp.nvim_workspace()
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
-    sign_icons = {
-        error = 'E',
-        warn = 'W',
-        hint = 'H',
-        info = 'I'
-    }
+    suggest_lsp_servers = false
+})
+lsp.set_sign_icons({
+    error = '✘',
+    warn = '▲',
+    hint = '⚑',
+    info = ''
+})
+
+-- disable diagnosis text on the right
+vim.diagnostic.config({
+  severity_sort = true,
+  virtual_text = false,
+  float = {
+    style = 'minimal',
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
 })
 
 lsp.on_attach(function(client, bufnr)

@@ -32,8 +32,13 @@ if type -q nvim
   alias vi nvim
 end
 
-alias be "bundle exec"
-alias k kubectl
+if type -q bundle
+  alias be "bundle exec"
+end
+
+if type -q kubectl
+  alias k kubectl
+end
 
 #########
 # $PATH #

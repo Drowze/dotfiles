@@ -14,3 +14,5 @@ local function set_custom_filetype(pattern, filetype)
 end
 
 set_custom_filetype('*.jbuilder', 'ruby')
+set_custom_filetype('Appraisals', 'ruby')
+vim.cmd('runtime macros/matchit.vim')

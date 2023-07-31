@@ -46,5 +46,13 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 vim.opt.undofile = true
 
+-- opens netrw previews (`p`) vertically
+vim.g['netrw_preview'] = 1
+
+-- when a vertical preview window is opened, the directory listing
+-- will use only 30% of the columns available; the rest of the window
+-- is used for the preview window
+vim.g['netrw_winsize'] = 30
+
 -- speeds up dramatically opening python files
 vim.g['python3_host_prog'] = '$HOME/.asdf/shims/python3'
