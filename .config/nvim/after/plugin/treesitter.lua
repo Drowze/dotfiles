@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   -- A list of parser names, or 'all'
   ensure_installed = { 'vim', 'help', 'ruby', 'javascript', 'c', 'lua', 'rust', 'python' },
 
@@ -18,5 +18,11 @@ require'nvim-treesitter.configs'.setup {
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
+  },
+}
+
+require('nvim-treesitter.configs').setup {
+  endwise = {
+      enable = true,
   },
 }

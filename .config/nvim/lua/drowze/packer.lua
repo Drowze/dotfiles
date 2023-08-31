@@ -17,7 +17,8 @@ return require('packer').startup(function(use)
   use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', version = '0.9.0' }
   use('nvim-treesitter/nvim-treesitter-textobjects')
-  use{ 'nvim-treesitter/playground', opt = true, cmd = 'TSPlayground' }
+  use { 'nvim-treesitter/playground', opt = true, cmd = 'TSPlayground' }
+  use { 'RRethy/nvim-treesitter-endwise', requires = { 'nvim-treesitter/nvim-treesitter' } }
   use('mbbill/undotree')
   use { 'lewis6991/gitsigns.nvim', tag = 'release', config = function() require'gitsigns'.setup() end }
   use('tpope/vim-fugitive')

@@ -1,10 +1,12 @@
 local lsp = require('lsp-zero')
+local lspconfig = require('lspconfig')
 
 lsp.preset('recommended')
 
 lsp.ensure_installed({
   'lua_ls',
-  'solargraph'
+  'solargraph',
+  'rubocop'
 })
 
 local cmp = require('cmp')
@@ -24,23 +26,24 @@ lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
 
--- TODO: can this be lazy? e.g. only cat Gemfile.lock on ruby files
-local solargraph_cmd = function()
-  local ret_code = nil
-  local jid = vim.fn.jobstart("cat Gemfile.lock | grep solargraph", { on_exit = function(_, data) ret_code = data end })
-  vim.fn.jobwait({ jid }, 5000)
-  if ret_code == 0 then
-    return { "bundle", "exec", "solargraph", "stdio" }
-  end
-  return { "solargraph", "stdio" }
-end
+lsp.configure('solargraph', {
+  cmd = { 'solargraph', 'stdio' },
+  filetypes = { "ruby" },
+  init_options = { formatting = false },
+  root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
+  settings = {
+    solargraph = {
+      formatting = false,
+    }
+  }
+})
 
-lsp.configure('solargraph', { cmd = solargraph_cmd() })
 lsp.nvim_workspace()
 
 lsp.set_preferences({
     suggest_lsp_servers = false
 })
+
 lsp.set_sign_icons({
     error = '✘',
     warn = '▲',
@@ -62,24 +65,21 @@ vim.diagnostic.config({
 })
 
 lsp.on_attach(function(client, bufnr)
-  local function opts(desc)
-    return {
-      buffer = bufnr,
-      remap = false,
-      desc = desc
-    }
-  end
-
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts('LSP: [G]o to [d]efinition'))
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts('LSP: Show hover information'))
-  vim.keymap.set('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts('LSP: search workspace symbol'))
-  vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, opts('LSP: [v]iew [d]iagnostic'))
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_next, opts('LSP: goto next'))
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_prev, opts('LSP: goto previous'))
-  vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts('LSP: [v]iew [r]ecommended [a]ctions'))
-  vim.keymap.set('n', '<leader>vrr', vim.lsp.buf.references, opts('LSP: [v]iew [r]eferences'))
-  vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts('LSP: rename symbol'))
-  vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts('LSP: view signature help'))
+  lsp.default_keymaps({buffer = bufnr}) -- add lsp-zero defaults
+  
+  -- K: Displays hover information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.hover().
+  -- gd: Jumps to the definition of the symbol under the cursor. See :help vim.lsp.buf.definition().
+  -- gD: Jumps to the declaration of the symbol under the cursor. Some servers don't implement this feature. See :help vim.lsp.buf.declaration().
+  -- gi: Lists all the implementations for the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.implementation().
+  -- go: Jumps to the definition of the type of the symbol under the cursor. See :help vim.lsp.buf.type_definition().
+  -- gr: Lists all the references to the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.references().
+  -- gs: Displays signature information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.signature_help(). If a mapping already exists for this key this function is not bound.
+  -- <F2>: Renames all references to the symbol under the cursor. See :help vim.lsp.buf.rename().
+  -- <F3>: Format code in current buffer. See :help vim.lsp.buf.format().
+  -- <F4>: Selects a code action available at the current cursor position. See :help vim.lsp.buf.code_action().
+  -- gl: Show diagnostics in a floating window. See :help vim.diagnostic.open_float().
+  -- [d: Move to the previous diagnostic in the current buffer. See :help vim.diagnostic.goto_prev().
+  -- ]d: Move to the next diagnostic. See :help vim.diagnostic.goto_next().
 end)
 
 lsp.setup()
