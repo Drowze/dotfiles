@@ -5,7 +5,20 @@ local loaded_exts = false
 local function lazy_telescope(opts)
   opts = opts or {}
 
-  if not telescope then telescope = require'telescope' end
+  if not telescope then
+    telescope = require'telescope'
+    telescope.setup {
+      pickers = {
+        buffers = {
+          mappings = {
+            i = {
+              ["<c-x>"] = "delete_buffer",
+            }
+          }
+        }
+      }
+    }
+  end
   if opts.load_ext and not loaded_exts then
     loaded_exts = true
     telescope.load_extension('live_grep_args')
@@ -16,6 +29,7 @@ end
 
 local function lazy_builtin()
   if not builtin then
+    lazy_telescope()
     builtin = require'telescope.builtin'
   end
   return builtin
@@ -37,10 +51,14 @@ vim.keymap.set('n', '<leader>pS', function()
   local current_path
 
   if vim.api.nvim_buf_get_option(0, "filetype") == "netrw" then
-    current_path = vim.fn.expand('%')
+    -- not using netrw? maybe try current_path = vim.fn.expand('%')
+    current_path = vim.b.netrw_curdir
   else
     current_path = vim.fn.expand('%:h')
   end
+
+  -- try to get a relative path
+  current_path = vim.fn.fnamemodify(current_path, ":.")
 
   local input = vim.fn.input('(' .. current_path .. ') ' .. 'grep > ')
   if input == "" then return end

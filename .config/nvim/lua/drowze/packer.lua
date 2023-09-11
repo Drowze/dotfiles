@@ -11,7 +11,7 @@ return require('packer').startup(function(use)
   use { 'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end }
   use {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+    tag = '0.1.2',
     requires = { { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-live-grep-args.nvim' } }
   }
   use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
@@ -24,9 +24,11 @@ return require('packer').startup(function(use)
   use('tpope/vim-fugitive')
   use('tpope/vim-rhubarb')
   use { 'tpope/vim-projectionist', ft = { 'ruby' } }
+  use { 'tpope/vim-eunuch', config = function () vim.cmd('cnoreabbrev rename Rename') end }
   use { 'kylechui/nvim-surround', tag = '*', config = function() require'nvim-surround'.setup() end, event = 'CursorMoved' }
   use { 'Wansmer/treesj', requires = { 'nvim-treesitter' }, config = function() require('treesj').setup() end }
   use('vim-test/vim-test')
+  use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
 
   -- let there be LSP... --
   use {
