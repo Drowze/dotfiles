@@ -8,6 +8,9 @@ local function lazy_telescope(opts)
   if not telescope then
     telescope = require'telescope'
     telescope.setup {
+      defaults = {
+        prompt_prefix= "🔍 "
+      },
       pickers = {
         buffers = {
           mappings = {

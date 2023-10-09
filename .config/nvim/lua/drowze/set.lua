@@ -1,6 +1,10 @@
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 
+-- vimdiff: ignore whitespaces, better line-match
+-- see neovim/neovim#14537 for more about line-match
+vim.opt.diffopt:append { 'iwhiteall', 'linematch:50' }
+
 -- hide current mode, show partial command
 vim.opt.showmode = false
 vim.opt.showcmd = true

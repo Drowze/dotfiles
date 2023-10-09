@@ -1,3 +1,9 @@
+" Compatibility with foreign systems (e.g.: when copying our vimrc to a remote
+" machine)
+if $TERM == "xterm"
+  set term=xterm-256color
+endif
+
 " Fix groovy syntax
 " https://github.com/vim/vim/issues/7280
 set regexpengine=0
@@ -69,9 +75,6 @@ set splitbelow
 set number
 set relativenumber
 
-" Show ruler
-set colorcolumn=80
-
 " Highlight search results
 set hlsearch
 
@@ -88,6 +91,28 @@ set smartindent
 " Show invisible chars
 set list
 set listchars=tab:▸\ ,eol:↲,trail:·
+
+" Have vimdiff ignoring whitespaces
+if exists('&diffopt')
+  if has("patch-8.1.0393")
+    set diffopt+=iwhiteall
+  else
+    set diffopt+=iwhite
+    function DiffW()
+      let opt = ""
+       if &diffopt =~ "icase"
+         let opt = opt . "-i "
+       endif
+       if &diffopt =~ "iwhite"
+         let opt = opt . "-w "
+       endif
+       silent execute "!diff -a --binary " . opt .
+         \ v:fname_in . " " . v:fname_new .  " > " . v:fname_out
+       redraw
+    endfunction
+    set diffexpr=DiffW()
+  endif
+endif
 
 " Toggle showing invisible chars
 noremap <F12> :set list!<CR>:set noruler!<CR>:highlight EndOfBuffer ctermfg=236<CR>

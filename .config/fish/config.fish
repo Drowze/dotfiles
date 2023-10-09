@@ -89,7 +89,7 @@ set -gx BAT_THEME Dracula
 set -gx FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
-# build rubies
-if test -e /usr/local/opt/openssl@1.1
-  set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=/usr/local/opt/openssl@1.1
+# credentials
+if test -f $HOME/.config/fish/secrets.fish
+  source $HOME/.config/fish/secrets.fish
 end

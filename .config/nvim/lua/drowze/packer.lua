@@ -4,6 +4,16 @@ return require('packer').startup(function(use)
 
   use('wsdjeg/vim-fetch')
   use('towolf/vim-helm')
+  use {
+    'cuducos/yaml.nvim',
+    ft = { 'yaml' },
+    requires = { 'nvim-treesitter/nvim-treesitter', 'nvim-telescope/telescope.nvim' }
+  }
+  use {
+    'phelipetls/jsonpath.nvim',
+    ft = { 'json' },
+    requires = { 'nvim-treesitter/nvim-treesitter' }
+  }
   use('pocke/rbs.vim')
   use('Mofiqul/dracula.nvim')
   use('ThePrimeagen/harpoon')
@@ -20,12 +30,17 @@ return require('packer').startup(function(use)
   use { 'nvim-treesitter/playground', opt = true, cmd = 'TSPlayground' }
   use { 'RRethy/nvim-treesitter-endwise', requires = { 'nvim-treesitter/nvim-treesitter' } }
   use('mbbill/undotree')
-  use { 'lewis6991/gitsigns.nvim', tag = 'release', config = function() require'gitsigns'.setup() end }
+  use ('lewis6991/gitsigns.nvim')
   use('tpope/vim-fugitive')
   use('tpope/vim-rhubarb')
   use { 'tpope/vim-projectionist', ft = { 'ruby' } }
   use { 'tpope/vim-eunuch', config = function () vim.cmd('cnoreabbrev rename Rename') end }
-  use { 'kylechui/nvim-surround', tag = '*', config = function() require'nvim-surround'.setup() end, event = 'CursorMoved' }
+  use {
+    'kylechui/nvim-surround',
+    tag = '*',
+    config = function() require'nvim-surround'.setup() end,
+    event = 'CursorMoved'
+  }
   use { 'Wansmer/treesj', requires = { 'nvim-treesitter' }, config = function() require('treesj').setup() end }
   use('vim-test/vim-test')
   use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
