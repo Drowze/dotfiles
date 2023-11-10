@@ -50,6 +50,9 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 vim.opt.undofile = true
 
+-- disable netrw
+vim.g['loaded_netrwPlugin'] = 1
+
 -- opens netrw previews (`p`) vertically
 vim.g['netrw_preview'] = 1
 

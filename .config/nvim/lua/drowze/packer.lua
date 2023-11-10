@@ -41,9 +41,16 @@ return require('packer').startup(function(use)
     config = function() require'nvim-surround'.setup() end,
     event = 'CursorMoved'
   }
+  -- effectively replacement of splitjoin
   use { 'Wansmer/treesj', requires = { 'nvim-treesitter' }, config = function() require('treesj').setup() end }
   use('vim-test/vim-test')
   use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
+  use {
+    'm4xshen/hardtime.nvim',
+    requires = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+    config = function () require'hardtime'.setup({ disabled_filetypes = { "netrw", "oil", "tsplayground" }, restriction_mode = "hint" }) end
+  }
+  use('stevearc/oil.nvim')
 
   -- let there be LSP... --
   use {

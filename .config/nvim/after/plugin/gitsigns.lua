@@ -1,7 +1,7 @@
 local gitsigns = require('gitsigns')
 
 -- Suggested mappings https://github.com/lewis6991/gitsigns.nvim#keymaps
-require('gitsigns').setup{
+gitsigns.setup({
   on_attach = function(bufnr)
     local function gitsigns_map(mode, key, action, desc, opts)
       opts = opts or {}
@@ -43,4 +43,4 @@ require('gitsigns').setup{
     -- Text object
     gitsigns_map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
-}
+})

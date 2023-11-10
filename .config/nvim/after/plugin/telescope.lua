@@ -56,6 +56,8 @@ vim.keymap.set('n', '<leader>pS', function()
   if vim.api.nvim_buf_get_option(0, "filetype") == "netrw" then
     -- not using netrw? maybe try current_path = vim.fn.expand('%')
     current_path = vim.b.netrw_curdir
+  elseif vim.api.nvim_buf_get_option(0, "filetype") == "oil" then
+    current_path = require('oil').get_current_dir()
   else
     current_path = vim.fn.expand('%:h')
   end
