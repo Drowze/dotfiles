@@ -1,0 +1,55 @@
+#!/usr/bin/env sh
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "missing jq!"
+  exit 1
+fi
+
+TMP_FILE=/tmp/fear-and-greed
+SECONDS_TO_CACHE=3600
+
+is_cache_valid() {
+  if ! test -f $TMP_FILE; then
+    false
+  fi
+
+  current_ts=$(date +%s)
+  cached_ts=$(cat $TMP_FILE | jq '.timestamp')
+  seconds_past_since_cached=$((current_ts - cached_ts))
+
+  if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
+    true
+  else
+    false
+  fi
+}
+
+fetch() {
+  curl -s 'https://api.alternative.me/fng/?limit=2'
+}
+
+if ! is_cache_valid; then
+  fetch | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
+fi
+
+response="$(cat $TMP_FILE | jq -r '.response')"
+
+today_value="$(echo "$response" | jq -r '.data[0].value')"
+yesterday_value="$(echo "$response" | jq -r '.data[1].value')"
+if [ "$today_value" -ge "$yesterday_value" ]; then
+  equation="($today_value-$yesterday_value)*100/$yesterday_value"
+else
+  sign="-"
+  equation="($yesterday_value-$today_value)*100/$yesterday_value"
+fi
+change_percent="$sign$(echo "scale = 2 ; $equation" | bc)"
+
+today_classification="$(echo "$response" | jq -r '.data[0].value_classification')"
+if [ "$today_classification" = "Fear" ] || [ "$today_classification" = "Greed" ] || [ "$today_classification" = "Neutral" ]; then
+  today_label="$(printf '%s' "$today_classification" | cut -c 1)"
+else
+  # e.g.: Extreme Fear. I want these to be in full!!!
+  today_label=" $today_classification"
+fi
+
+printf "F&G: %s%s (%s%%)" "$today_value" "$today_label" "$change_percent"
