@@ -24,14 +24,18 @@ function is_cache_valid {
   fi
 }
 
-if is_cache_valid; then
-  price="$(cat $TMP_FILE | jq '.price')"
-  variation="$(cat $TMP_FILE | jq '.variation')"
-else
+function fetch {
   price=$(curl -s https://api.kraken.com/0/public/Ticker\?pair\=ETHEUR | jq '.result.XETHZEUR.a[0]' | sed 's/\"//g')
   variation=$(curl -s https://data.messari.io/api/v1/assets/eth/metrics/market-data)
-  jq -n "{price: $price, variation: $variation, timestamp: $(date +%s)}" > $TMP_FILE
+  jq -n "{price: $price, variation: $variation}"
+}
+
+if ! is_cache_valid; then
+  fetch | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
 fi
+
+price="$(cat $TMP_FILE | jq '.response.price')"
+variation="$(cat $TMP_FILE | jq '.response.variation')"
 
 hour_variation=$(echo ${variation} | jq '.data.market_data.percent_change_usd_last_1_hour' | awk '{printf "%.2f", $1}')
 day_variation=$(echo ${variation} | jq '.data.market_data.percent_change_usd_last_24_hours' | awk '{printf "%.2f", $1}')

@@ -25,12 +25,15 @@ function is_cache_valid {
   fi
 }
 
-if is_cache_valid; then
-  response="$(cat $TMP_FILE | jq -r '.response')"
-else
-  response="$(curl -s 'https://www.ovh.com/engine/api/dedicated/server/availabilities?country=ie')"
-  echo "$response" | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
+function fetch {
+  curl -s 'https://www.ovh.com/engine/api/dedicated/server/availabilities?country=ie'
+}
+
+if ! is_cache_valid; then
+  fetch | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
 fi
+
+response="$(cat $TMP_FILE | jq -r '.response')"
 
 for hardware in ${HARDWARES[@]}; do
   availability="$(echo "$response" | jq ".[] | select(.hardware==\"$hardware\") | select(.datacenters[].availability != \"unavailable\")")"
