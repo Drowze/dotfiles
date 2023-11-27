@@ -83,4 +83,7 @@ return require('packer').startup(function(use)
   use('mfussenegger/nvim-dap')
   use('mfussenegger/nvim-dap-python')
   use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
+
+  ---@diagnostic disable: undefined-global
+  if PACKER_BOOTSTRAP then require('packer').sync() end
 end)
