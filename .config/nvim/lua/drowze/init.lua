@@ -1,18 +1,21 @@
+-- bootstrap and setup lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+require('lazy').setup('drowze.plugins')
+--vim.cmd.colorscheme('dracula')
+--vim.api.nvim_set_hl(0, 'WinSeparator', { fg = 'white' })
+
 require('drowze.remap')
 require('drowze.set')
 
-local function set_custom_filetype(pattern, filetype)
-  vim.api.nvim_create_autocmd(
-    { 'BufNewFile', 'BufRead' },
-    {
-      pattern = pattern,
-      callback = function()
-        vim.api.nvim_set_option_value('filetype', filetype, { scope = 'local' })
-      end
-    }
-  )
-end
-
-set_custom_filetype('*.jbuilder', 'ruby')
-set_custom_filetype('Appraisals', 'ruby')
 vim.cmd('runtime macros/matchit.vim')

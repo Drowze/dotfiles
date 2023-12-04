@@ -63,3 +63,18 @@ vim.g['netrw_winsize'] = 30
 
 -- speeds up dramatically opening python files
 vim.g['python3_host_prog'] = '$HOME/.asdf/shims/python3'
+
+local function set_custom_filetype(pattern, filetype)
+  vim.api.nvim_create_autocmd(
+    { 'BufNewFile', 'BufRead' },
+    {
+      pattern = pattern,
+      callback = function()
+        vim.api.nvim_set_option_value('filetype', filetype, { scope = 'local' })
+      end
+    }
+  )
+end
+
+set_custom_filetype('*.jbuilder', 'ruby')
+set_custom_filetype('Appraisals', 'ruby')
