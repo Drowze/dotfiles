@@ -22,6 +22,8 @@ noremap <UP> :echo 'hjkl'<CR>
 noremap <DOWN> :echo 'hjkl'<CR>
 noremap <RIGHT> :echo 'hjkl'<CR>
 
+nnoremap <leader>pv :Ex<CR>
+
 " ESC delay wtf check johnhawthorn.com/2012/09/vi-escape-delays
 set timeoutlen=1000 ttimeoutlen=0
 
