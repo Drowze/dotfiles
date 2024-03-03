@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 if ! command -v jq >/dev/null 2>&1; then
   echo "missing jq!"
   exit 1
@@ -12,32 +14,56 @@ ASSET_LOWER=$(echo "$ASSET" | awk '{print tolower($0)}')
 DECIMAL_PLACES="${2:-2}"
 
 TMP_FILE=/tmp/tmux-${ASSET_LOWER}-price
+PROXY_CONFIG=$HOME/.config/tmux-price-proxy
 SECONDS_TO_CACHE=60
 
 is_cache_valid() {
-  if ! test -f "$TMP_FILE"; then
-    false
-  fi
+  if test -f "$TMP_FILE"; then
+    current_ts=$(date +%s)
+    cached_ts=$(jq '.timestamp' < "$TMP_FILE")
+    seconds_past_since_cached=$((current_ts - cached_ts))
 
-  current_ts=$(date +%s)
-  cached_ts=$(jq '.timestamp' < "$TMP_FILE")
-  seconds_past_since_cached=$((current_ts - cached_ts))
-
-  if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
-    true
+    if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
+      true
+    else
+      false
+    fi
   else
     false
   fi
 }
 
+get_proxy() {
+  if test -f $PROXY_CONFIG; then
+    cat "$PROXY_CONFIG" | tr -d '\n'
+  fi
+}
+
+http() {
+  local url=$1
+  local proxy="$(get_proxy)"
+  local response="$(curl -s $proxy "$url")"
+
+  echo "$response"
+}
+
 fetch() {
-  price=$(curl -s "https://api.kraken.com/0/public/Ticker?pair=${ASSET_UPPER}USD" | jq -r '.result[].a[0]')
-  variation=$(curl -s "https://data.messari.io/api/v1/assets/${ASSET_LOWER}/metrics/market-data")
-  jq -n "{price: $price, variation: $variation}"
+  variation_response="$(http "https://data.messari.io/api/v1/assets/${ASSET_LOWER}/metrics/market-data")"
+  price_response="$(http "https://api.kraken.com/0/public/Ticker?pair=${ASSET_UPPER}USD")"
+  if [ -n "$variation_response" ] && [ -n "$price_response" ]; then
+    price=$(echo "$price_response" | jq -r '.result[].a[0]')
+    jq -n "{price: $price, variation: $variation_response}"
+  fi
 }
 
 if ! is_cache_valid; then
-  fetch | jq "{response: ., timestamp: $(date +%s)}" > "$TMP_FILE"
+  json="$(fetch)"
+  if [ -n "$json" ]; then
+    echo "$json" | jq "{response: ., timestamp: $(date +%s)}" > "$TMP_FILE"
+  else
+    echo "internet?"
+    exit 1
+  fi
 fi
 
 price="$(jq '.response.price' < "$TMP_FILE")"
@@ -46,9 +72,4 @@ variation="$(jq '.response.variation' < "$TMP_FILE")"
 hour_variation=$(echo "$variation" | jq '.data.market_data.percent_change_usd_last_1_hour' | awk '{printf "%.2f", $1}')
 day_variation=$(echo "$variation" | jq '.data.market_data.percent_change_usd_last_24_hours' | awk '{printf "%.2f", $1}')
 
-if [ "$price" = "" ]; then
-  echo "internet?"
-  exit 1
-else
-  printf "%s: \$%'.${DECIMAL_PLACES}f (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"
-fi
+printf "%s: \$%'.${DECIMAL_PLACES}f (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"

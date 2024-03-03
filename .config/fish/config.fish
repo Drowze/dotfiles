@@ -2,6 +2,10 @@ function fish_greeting
   fish_logo
 end
 
+if test -f ~/.config/fish/functions/oh_helpers.fish
+  source ~/.config/fish/functions/oh_helpers.fish
+end
+
 # Direnv
 if type -q direnv
   direnv hook fish | source

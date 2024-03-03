@@ -44,5 +44,9 @@ return {
 
     vim.g['test#strategy'] = 'neovim_enhanced'
     vim.g['test#neovim#term_position'] = 'belowright 15'
+    vim.g['test#ruby#rspec#options'] = {
+      ['nearest'] = '--no-profile --format documentation',
+      ['file'] = '--no-profile --format documentation',
+    }
   end
 }

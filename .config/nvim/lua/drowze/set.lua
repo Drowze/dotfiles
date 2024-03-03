@@ -1,6 +1,9 @@
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 
+-- Built-in fuzzy completion (e.g. buffer names, vim commands, etc)
+vim.opt.wildoptions:append { 'fuzzy' }
+
 -- vimdiff: ignore whitespaces, better line-match
 -- see neovim/neovim#14537 for more about line-match
 vim.opt.diffopt:append { 'iwhiteall', 'linematch:50' }
@@ -43,6 +46,8 @@ vim.opt.listchars = {
   eol = '↲',
   trail= '·'
 }
+
+vim.opt.mouse = 'n'
 
 -- we use undotree and have a ~permanent~ history
 vim.opt.swapfile = false

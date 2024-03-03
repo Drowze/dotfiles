@@ -26,7 +26,20 @@ return {
   {
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    config = { disabled_filetypes = { "netrw", "oil", "tsplayground" }, restriction_mode = "hint" }
+    config = { disabled_filetypes = { "netrw", "oil", "tsplayground" }, restriction_mode = "hint", disable_mouse = false }
+  },
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
   },
 
   -- lsp:
