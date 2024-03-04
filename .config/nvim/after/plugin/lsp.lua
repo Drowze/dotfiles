@@ -1,5 +1,27 @@
-require("neodev").setup({})
+-- disable diagnosis text on the right
+vim.diagnostic.config({
+  severity_sort = true,
+  -- virtual_text = false, # TODO: add some way to toggle virtual_text
+  float = {
+    style = 'minimal',
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+})
+-- grey virtual text
+for _, group_name in pairs({
+  'DiagnosticVirtualTextError',
+  'DiagnosticVirtualTextWarn',
+  'DiagnosticVirtualTextInfo',
+  'DiagnosticVirtualTextHint',
+  'DiagnosticVirtualTextOk',
+}) do
+  vim.api.nvim_set_hl(0, group_name, { link = 'LineNr' })
+end
 
+require("neodev").setup({})
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
@@ -48,36 +70,18 @@ require('mason-lspconfig').setup_handlers({
     })
   end,
   ['lua_ls'] = function()
-    lspconfig.lua_ls.setup({
-      on_init = function(client)
-        local path = client.workspace_folders[1].name
-        if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
-          client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-            Lua = {
-              runtime = {
-                -- Tell the language server which version of Lua you're using
-                -- (most likely LuaJIT in the case of Neovim)
-                version = 'LuaJIT'
-              },
-              -- Make the server aware of Neovim runtime files
-              workspace = {
-                checkThirdParty = false,
-                library = {
-                  vim.env.VIMRUNTIME
-                  -- Depending on the usage, you might want to add additional paths here.
-                  -- E.g.: For using `vim.*` functions, add vim.env.VIMRUNTIME/lua.
-                  -- "${3rd}/luv/library"
-                  -- "${3rd}/busted/library",
-                }
-                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                -- library = vim.api.nvim_get_runtime_file("", true)
-              }
-            }
-          })
-        end
-        return true
-      end
-    })
+    lspconfig.lua_ls.setup {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" }
+          },
+          workspace = {
+            checkThirdParty = false
+          }
+        }
+      }
+    }
   end
 })
 
@@ -87,7 +91,7 @@ local cmp = require('cmp')
 local luasnip = require('luasnip')
 
 local select_opts = {behavior = cmp.SelectBehavior.Select}
-cmp.setup({ ---@diagnostic disable-line: missing-fields
+cmp.setup({
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end
   },

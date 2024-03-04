@@ -2,7 +2,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    version = '0.9.1',
+    branch = 'master',
     event = 'BufRead',
     opts = {
       -- A list of parser names, or 'all'
@@ -29,7 +29,7 @@ return {
     config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
   },
 --  { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = 'nvim-treesitter/nvim-treesitter' },
-  { 'nvim-treesitter/playground', cmd = 'TSPlayground', dependencies = 'nvim-treesitter/nvim-treesitter' },
+  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle', dependencies = 'nvim-treesitter/nvim-treesitter' },
   {
     'RRethy/nvim-treesitter-endwise',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
