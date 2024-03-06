@@ -28,6 +28,7 @@ return {
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     config = { disabled_filetypes = { "netrw", "oil", "tsplayground" }, restriction_mode = "hint", disable_mouse = false }
   },
+  { 'klen/nvim-config-local', config = true },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
