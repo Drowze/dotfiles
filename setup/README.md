@@ -11,7 +11,7 @@
 brew tap homebrew/cask-fonts
 brew install fish
 fish
-brew install gpg rg fd fzf font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima
+brew install gpg rg fd fzf tmux font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima
 brew install saml2aws awscli # work specific
 brew install --cask --no-quarantine firefox keepassxc alacritty spotify slack zoom rectangle alt-tab
 
