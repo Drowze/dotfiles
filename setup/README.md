@@ -27,7 +27,7 @@ ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/dock
 
 4. Setup ssh and gpg
 ```bash
-# if on macos:
+# THIS SEEM TO NOT BE NEEDED ANYMORE - need to confirm
 brew install pinentry-mac
 echo "pinentry-program $(brew --prefix pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
 killall gpg-agent
@@ -43,6 +43,9 @@ keepassxc-cli attachment-export $database $ssh_entry id_ed25519.pub ~/.ssh/id_ed
 keepassxc-cli attachment-export $database $gpg_entry backupkeys.pgp backupkeys.pgp
 gpg --import-options restore --import backupkeys.pgp
 rm backupkeys.pgp
+
+# then, to make gpg key valid again (if needed):
+https://gist.github.com/TheSherlockHomie/a91d3ecdce8d0ea2bfa38b67c0355d00
 ```
 
 5. Make fish default shell
