@@ -9,9 +9,11 @@
 ```bash
 # if on MacOS
 brew tap homebrew/cask-fonts
+brew install fish
+fish
 brew install gpg rg fd fzf font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima
 brew install saml2aws awscli # work specific
-brew install --cask --no-quarantine keepassxc alacritty spotify slack zoom rectangle alt-tab vscodium docker
+brew install --cask --no-quarantine firefox keepassxc alacritty spotify slack zoom rectangle alt-tab
 
 mkdir -p ~/.docker/cli-plugins
 ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/docker-compose
@@ -42,11 +44,10 @@ gpg --import-options restore --import backupkeys.pgp
 rm backupkeys.pgp
 ```
 
-5. Install fish
+5. Make fish default shell
 ```bash
-brew install fish
-chsh -s $(which fish)
 which fish | sudo tee -a /etc/shells
+chsh -s $(which fish)
 ```
 
 6. Enable early features in fish and install fisher
@@ -59,7 +60,7 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 7. Install asdf, asdf-python, latest python, ansible
 ```bash
 # asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
 echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish
 mkdir -p ~/.config/fish/completions
 ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
@@ -67,18 +68,17 @@ source ~/.config/fish/config.fish
 
 # asdf-python, python, ansible
 asdf plugin add python
-asdf install python 3.10.4
-asdf global python 3.10.4
+asdf install python 3.12.2
+asdf global python 3.12.2
 pip install ansible
 asdf reshim python
 ```
 
-8. Create valid setup/vars.yml according setup/vars.yml.sample
-
-9. Install dotfiles
+8. Install dotfiles
 ```bash
 git clone git@github.com:Drowze/dotfiles.git ~/dotfiles
 cd dotfiles
+# Create valid setup/vars.yml according setup/vars.yml.sample
 ansible-playbook setup/setup_dotfiles.yml
 fisher update
 ```
