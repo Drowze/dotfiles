@@ -11,8 +11,9 @@
 brew tap homebrew/cask-fonts
 brew install fish
 fish
-brew install gpg rg fd fzf tmux font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima
-brew install saml2aws awscli # work specific
+brew install gpg rg fd fzf tmux font-hack-nerd-font jq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima kubectl
+brew tap ankitpokhrel/jira-cli # work specific
+brew install az cloudflared Azure/kubelogin/kubelogin # work specific
 brew install --cask --no-quarantine firefox keepassxc alacritty spotify slack zoom rectangle alt-tab
 
 mkdir -p ~/.docker/cli-plugins
