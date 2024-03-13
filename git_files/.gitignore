@@ -1,4 +1,5 @@
-.tool-versions
-.pryrc
-.irbrc
-.draft
+/.tool-versions
+/.pryrc
+/.irbrc
+/.draft
+/.nvim.lua
