@@ -56,21 +56,39 @@ require('mason-lspconfig').setup({
 })
 
 local lspconfig = require('lspconfig')
-local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities, require('cmp_nvim_lsp').default_capabilities())
+-- vim.lsp.set_log_level("debug") -- comment out after debugging
 
 require('mason-lspconfig').setup_handlers({
   function (server_name)
     lspconfig[server_name].setup({})
   end,
+  ['rubocop'] = function()
+    lspconfig.rubocop.setup({
+      single_file_support = true,
+      capabilities = lsp_capabilities
+    })
+  end,
   ['solargraph'] = function()
     lspconfig.solargraph.setup({
-      capabilities = lsp_capabilities,
+      cmd = { 'solargraph', 'stdio' },
+      settings = {
+        solargraph = {
+          diagnostics = false, -- rely on rubocop LSP for diagnostics
+          -- logLevel = 'debug',
+        },
+      },
+      init_options = { formatting = false },
+      filetypes = { 'ruby' },
       root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
+      capabilities = lsp_capabilities,
       single_file_support = true,
     })
   end,
   ['lua_ls'] = function()
     lspconfig.lua_ls.setup {
+      capabilities = lsp_capabilities,
       settings = {
         Lua = {
           diagnostics = {

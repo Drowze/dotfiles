@@ -82,4 +82,5 @@ local function set_custom_filetype(pattern, filetype)
 end
 
 set_custom_filetype('*.jbuilder', 'ruby')
-set_custom_filetype('Appraisals', 'ruby')
+set_custom_filetype('Dangerfile', 'ruby')
+set_custom_filetype('.pryrc', 'ruby')
