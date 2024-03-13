@@ -42,6 +42,7 @@ return {
       -- refer to the configuration section below
     }
   },
+  { 'tyru/capture.vim' },
 
   -- lsp:
   { "neovim/nvim-lspconfig" },

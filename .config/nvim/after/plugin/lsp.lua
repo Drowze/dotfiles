@@ -51,7 +51,8 @@ require('mason-lspconfig').setup({
     'solargraph',
     'rubocop',
     'lua_ls',
-    'bashls'
+    'bashls',
+    -- 'ruby_ls',
   }
 })
 
@@ -64,6 +65,34 @@ require('mason-lspconfig').setup_handlers({
   function (server_name)
     lspconfig[server_name].setup({})
   end,
+  -- ['ruby_ls'] = function()
+  --   lspconfig.ruby_ls.setup({
+  --     cmd = { "bundle", "exec", "ruby-lsp" },
+  --     capabilities = lsp_capabilities,
+  --     init_options = {
+  --       formatter = 'rubocop',
+  --       enabledFeatures = {
+  --         "codeActions",
+  --         "diagnostics",
+  --         "documentHighlights",
+  --         "documentLink",
+  --         "documentSymbols",
+  --         "foldingRanges",
+  --         "formatting",
+  --         "hover",
+  --         "inlayHint",
+  --         "onTypeFormatting",
+  --         "selectionRanges",
+  --         "semanticHighlighting",
+  --         "completion",
+  --         "codeLens",
+  --         "definition",
+  --         "workspaceSymbol",
+  --         "signatureHelp"
+  --       }
+  --     },
+  --   })
+  -- end,
   ['rubocop'] = function()
     lspconfig.rubocop.setup({
       single_file_support = true,
