@@ -2,6 +2,11 @@ function fish_greeting
   fish_logo
 end
 
+set -l is_mac
+if test (uname -s) = "Darwin"
+  set is_mac yes
+end
+
 if test -f ~/.config/fish/functions/oh_helpers.fish
   source ~/.config/fish/functions/oh_helpers.fish
 end
@@ -63,7 +68,7 @@ if test -d $HOME/.android/emulator
   fish_add_path $HOME/.android/emulator
   fish_add_path $HOME/.android/platform-tools
 end
-if test -d /usr/local/opt/mongodb-community@4.2/bin
+if test "$is_mac" = 'yes' && test -d /usr/local/opt/mongodb-community@4.2/bin
   fish_add_path "/usr/local/opt/mongodb-community@4.2/bin"
 end
 
@@ -80,7 +85,7 @@ set fzf_fd_opts --hidden --no-ignore --exclude '.git' --exclude 'node_modules' -
 ############
 # ENV VARS #
 ############
-set -gx VISUAL vim
+set -gx VISUAL nvim
 set -gx EDITOR $VISUAL
 set -gx LC_CTYPE en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
@@ -92,7 +97,10 @@ set -gx BAT_THEME Dracula
 # fzf.vim cmd
 set -gx FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
-set -gx HOMEBREW_NO_AUTO_UPDATE 1
+if test "$is_mac" = yes
+  set -gx HOMEBREW_NO_AUTO_UPDATE 1
+  set -gx GPG_TTY (tty) # fix gpg in mac-os
+end
 # credentials
 if test -f $HOME/.config/fish/secrets.fish
   source $HOME/.config/fish/secrets.fish
