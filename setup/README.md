@@ -11,7 +11,7 @@
 brew tap homebrew/cask-fonts
 brew install fish
 fish
-brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima kubectl gsed
+brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-compose colima kubectl gsed shellcheck
 brew tap ankitpokhrel/jira-cli # work specific
 brew install az cloudflared Azure/kubelogin/kubelogin # work specific
 brew install --cask --no-quarantine firefox keepassxc alacritty spotify slack zoom rectangle alt-tab
@@ -27,11 +27,6 @@ ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/dock
 
 4. Setup ssh and gpg
 ```bash
-# THIS SEEM TO NOT BE NEEDED ANYMORE - need to confirm
-brew install pinentry-mac
-echo "pinentry-program $(brew --prefix pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
-killall gpg-agent
-
 # then
 database=$HOME/database.kdbx
 ssh_entry="SSH"
