@@ -115,6 +115,11 @@ require('mason-lspconfig').setup_handlers({
       single_file_support = true,
     })
   end,
+  ['vimls'] = function()
+    lspconfig.vimls.setup({
+      capabilities = lsp_capabilities
+    })
+  end,
   ['lua_ls'] = function()
     lspconfig.lua_ls.setup {
       capabilities = lsp_capabilities,

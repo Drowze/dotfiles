@@ -1,5 +1,6 @@
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
+vim.opt.updatetime = 250
 
 -- Built-in fuzzy completion (e.g. buffer names, vim commands, etc)
 vim.opt.wildoptions:append { 'fuzzy' }
@@ -84,3 +85,5 @@ end
 set_custom_filetype('*.jbuilder', 'ruby')
 set_custom_filetype('Dangerfile', 'ruby')
 set_custom_filetype('.pryrc', 'ruby')
+set_custom_filetype('.env.test', 'sh')
+set_custom_filetype('.env.development', 'sh')

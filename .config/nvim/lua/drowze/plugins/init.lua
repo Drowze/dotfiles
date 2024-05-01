@@ -12,7 +12,7 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter' }
   },
   { 'pocke/rbs.vim', ft = { 'rbs'} },
-  { 'NvChad/nvim-colorizer.lua', config = true },
+  { 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { names = false } } },
   { 'tpope/vim-fugitive', event = 'VeryLazy' },
   { 'tpope/vim-rhubarb', event = 'VeryLazy', dependencies = 'tpope/vim-fugitive' },
   { 'tpope/vim-eunuch', event = 'VeryLazy', config = function () vim.cmd('cnoreabbrev rename Rename') end },
@@ -22,13 +22,8 @@ return {
     config = true,
     event = 'VeryLazy'
   },
-  { 'numToStr/Comment.nvim', config = true },
-  {
-    'm4xshen/hardtime.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    config = { disabled_filetypes = { "netrw", "oil", "tsplayground" }, restriction_mode = "hint", disable_mouse = false }
-  },
-  { 'klen/nvim-config-local', config = true },
+  { 'numToStr/Comment.nvim', event = 'VeryLazy', config = true },
+  { 'klen/nvim-config-local', opts = { lookup_parents = true } },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -36,13 +31,18 @@ return {
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
+    opts = {}
   },
-  { 'tyru/capture.vim' },
+  { 'tyru/capture.vim', cmd = 'Capture' },
+  {
+    "linrongbin16/gitlinker.nvim",
+    cmd = "GitLink",
+    opts = {},
+    keys = {
+      { "<leader>gy", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
+      { "<leader>gY", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
+    },
+  },
 
   -- lsp:
   { "neovim/nvim-lspconfig" },

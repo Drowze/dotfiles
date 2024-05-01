@@ -39,6 +39,7 @@ end
 
 if type -q nvim
   alias vi nvim
+  alias nvimdiff "nvim -d"
 end
 
 if type -q bundle
@@ -68,8 +69,13 @@ if test -d $HOME/.android/emulator
   fish_add_path $HOME/.android/emulator
   fish_add_path $HOME/.android/platform-tools
 end
-if test "$is_mac" = 'yes' && test -d /usr/local/opt/mongodb-community@4.2/bin
-  fish_add_path "/usr/local/opt/mongodb-community@4.2/bin"
+if test "$is_mac" = 'yes'
+  if test -d /usr/local/opt/mongodb-community@4.2/bin
+    fish_add_path /usr/local/opt/mongodb-community@4.2/bin
+  end
+  if test -d /usr/local/opt/libpq/bin
+    fish_add_path /usr/local/opt/libpq/bin
+  end
 end
 
 ###########
