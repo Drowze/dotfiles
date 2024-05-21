@@ -27,6 +27,7 @@ return {
     { '<leader>pf', function() require('telescope.builtin').find_files() end, desc = 'Telescope: all files' },
     { '<leader>pb', function() require('telescope.builtin').buffers() end,  desc = 'Telescope: all buffers' },
     { '<leader>pl', function() require('telescope.builtin').lsp_references() end, desc = 'Telescope: LSP references' },
+    { '<leader>ps', function() require('telescope.builtin').grep_string() end, mode = 'v', desc = 'Telescope: grep selection' },
     {
       '<leader>ps',
       function()

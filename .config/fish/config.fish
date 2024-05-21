@@ -50,6 +50,12 @@ if type -q kubectl
   alias k kubectl
 end
 
+if type -q fzf && type -q bat && type -q rg && type -q nvim
+  function rgopen
+    rg --no-heading --line-number $argv | cut -d':' -f1-2 | sort | fzf --multi --delimiter=: --preview "bat --color=always {1}" | xargs nvim -
+  end
+end
+
 #########
 # $PATH #
 #########

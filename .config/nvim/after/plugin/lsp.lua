@@ -44,6 +44,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+vim.api.nvim_create_autocmd('BufRead', {
+  desc = 'Disable LSP by filename',
+  pattern = '*.env,*.env.bak',
+  callback = function(event) vim.diagnostic.disable(event.buf) end
+})
+
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
