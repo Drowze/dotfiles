@@ -13,8 +13,8 @@ brew install fish
 fish
 brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-buildx docker-compose colima kubectl gsed shellcheck
 brew tap ankitpokhrel/jira-cli # work specific
-brew install az cloudflared Azure/kubelogin/kubelogin # work specific
-brew install --cask --no-quarantine firefox keepassxc alacritty spotify slack zoom rectangle alt-tab
+brew install az jira-cli cloudflared Azure/kubelogin/kubelogin # work specific
+brew install --cask --no-quarantine font-hack-nerd-font brave-browser keepassxc alacritty spotify slack zoom rectangle alt-tab
 
 mkdir -p ~/.docker/cli-plugins
 ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/docker-compose
@@ -52,7 +52,6 @@ chsh -s $(which fish)
 6. Enable early features in fish and install fisher
 ```bash
 fish
-set -U fish_features ampersand-nobg-in-token,qmark-noglob
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
@@ -67,8 +66,9 @@ source ~/.config/fish/config.fish
 
 # asdf-python, python, ansible
 asdf plugin add python
-asdf install python 3.12.2
-asdf global python 3.12.2
+set -l latest_python (asdf list-all python | grep -E '^(\d|\.)+$' | tail -n1)
+asdf install python $latest_python
+asdf global python $latest_python
 pip install ansible
 asdf reshim python
 ```
