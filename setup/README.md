@@ -49,7 +49,7 @@ which fish | sudo tee -a /etc/shells
 chsh -s $(which fish)
 ```
 
-6. Enable early features in fish and install fisher
+6. Install fisher
 ```bash
 fish
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
