@@ -39,8 +39,8 @@ return {
     cmd = "GitLink",
     opts = {},
     keys = {
-      { "<leader>gy", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
-      { "<leader>gY", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
+      { "<leader>gly", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
+      { "<leader>glo", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
     },
   },
 
@@ -54,39 +54,4 @@ return {
   { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
   { 'hrsh7th/nvim-cmp' }, -- autocomplete engine
   { 'saadparwaiz1/cmp_luasnip' }, -- autocomplete lua thru luasnip (is needed, considering neodev?)
-
-  { 'github/copilot.vim', event = 'VeryLazy' },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    dependencies = {
-      { "github/copilot.vim" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
-    },
-    -- See Commands section for default commands if you want to lazy load on them
-    cmd = {
-      'CopilotChat',
-      'CopilotChatOpen',
-      'CopilotChatClose',
-      'CopilotChatToggle',
-      'CopilotChatStop',
-      'CopilotChatReset',
-      'CopilotChatSave',
-      'CopilotChatLoad',
-      'CopilotChatDebugInfo',
-      'CopilotChatExplain',
-      'CopilotChatReview',
-      'CopilotChatFix',
-      'CopilotChatOptimize',
-      'CopilotChatDocs',
-      'CopilotChatTests',
-      'CopilotChatFixDiagnostic',
-      'CopilotChatCommit',
-      'CopilotChatCommitStaged'
-    }
-  },
 }

@@ -10,7 +10,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.runtimepath:prepend(lazypath)
 require('lazy').setup('drowze.plugins')
 --vim.cmd.colorscheme('dracula')
 --vim.api.nvim_set_hl(0, 'WinSeparator', { fg = 'white' })

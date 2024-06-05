@@ -10,10 +10,11 @@ return {
   init = function()
     -- conditionally load on startup, see https://github.com/folke/lazy.nvim/issues/533
     if vim.fn.argc() == 1 then
-      local stat = vim.loop.fs_stat(vim.fn.argv(0))
+      local filename = vim.fn.argv()[1]
+      local stat = vim.loop.fs_stat(filename)
       -- Capture the protocol and lazy load oil if it is "oil-ssh", besides also lazy
       -- loading it when the first argument is a directory.
-      local adapter = string.match(vim.fn.argv(0), "^([%l-]*)://")
+      local adapter = string.match(filename, "^([%l-]*)://")
       if (stat and stat.type == "directory") or adapter == "oil-ssh" then
         require("lazy").load({ plugins = { "oil.nvim" } })
       end
@@ -98,10 +99,12 @@ return {
       -- Show files and directories that start with "."
       show_hidden = false,
       -- This function defines what is considered a "hidden" file
+      ---@diagnostic disable-next-line: unused-local
       is_hidden_file = function(name, bufnr)
         return vim.startswith(name, ".")
       end,
       -- This function defines what will never be shown, even when `show_hidden` is set
+      ---@diagnostic disable-next-line: unused-local
       is_always_hidden = function(name, bufnr)
         return false
       end,

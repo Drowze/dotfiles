@@ -42,10 +42,11 @@ return {
       '<leader>pS',
       function()
         local current_path
+        local current_filetype = vim.api.nvim_get_option_value("filetype", {})
 
-        if vim.api.nvim_buf_get_option(0, "filetype") == "netrw" then
+        if current_filetype == "netrw" then
           current_path = vim.b.netrw_curdir
-        elseif vim.api.nvim_buf_get_option(0, "filetype") == "oil" then
+        elseif current_filetype == "oil" then
           current_path = require('oil').get_current_dir()
         else
           current_path = vim.fn.expand('%:h')

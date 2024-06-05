@@ -2,7 +2,10 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    branch = 'master',
+    -- TODO: verify breaking changes to ruby syntax highlight with dracula
+    -- commit = 'f197a15b0d1e8d555263af20add51450e5aaa1f0', -- bad commit in master
+    commit = '298a9dd4f8a0d95b347a7ebd301849d8b0e3917e',
+    -- branch = 'master',
     event = 'BufRead',
     opts = {
       -- A list of parser names, or 'all'

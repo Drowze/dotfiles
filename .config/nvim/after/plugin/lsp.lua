@@ -5,7 +5,7 @@ vim.diagnostic.config({
   float = {
     style = 'minimal',
     border = 'rounded',
-    source = 'always',
+    source = true,
     header = '',
     prefix = '',
   },
@@ -44,11 +44,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
-vim.api.nvim_create_autocmd('BufRead', {
-  desc = 'Disable LSP by filename',
-  pattern = '*.env,*.env.bak',
-  callback = function(event) vim.diagnostic.disable(event.buf) end
-})
+vim.api.nvim_create_autocmd(
+  { 'BufNewFile', 'BufRead' },
+  {
+    desc = 'Disable LSP by filename',
+    pattern = '.env,.env.*',
+    callback = function()
+      vim.diagnostic.enable(not vim.diagnostic.is_enabled( { bufnr = 0 }), { bufnr = 0 })
+    end
+  }
+)
 
 require('mason').setup()
 require('mason-lspconfig').setup({
