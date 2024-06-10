@@ -22,7 +22,6 @@ return {
     config = true,
     event = 'VeryLazy'
   },
-  { 'numToStr/Comment.nvim', event = 'VeryLazy', config = true },
   { 'klen/nvim-config-local', opts = { lookup_parents = true } },
   {
     "folke/which-key.nvim",
@@ -49,7 +48,6 @@ return {
   { "williamboman/mason-lspconfig.nvim", dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" } },
   { "williamboman/mason.nvim" },
   { 'L3MON4D3/LuaSnip' }, -- snippets
-  { 'folke/neodev.nvim' }, -- lsp config for neovim functions
   { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
   { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
   { 'hrsh7th/nvim-cmp' }, -- autocomplete engine

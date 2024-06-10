@@ -21,13 +21,11 @@ for _, group_name in pairs({
   vim.api.nvim_set_hl(0, group_name, { link = 'LineNr' })
 end
 
-require("neodev").setup({})
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
     local opts = {buffer = event.buf}
 
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
@@ -38,9 +36,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set({'n', 'x'}, '<F3>', function() vim.lsp.buf.format({async = true}) end, opts)
     vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
 
-    vim.keymap.set('n', 'gl', vim.diagnostic.open_float, opts)
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+    vim.keymap.set('n', 'gl', function() vim.print("DEPRECATED: use <C-W>d instead") end, opts)
   end
 })
 
@@ -133,16 +129,37 @@ require('mason-lspconfig').setup_handlers({
   end,
   ['lua_ls'] = function()
     lspconfig.lua_ls.setup {
-      capabilities = lsp_capabilities,
-      settings = {
-        Lua = {
+      on_init = function(client)
+        local path = client.workspace_folders[1].name
+        if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+          return
+        end
+
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+          runtime = {
+            -- Tell the language server which version of Lua you're using
+            -- (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT'
+          },
           diagnostics = {
             globals = { "vim" }
           },
+          -- Make the server aware of Neovim runtime files
           workspace = {
-            checkThirdParty = false
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME,
+              -- Depending on the usage, you might want to add additional paths here.
+              "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            }
+            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+            -- library = vim.api.nvim_get_runtime_file("", true)
           }
-        }
+        })
+      end,
+      settings = {
+        Lua = {}
       }
     }
   end
@@ -154,6 +171,7 @@ local cmp = require('cmp')
 local luasnip = require('luasnip')
 
 local select_opts = {behavior = cmp.SelectBehavior.Select}
+-- local source_opts = 
 cmp.setup({
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end
