@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
 
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
@@ -40,14 +40,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+
+vim.api.nvim_create_user_command('LspToggle',
+  function()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled( { bufnr = 0 }), { bufnr = 0 })
+  end,
+  { desc = 'Toggle LSP' }
+)
+
 vim.api.nvim_create_autocmd(
   { 'BufNewFile', 'BufRead' },
   {
     desc = 'Disable LSP by filename',
     pattern = '.env,.env.*',
-    callback = function()
-      vim.diagnostic.enable(not vim.diagnostic.is_enabled( { bufnr = 0 }), { bufnr = 0 })
-    end
+    command = 'LspToggle',
   }
 )
 
