@@ -5,7 +5,7 @@ vim.diagnostic.config({
   float = {
     style = 'minimal',
     border = 'rounded',
-    source = true,
+    source = "always",
     header = '',
     prefix = '',
   },
@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
 
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
@@ -40,14 +40,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+
+vim.api.nvim_create_user_command('LspToggle',
+  function()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled( { bufnr = 0 }), { bufnr = 0 })
+  end,
+  { desc = 'Toggle LSP' }
+)
+
 vim.api.nvim_create_autocmd(
   { 'BufNewFile', 'BufRead' },
   {
     desc = 'Disable LSP by filename',
     pattern = '.env,.env.*',
-    callback = function()
-      vim.diagnostic.enable(not vim.diagnostic.is_enabled( { bufnr = 0 }), { bufnr = 0 })
-    end
+    command = 'LspToggle',
   }
 )
 
@@ -55,22 +61,50 @@ require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
     -- Replace these with whatever servers you want to install
-    'solargraph',
-    'rubocop',
+    -- 'solargraph',
+    -- 'rubocop',
     'lua_ls',
     'bashls',
-    -- 'ruby_ls',
+    'ruby_lsp',
   }
 })
 
 local lspconfig = require('lspconfig')
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities, require('cmp_nvim_lsp').default_capabilities())
--- vim.lsp.set_log_level("debug") -- comment out after debugging
+vim.lsp.set_log_level("debug") -- comment out after debugging
 
 require('mason-lspconfig').setup_handlers({
   function (server_name)
     lspconfig[server_name].setup({})
+  end,
+  ['ruby_lsp'] = function()
+    lspconfig.ruby_lsp.setup({
+      capabilities = lsp_capabilities,
+      init_options = {
+        formatter = 'rubocop',
+        enabledFeatures = {
+          -- https://github.com/Shopify/ruby-lsp/blob/main/vscode/package.json#L191
+          "codeActions",
+          "diagnostics",
+          "documentHighlights",
+          "documentLink",
+          "documentSymbols",
+          "foldingRanges",
+          "formatting",
+          "hover",
+          "inlayHint",
+          "onTypeFormatting",
+          "selectionRanges",
+          "semanticHighlighting",
+          "completion",
+          "codeLens",
+          "definition",
+          "workspaceSymbol",
+          "signatureHelp",
+        }
+      }
+    })
   end,
   -- ['ruby_ls'] = function()
   --   lspconfig.ruby_ls.setup({
@@ -100,28 +134,28 @@ require('mason-lspconfig').setup_handlers({
   --     },
   --   })
   -- end,
-  ['rubocop'] = function()
-    lspconfig.rubocop.setup({
-      single_file_support = true,
-      capabilities = lsp_capabilities
-    })
-  end,
-  ['solargraph'] = function()
-    lspconfig.solargraph.setup({
-      cmd = { 'solargraph', 'stdio' },
-      settings = {
-        solargraph = {
-          diagnostics = false, -- rely on rubocop LSP for diagnostics
-          -- logLevel = 'debug',
-        },
-      },
-      init_options = { formatting = false },
-      filetypes = { 'ruby' },
-      root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
-      capabilities = lsp_capabilities,
-      single_file_support = true,
-    })
-  end,
+  -- ['rubocop'] = function()
+  --   lspconfig.rubocop.setup({
+  --     single_file_support = true,
+  --     capabilities = lsp_capabilities
+  --   })
+  -- end,
+  -- ['solargraph'] = function()
+  --   lspconfig.solargraph.setup({
+  --     cmd = { 'solargraph', 'stdio' },
+  --     settings = {
+  --       solargraph = {
+  --         diagnostics = false, -- rely on rubocop LSP for diagnostics
+  --         -- logLevel = 'debug',
+  --       },
+  --     },
+  --     init_options = { formatting = false },
+  --     filetypes = { 'ruby' },
+  --     root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
+  --     capabilities = lsp_capabilities,
+  --     single_file_support = true,
+  --   })
+  -- end,
   ['vimls'] = function()
     lspconfig.vimls.setup({
       capabilities = lsp_capabilities
