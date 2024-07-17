@@ -42,6 +42,7 @@ return {
       { "<leader>glo", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
     },
   },
+  { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
 
   -- lsp:
   { "neovim/nvim-lspconfig" },
