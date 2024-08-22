@@ -11,7 +11,7 @@
 brew tap homebrew/cask-fonts
 brew install fish
 fish
-brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-buildx docker-compose colima kubectl gsed shellcheck
+brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-buildx docker-compose colima kubectl gsed shellcheck coreutils
 brew tap ankitpokhrel/jira-cli # work specific
 brew install az jira-cli cloudflared Azure/kubelogin/kubelogin # work specific
 brew install --cask --no-quarantine font-hack-nerd-font brave-browser keepassxc alacritty spotify slack zoom rectangle alt-tab

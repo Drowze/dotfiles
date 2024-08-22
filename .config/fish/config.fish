@@ -16,14 +16,16 @@ end
 # Direnv
 if type -q direnv
   direnv hook fish | source
-
-  # direnv is too verbose... this should suppress all logging
-  set -x DIRENV_LOG_FORMAT ""
 end
 
 # Source asdf files
 if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
+end
+
+# full colima compatibility
+if type -q colima && test -e $HOME/.colima
+  set -gx DOCKER_HOST "unix://$HOME/.colima/docker.sock"
 end
 
 # Feature flags
@@ -119,6 +121,7 @@ set -x BAT_THEME Dracula
 set -x FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
 if test "$is_mac" = yes
+  set -x OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
   set -x HOMEBREW_NO_AUTO_UPDATE 1
   set -x GPG_TTY (tty) # fix gpg in mac-os
 end

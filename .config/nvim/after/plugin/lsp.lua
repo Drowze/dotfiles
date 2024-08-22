@@ -1,3 +1,8 @@
+vim.fn.sign_define('DiagnosticSignError', { text = '❌', texthl = 'DiagnosticSignError' })
+vim.fn.sign_define('DiagnosticSignWarn', { text = '🟡', texthl = 'DiagnosticSignWarn' })
+vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+
 -- disable diagnosis text on the right
 vim.diagnostic.config({
   severity_sort = true,
@@ -26,8 +31,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
 
-    vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gD', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
+    vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions() end, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -117,8 +122,10 @@ require('mason-lspconfig').setup_handlers({
       cmd = { 'solargraph', 'stdio' },
       settings = {
         solargraph = {
-          diagnostics = false, -- rely on rubocop LSP for diagnostics
-          -- logLevel = 'debug',
+          diagnostics = true,
+          formatting = false, -- rely on rubocop LSP for diagnostics
+          autoformat = false, -- rely on rubocop LSP for diagnostics
+          logLevel = 'warn',
         },
       },
       init_options = { formatting = false },
