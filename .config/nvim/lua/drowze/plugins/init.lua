@@ -43,6 +43,11 @@ return {
     },
   },
   { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
+  {
+    'echasnovski/mini.indentscope',
+    version = false,
+    config = function() require('mini.indentscope').setup() end
+  },
 
   -- lsp:
   { "neovim/nvim-lspconfig" },

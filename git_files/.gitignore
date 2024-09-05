@@ -9,3 +9,6 @@
 # solargraph overrides
 /.solargraph_definitions.rb
 /a.rb
+
+# secrets
+/.azure_federated_token
