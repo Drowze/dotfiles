@@ -12,3 +12,6 @@
 
 # secrets
 /.azure_federated_token
+
+# ripgrep rc
+/.ripgreprc

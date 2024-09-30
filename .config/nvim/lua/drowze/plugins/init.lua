@@ -16,22 +16,7 @@ return {
   { 'tpope/vim-fugitive', event = 'VeryLazy' },
   { 'tpope/vim-rhubarb', event = 'VeryLazy', dependencies = 'tpope/vim-fugitive' },
   { 'tpope/vim-eunuch', event = 'VeryLazy', config = function () vim.cmd('cnoreabbrev rename Rename') end },
-  {
-    'kylechui/nvim-surround',
-    version = '*',
-    config = true,
-    event = 'VeryLazy'
-  },
   { 'klen/nvim-config-local', opts = { lookup_parents = true } },
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
-    opts = {}
-  },
   { 'tyru/capture.vim', cmd = 'Capture' },
   {
     "linrongbin16/gitlinker.nvim",
@@ -43,11 +28,6 @@ return {
     },
   },
   { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
-  {
-    'echasnovski/mini.indentscope',
-    version = false,
-    config = function() require('mini.indentscope').setup() end
-  },
 
   -- lsp:
   { "neovim/nvim-lspconfig" },
@@ -58,4 +38,12 @@ return {
   { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
   { 'hrsh7th/nvim-cmp' }, -- autocomplete engine
   { 'saadparwaiz1/cmp_luasnip' }, -- autocomplete lua thru luasnip (is needed, considering neodev?)
+
+  {
+    "kndndrj/nvim-dbee",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    build = function() require("dbee").install() end,
+    config = true,
+    cmd = "Dbee",
+  },
 }
