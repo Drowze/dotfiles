@@ -9,6 +9,9 @@ if test (uname -s) = "Darwin"
   set mac_brew_dir (brew --prefix)
 end
 
+# do not clear prompt on ctrl-c
+bind ctrl-c cancel-commandline
+
 if test -f ~/.config/fish/functions/oh_helpers.fish
   source ~/.config/fish/functions/oh_helpers.fish
 end

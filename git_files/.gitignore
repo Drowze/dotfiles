@@ -12,6 +12,10 @@
 
 # secrets
 /.azure_federated_token
+/bin/fetch-azure-token
 
 # ripgrep rc
 /.ripgreprc
+
+# https://github.com/tpope/vim-projectionist
+.projections.json

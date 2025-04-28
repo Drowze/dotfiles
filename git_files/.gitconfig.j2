@@ -5,11 +5,13 @@
 [alias]
   st = status
   co = checkout
+  sw = switch
   bblame = blame -w -C -C -C # ignores whitespace and movements across any commit
   pushf = push --force-with-lease --force-if-includes # push force but avoid overwriting commits unexpectedly
   recent = !sh -c 'git reflog | grep checkout: | cut -w -f8 | cat -n | sort -uk2 | sort -n | cut -f2'
   fco = !sh -c 'git recent | fzf | xargs git switch'
-  modified = !sh -c 'git st | grep modified: | cut -c 14-'
+  logS = "!f() { git log --format='commit %h' -S\"$1\" $2 | tig; }; f"
+  modified = diff --name-only --diff-filter=ACM
   find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
   show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 [commit]
@@ -30,3 +32,5 @@
   defaultBranch = main
 [log]
   date = iso-local
+[safe]
+  directory = *
