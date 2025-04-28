@@ -1,3 +1,15 @@
+local function winbar_get_path()
+  if vim.bo.filetype == 'yaml' then
+    local path = require('yaml_nvim').get_yaml_key() or ''
+    return 'yq: ' .. path
+  elseif vim.bo.filetype == 'json' then
+    local path = require('jsonpath').get() or ''
+    return 'jq: ' .. path
+  else
+    return ''
+  end
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
@@ -15,7 +27,7 @@ return {
       always_divide_middle = true,
       globalstatus = true,
       refresh = {
-        statusline = 1000,
+        statusline = 100,
         tabline = 1000,
         winbar = 1000,
       }
@@ -37,7 +49,9 @@ return {
       lualine_z = {}
     },
     tabline = {},
-    winbar = {},
+    winbar = {
+      lualine_x = { winbar_get_path },
+    },
     inactive_winbar = {},
     extensions = {}
   }

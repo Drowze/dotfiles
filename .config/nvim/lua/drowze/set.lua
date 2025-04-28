@@ -40,6 +40,10 @@ vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
+-- folds
+vim.opt.foldmethod = 'indent'
+vim.opt.foldenable = false -- do not fold by default
+
 -- invisible characters
 vim.opt.list = true
 vim.opt.listchars = {
@@ -85,6 +89,8 @@ end
 set_custom_filetype('*.jbuilder', 'ruby')
 set_custom_filetype('Dangerfile', 'ruby')
 set_custom_filetype('.pryrc', 'ruby')
+set_custom_filetype('.simplecov', 'ruby')
+
 set_custom_filetype('.env.test', 'sh')
 set_custom_filetype('.env.development', 'sh')
 set_custom_filetype('.env.local', 'sh')

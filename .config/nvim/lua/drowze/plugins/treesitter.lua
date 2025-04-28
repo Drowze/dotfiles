@@ -41,7 +41,11 @@ return {
   },
   {
     'Wansmer/treesj',
-    keys = { '<space>m', '<space>j', '<space>s' },
+    keys = {
+      { '<space>m', desc = 'treesj: Toggle join' },
+      { '<space>j', desc = 'treesj: Join lines' },
+      { '<space>s', desc = 'treesj: Split lines' },
+    },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
       max_join_length = 240

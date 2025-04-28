@@ -37,10 +37,10 @@ return {
       gitsigns_map('n', '<leader>hR', gitsigns.reset_buffer, 'reset buffer')
       gitsigns_map('n', '<leader>hp', gitsigns.preview_hunk, 'preview hunk')
       gitsigns_map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end, 'blame line')
-      gitsigns_map('n', '<leader>tb', gitsigns.toggle_current_line_blame, 'toggle blame current line')
+      gitsigns_map('n', '<leader>htb', gitsigns.toggle_current_line_blame, 'toggle blame current line')
+      gitsigns_map('n', '<leader>htd', gitsigns.toggle_deleted, 'toggle show deleted')
       gitsigns_map('n', '<leader>hd', gitsigns.diffthis, 'open diff')
       gitsigns_map('n', '<leader>hD', function() gitsigns.diffthis('~') end, 'open diff ~')
-      gitsigns_map('n', '<leader>td', gitsigns.toggle_deleted, 'toggle show deleted')
 
       -- Text object
       gitsigns_map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')

@@ -27,7 +27,17 @@ return {
     { '<leader>pf', function() require('telescope.builtin').find_files() end, desc = 'Telescope: all files' },
     { '<leader>pb', function() require('telescope.builtin').buffers() end,  desc = 'Telescope: all buffers' },
     { '<leader>pl', function() require('telescope.builtin').lsp_references() end, desc = 'Telescope: LSP references' },
-    { '<leader>ps', function() require('telescope.builtin').grep_string() end, mode = 'v', desc = 'Telescope: grep selection' },
+    {
+      '<leader>ps',
+      function()
+        local utils = require('drowze.utils')
+        local selection = utils.get_visual_selection()
+        -- local escaped_selection = utils.rg_escape(selection)
+        require('telescope.builtin').grep_string({ search = selection })
+      end,
+      mode = 'v',
+      desc = 'Telescope: grep selection',
+    },
     {
       '<leader>ps',
       function()
@@ -41,19 +51,8 @@ return {
     {
       '<leader>pS',
       function()
-        local current_path
-        local current_filetype = vim.api.nvim_get_option_value("filetype", {})
-
-        if current_filetype == "netrw" then
-          current_path = vim.b.netrw_curdir
-        elseif current_filetype == "oil" then
-          current_path = require('oil').get_current_dir()
-        else
-          current_path = vim.fn.expand('%:h')
-        end
-
-        -- try to get a relative path
-        current_path = vim.fn.fnamemodify(current_path, ":.")
+        local utils = require('drowze.utils')
+        local current_path = utils.get_current_path()
 
         local input = vim.fn.input('(' .. current_path .. ') ' .. 'grep > ')
         if input == "" then return end

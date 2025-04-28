@@ -18,6 +18,7 @@ return {
       vim.fn.termopen(cmd)
       vim.api.nvim_set_option_value('number', false, { scope = 'local' })
       vim.api.nvim_set_option_value('relativenumber', false, { scope = 'local' })
+      vim.b['miniindentscope_disable'] = true
 
       vim.keymap.set('n', '<CR>', function() vim.api.nvim_buf_delete(0, {}) end, { buffer = true })
 

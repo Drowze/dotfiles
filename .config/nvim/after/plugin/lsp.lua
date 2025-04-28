@@ -70,6 +70,7 @@ require('mason-lspconfig').setup({
     'rubocop',
     'lua_ls',
     'bashls',
+    'vimls',
     -- 'ruby_ls',
   }
 })

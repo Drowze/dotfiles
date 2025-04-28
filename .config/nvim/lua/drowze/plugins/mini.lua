@@ -9,7 +9,9 @@ return {
     'echasnovski/mini.surround',
     version = false,
     event = 'VeryLazy',
-    config = true
+    config = {
+      search_method = 'cover_or_nearest',
+    }
   },
   -- TODO: investigate screenshots
   -- {
@@ -77,7 +79,7 @@ return {
             config = {},
 
             -- Delay before showing clue window
-            delay = 300,
+            delay = 200,
 
             -- Keys to scroll inside the clue window
             scroll_down = '<C-d>',
