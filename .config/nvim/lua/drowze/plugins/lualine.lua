@@ -12,7 +12,7 @@ end
 
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   opts = {
     options = {
       icons_enabled = true,
@@ -36,7 +36,7 @@ return {
       lualine_a = {'mode'},
       lualine_b = {'branch', 'diff', 'diagnostics'},
       lualine_c = {'filename'},
-      lualine_x = {'encoding', "require'lsp-status'.status()", 'filetype'},
+      lualine_x = {'encoding', 'lsp_status', 'filetype'},
       lualine_y = {'progress'},
       lualine_z = {'location'}
     },
