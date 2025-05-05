@@ -26,7 +26,7 @@ return {
         additional_vim_regex_highlighting = false,
       },
     },
-    config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
+    main = 'nvim-treesitter.configs',
   },
 --  { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = 'nvim-treesitter/nvim-treesitter' },
   { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle', dependencies = 'nvim-treesitter/nvim-treesitter' },
@@ -37,7 +37,7 @@ return {
     opts = {
       endwise = { enable = true },
     },
-    config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
+    main = 'nvim-treesitter.configs',
   },
   {
     'Wansmer/treesj',

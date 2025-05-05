@@ -31,17 +31,21 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
 
+    -- omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
+    --
+    -- default keymaps:
+    -- K (n): vim.lsp.buf.hover()
+    -- grn (n): vim.lsp.buf.rename()
+    -- gra (n): vim.lsp.buf.code_action()
+    -- grr (n): vim.lsp.buf.references()
+    -- gri (n): vim.lsp.buf.implementation()
+    -- gO (n): vim.lsp.buf.document_symbol()
+    -- CTRL-S (i): vim.lsp.buf.signature_help()
+
     vim.keymap.set('n', 'gD', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
     vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions() end, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts)
     vim.keymap.set({'n', 'x'}, '<F3>', function() vim.lsp.buf.format({async = true}) end, opts)
-    vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
-
-    vim.keymap.set('n', 'gl', function() vim.print("DEPRECATED: use <C-W>d instead") end, opts)
   end
 })
 

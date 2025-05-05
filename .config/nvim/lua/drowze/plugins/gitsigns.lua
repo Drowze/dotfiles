@@ -43,7 +43,7 @@ return {
       gitsigns_map('n', '<leader>hD', function() gitsigns.diffthis('~') end, 'open diff ~')
 
       -- Text object
-      gitsigns_map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+      gitsigns_map({'o', 'x'}, 'ih', gitsigns.select_hunk, 'select hunk')
     end
   }
 }
