@@ -28,7 +28,6 @@ return {
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
     config = true,
-    -- See Commands section for default commands if you want to lazy load on them
     cmd = {
       'CopilotChat',
       'CopilotChatOpen',

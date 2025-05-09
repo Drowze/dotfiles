@@ -13,7 +13,8 @@ return {
         "app/controllers/*_controller.rb": {
           "alternate": [
             "spec/controllers/{}_controller_spec.rb",
-            "spec/requests/{}_spec.rb"
+            "spec/requests/{}_spec.rb",
+            "spec/requests/{}_request_spec.rb"
           ]
         },
         "app/*.rb": {
@@ -26,6 +27,9 @@ return {
           ]
         },
 
+        "spec/requests/*_request_spec.rb": {
+          "alternate": ["app/controllers/{}_controller.rb"]
+        },
         "spec/requests/*_spec.rb": {
           "alternate": ["app/controllers/{}_controller.rb"]
         },

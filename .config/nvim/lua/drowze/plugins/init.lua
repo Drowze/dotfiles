@@ -38,8 +38,8 @@ return {
 
   -- lsp:
   { "neovim/nvim-lspconfig" },
-  { "williamboman/mason-lspconfig.nvim", dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" } },
-  { "williamboman/mason.nvim" },
+  { "mason-org/mason.nvim", version = "^1.0.0" }, -- TODO: update mason to v2
+  { "mason-org/mason-lspconfig.nvim", version = "^1.0.0", dependencies = { "neovim/nvim-lspconfig", "mason-org/mason.nvim" } },
   { 'L3MON4D3/LuaSnip' }, -- snippets
   { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
   { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
