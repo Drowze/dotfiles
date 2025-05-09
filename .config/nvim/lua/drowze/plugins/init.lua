@@ -36,16 +36,6 @@ return {
   },
   { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
 
-  -- lsp:
-  { "neovim/nvim-lspconfig" },
-  { "mason-org/mason.nvim", version = "^1.0.0" }, -- TODO: update mason to v2
-  { "mason-org/mason-lspconfig.nvim", version = "^1.0.0", dependencies = { "neovim/nvim-lspconfig", "mason-org/mason.nvim" } },
-  { 'L3MON4D3/LuaSnip' }, -- snippets
-  { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
-  { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
-  { 'hrsh7th/nvim-cmp' }, -- autocomplete engine
-  { 'saadparwaiz1/cmp_luasnip' }, -- autocomplete lua thru luasnip (is needed, considering neodev?)
-
   {
     "kndndrj/nvim-dbee",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -58,5 +48,15 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
     ft = { 'markdown' },
     opts = {},
-  }
+  },
+
+  -- lsp:
+  { "neovim/nvim-lspconfig" },
+  { "mason-org/mason.nvim" },
+  { "mason-org/mason-lspconfig.nvim", dependencies = { "neovim/nvim-lspconfig", "mason-org/mason.nvim" } },
+  { 'L3MON4D3/LuaSnip' }, -- snippets
+  { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
+  { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
+  { 'hrsh7th/nvim-cmp' }, -- autocomplete engine
+  { 'saadparwaiz1/cmp_luasnip' }, -- autocomplete lua thru luasnip (is needed, considering neodev?)
 }
