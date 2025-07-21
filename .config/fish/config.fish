@@ -26,11 +26,6 @@ if test -e ~/.asdf/asdf.fish
   source ~/.asdf/asdf.fish
 end
 
-# full colima compatibility
-if type -q colima && test -e $HOME/.colima
-  set -gx DOCKER_HOST "unix://$HOME/.colima/docker.sock"
-end
-
 # Feature flags
 set -U fish_features qmark-noglob # disable globbing with '?' so e.g.: `open http://example.com?foo=bar` works
 
@@ -119,6 +114,7 @@ set -x LC_ALL en_US.UTF-8
 set -x MSSQL_CLI_TELEMETRY_OPTOUT 1
 # ruby/rails
 set -x DISABLE_SPRING true
+set -x RUBY_DEBUG_IRB_CONSOLE true
 set -x BAT_THEME Dracula
 # fzf.vim cmd
 set -x FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
@@ -127,6 +123,7 @@ if test "$is_mac" = yes
   set -x OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
   set -x HOMEBREW_NO_AUTO_UPDATE 1
   set -x GPG_TTY (tty) # fix gpg in mac-os
+  set -x PGGSSENCMODE disable # see: https://github.com/ged/ruby-pg/issues/538
 end
 # credentials
 if test -f $HOME/.config/fish/secrets.fish

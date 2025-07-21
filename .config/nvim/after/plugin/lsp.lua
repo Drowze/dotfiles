@@ -41,13 +41,18 @@ vim.api.nvim_create_user_command(
   end,
   { desc = 'Toggle LSP' }
 )
+vim.api.nvim_create_user_command(
+  'LspLog',
+  function()
+    vim.cmd('tabnew ' .. vim.lsp.get_log_path())
+  end,
+  { desc = 'Open LSP log' }
+)
 
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
-    local opts = {buffer = event.buf}
-
-    -- omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
+    -- by default, omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
     --
     -- default keymaps:
     -- K (n): vim.lsp.buf.hover()
@@ -58,10 +63,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- gO (n): vim.lsp.buf.document_symbol()
     -- CTRL-S (i): vim.lsp.buf.signature_help()
 
-    vim.keymap.set('n', 'gD', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, opts)
-    vim.keymap.set('n', 'gd', function() require('telescope.builtin').lsp_definitions() end, opts)
-    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', function() vim.lsp.buf.format({async = true}) end, opts)
+    local function lsp_definitions() require('telescope.builtin').lsp_definitions() end
+    local function lsp_definitions_alt() require('telescope.builtin').lsp_definitions({ jump_type="vsplit" }) end
+    local function lsp_references() require('telescope.builtin').lsp_references() end
+    local function workspace_symbols()
+      require('telescope.builtin').lsp_workspace_symbols({
+        fname_width = 50,
+        symbol_width = 50,
+        ignore_symbols = { "property" }
+      })
+    end
+
+    local function keymap(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { desc = desc, buffer = event.buf })
+    end
+
+    keymap('n', 'gD', lsp_definitions, 'LSP: Definitions')
+    keymap('n', 'gd', lsp_definitions_alt, 'LSP: Definitions (vsplit)')
+    keymap('n', 'grr', lsp_references, 'LSP: References')
+    keymap('n', '<leader>ws', workspace_symbols, 'LSP: Workspace symbols')
+    keymap('n', 'go', vim.lsp.buf.type_definition, 'LSP: Type definition')
+    keymap({'n', 'x'}, '<F3>', vim.lsp.buf.format, 'LSP: Format')
   end
 })
 
