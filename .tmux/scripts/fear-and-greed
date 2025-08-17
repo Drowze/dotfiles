@@ -10,17 +10,17 @@ SECONDS_TO_CACHE=3600
 
 is_cache_valid() {
   if ! test -f $TMP_FILE; then
-    false
+    return 1 # false, cache does not exist
   fi
 
   current_ts=$(date +%s)
-  cached_ts=$(cat $TMP_FILE | jq '.timestamp')
+  cached_ts=$(jq '.timestamp' < "$TMP_FILE")
   seconds_past_since_cached=$((current_ts - cached_ts))
 
   if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
-    true
+    return 0 # true, cache is valid
   else
-    false
+    return 1 # false, cache is invalid
   fi
 }
 
@@ -29,10 +29,16 @@ fetch() {
 }
 
 if ! is_cache_valid; then
-  fetch | jq "{response: ., timestamp: $(date +%s)}" > $TMP_FILE
+  response="$(fetch)"
+  if [ -n "$response" ]; then
+    echo "$response" | jq "{response: ., timestamp: $(date +%s)}" > "$TMP_FILE"
+  else
+    echo "internet?"
+    exit 1
+  fi
 fi
 
-response="$(cat $TMP_FILE | jq -r '.response')"
+response="$(jq '.response' < "$TMP_FILE")"
 
 today_value="$(echo "$response" | jq -r '.data[0].value')"
 yesterday_value="$(echo "$response" | jq -r '.data[1].value')"
