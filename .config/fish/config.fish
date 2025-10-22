@@ -80,6 +80,9 @@ if test -d $HOME/.android/emulator
   fish_add_path $HOME/.android/emulator
   fish_add_path $HOME/.android/platform-tools
 end
+if test -d $HOME/go/bin
+  fish_add_path $HOME/go/bin
+end
 
 if test "$is_mac" = 'yes'
   if test -d $mac_brew_dir/opt/mongodb-community@4.2/bin

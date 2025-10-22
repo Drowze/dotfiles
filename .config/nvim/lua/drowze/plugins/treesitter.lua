@@ -23,6 +23,7 @@ return {
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
         -- Instead of true it can also be a list of languages
+        -- additional_vim_regex_highlighting = { 'ruby' }
         additional_vim_regex_highlighting = false,
       },
     },
@@ -119,7 +120,28 @@ return {
     },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
-      max_join_length = 240
+      max_join_length = 240,
+      -- TODO: figure out how to split/join ruby nested modules
+      -- langs = {
+      --   ruby = {
+      --     module = {
+      --       both = {
+      --         no_format_with = {}, -- Need to avoid 'no format with comment'
+      --         fallback = function(_)
+      --           vim.cmd('SplitjoinJoin')
+      --         end,
+      --       },
+      --     },
+      --     class = {
+      --       both = {
+      --         no_format_with = {},
+      --         fallback = function(_)
+      --           vim.cmd('SplitjoinSplit')
+      --         end,
+      --       },
+      --     },
+      --   },
+      -- }
     }
   },
 }

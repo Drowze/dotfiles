@@ -47,8 +47,15 @@ fi
 
 response="$(jq --arg asset_upper "$ASSET_UPPER" '.response.data[] | first(select(.symbol == $asset_upper))' < "$TMP_FILE")"
 
-price="$(echo "$response" | jq '.quotes.USD.price')"
 hour_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_1h' | awk '{printf "%.2f", $1}')"
 day_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_24h' | awk '{printf "%.2f", $1}')"
 
-printf "%s: \$%'.${DECIMAL_PLACES}f (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"
+price=""
+if $(echo "$response" | jq -e '.quotes.USD.price > 1000' >/dev/null 2>&1); then
+  price="$(echo "$response" | jq '.quotes.USD.price / 1000' | awk '{printf "%.0f", $1}')K"
+else
+  price="$(echo "$response" | jq '.quotes.USD.price' | awk '{printf "%.'$DECIMAL_PLACES'f", $1}')"
+fi
+
+
+printf "%s: %s (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"

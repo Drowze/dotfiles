@@ -182,6 +182,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-vinegar'
   Plug 'vim-test/vim-test'
+  Plug 'vim-ruby/vim-ruby'
+  Plug 'AndrewRadev/splitjoin.vim'
   Plug 'wesQ3/vim-windowswap'
   Plug 'wsdjeg/vim-fetch'
 call plug#end()
