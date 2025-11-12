@@ -1,0 +1,9 @@
+[tools]
+go = "latest"
+neovim = "nightly"
+node = "latest"
+postgres = "14.8"
+python = "latest"
+ruby = "latest"
+rust = "latest"
+usage = "latest"

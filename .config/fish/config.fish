@@ -5,8 +5,14 @@ end
 set -l is_mac
 set -l mac_brew_dir
 if test (uname -s) = "Darwin"
-  set is_mac yes
+  set is_mac "yes"
   set mac_brew_dir (brew --prefix)
+end
+
+# fish-async-prompt sources this file in a non-interactive shell
+set -l is_interactive
+if status is-interactive
+  set is_interactive "yes"
 end
 
 # do not clear prompt on ctrl-c
@@ -16,14 +22,10 @@ if test -f ~/.config/fish/functions/oh_helpers.fish
   source ~/.config/fish/functions/oh_helpers.fish
 end
 
-# Direnv
-if type -q direnv
-  direnv hook fish | source
-end
-
-# Source asdf files
-if test -e ~/.asdf/asdf.fish
-  source ~/.asdf/asdf.fish
+# source mise & setup shell completion
+if test "$is_interactive" = "yes" && test -f ~/.local/bin/mise
+  ~/.local/bin/mise activate fish | source
+  mise completion fish | source
 end
 
 # Feature flags
@@ -64,10 +66,6 @@ end
 #########
 # $PATH #
 #########
-
-if test -d $HOME/.config/yarn/global/node_modules/.bin
-  fish_add_path $HOME/.config/yarn/global/node_modules/.bin
-end
 if test -d $HOME/.yarn/bin
   fish_add_path $HOME/.yarn/bin
 end
@@ -84,15 +82,9 @@ if test -d $HOME/go/bin
   fish_add_path $HOME/go/bin
 end
 
-if test "$is_mac" = 'yes'
+if test "$is_mac" = "yes"
   if test -d $mac_brew_dir/opt/mongodb-community@4.2/bin
     fish_add_path $mac_brew_dir/opt/mongodb-community@4.2/bin
-  end
-  if test -d $mac_brew_dir/opt/libpq/bin
-    fish_add_path $mac_brew_dir/opt/libpq/bin
-  end
-  if test -d $mac_brew_dir/opt/libpq/bin
-    fish_add_path $mac_brew_dir/opt/libpq/bin
   end
 end
 

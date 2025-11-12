@@ -71,9 +71,6 @@ vim.g['netrw_preview'] = 1
 -- is used for the preview window
 vim.g['netrw_winsize'] = 30
 
--- speeds up dramatically opening python files
-vim.g['python3_host_prog'] = '$HOME/.asdf/shims/python3'
-
 local function set_custom_filetype(pattern, filetype)
   vim.api.nvim_create_autocmd(
     { 'BufNewFile', 'BufRead' },

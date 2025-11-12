@@ -1,4 +1,5 @@
 /.tool-versions
+/mise.toml
 /.pryrc
 /.irbrc
 /.draft

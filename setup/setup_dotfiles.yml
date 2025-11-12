@@ -13,7 +13,6 @@
         path: "{{ item }}"
         state: directory
       with_items:
-        - $HOME/.config/alacritty
         - $HOME/.config/fish/functions
         - $HOME/.tmux
 
@@ -38,6 +37,6 @@
         - { src: git_files/.gitconfig, dest: .gitconfig }
         - { src: .config/fish/config.fish, dest: .config/fish/config.fish }
         - { src: .config/fish/fish_plugins, dest: .config/fish/fish_plugins }
-        - { src: .config/alacritty/drafula.toml, dest: .config/alacritty/dracula.toml }
-        - { src: .config/alacritty/alacritty.toml, dest: .config/alacritty/alacritty.toml }
+        - { src: .config/alacritty, dest: .config/alacritty }
         - { src: .config/nvim, dest: .config/nvim }
+        - { src: .config/mise, dest: .config/mise }

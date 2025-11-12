@@ -9,10 +9,10 @@
 ```bash
 # if on MacOS
 brew tap homebrew/cask-fonts
-brew install fish
-fish
-brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget nvim ruby-install chruby-fish docker docker-buildx docker-compose colima kubectl gsed shellcheck coreutils
 brew tap ankitpokhrel/jira-cli # work specific
+brew install fish
+fish # enter in fish, so brew setup shell-specific stuff for fish
+brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget docker docker-buildx docker-compose colima kubectl gsed shellcheck coreutils
 brew install az jira-cli cloudflared Azure/kubelogin/kubelogin # work specific
 brew install --cask --no-quarantine font-hack-nerd-font brave-browser keepassxc alacritty spotify slack zoom rectangle alt-tab
 
@@ -55,22 +55,12 @@ fish
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
-7. Install asdf, asdf-python, latest python, ansible
+7. Install mise, neovim and some programming languages
 ```bash
-# asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish
-mkdir -p ~/.config/fish/completions
-ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
-source ~/.config/fish/config.fish
-
-# asdf-python, python, ansible
-asdf plugin add python
-set -l latest_python (asdf list-all python | grep -E '^(\d|\.)+$' | tail -n1)
-asdf install python $latest_python
-asdf global python $latest_python
-pip install ansible
-asdf reshim python
+curl https://mise.run | sh
+~/.local/bin/mise plugin install neovim https://github.com/richin13/asdf-neovim
+~/.local/bin/mise use -g neovim@nightly go@latest node@latest python@latest ruby@latest rust@latest usage@latest
+~/.local/bin/mise exec python -- pip install ansible
 ```
 
 8. Install dotfiles
@@ -78,6 +68,6 @@ asdf reshim python
 git clone git@github.com:Drowze/dotfiles.git ~/dotfiles
 cd dotfiles
 # Create valid setup/vars.yml according setup/vars.yml.sample
-ansible-playbook setup/setup_dotfiles.yml
+~/.local/bin/mise exec python -- ansible-playbook setup/setup_dotfiles.yml
 fisher update
 ```
