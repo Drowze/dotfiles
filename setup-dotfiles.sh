@@ -5,12 +5,16 @@ set -e
 dotfiles_path="$(dirname "$(realpath "$0")")"
 
 # Create ~/.gitconfig.user
-cat <<EOF > "$HOME/.gitconfig.user"
+if ! test -e "$HOME/.gitconfig.user"; then
+  cat <<EOF > "$HOME/.gitconfig.user"
 [user]
   name = ${DOTFILES_GIT_USER:?}
   email = ${DOTFILES_GIT_EMAIL:?}
   signingkey = ${DOTFILES_GIT_SIGNING_KEY:?}
 EOF
+else
+  echo "✅ '.gitconfig.user' (already exists)"
+fi
 
 # Create required directories
 mkdir -p "$HOME/.config/fish/functions"
