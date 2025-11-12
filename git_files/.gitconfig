@@ -1,7 +1,6 @@
-[user]
-  name = {{ git_user }}
-  email = {{ git_email }}
-  signingkey = {{ git_signingkey }}
+[include]
+  # NOTE: must create a file at ~/.gitconfig.user with the git credentials!
+  path = .gitconfig.user
 [alias]
   st = status
   co = checkout
@@ -33,4 +32,4 @@
 [log]
   date = iso-local
 [safe]
-  directory = *
+	directory = *
