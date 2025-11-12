@@ -47,6 +47,7 @@ https://gist.github.com/TheSherlockHomie/a91d3ecdce8d0ea2bfa38b67c0355d00
 ```bash
 which fish | sudo tee -a /etc/shells
 chsh -s $(which fish)
+# then log out the current session to have the change persisted
 ```
 
 6. Install fisher
@@ -55,17 +56,18 @@ fish
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
-7. Install mise, neovim and some programming languages
-```bash
-curl https://mise.run | sh
-~/.local/bin/mise plugin install neovim https://github.com/richin13/asdf-neovim
-~/.local/bin/mise use -g neovim@nightly go@latest node@latest python@latest ruby@latest rust@latest usage@latest
-```
-
-8. Install dotfiles
+7. Install dotfiles
 ```bash
 git clone git@github.com:Drowze/dotfiles.git ~/dotfiles
 ~/dotfiles/setup-dotfiles.sh
-source ~/.config/fish/config.fish
+source ~/.config/fish/config.fish # or exit/reopen the shell
 fisher update
+```
+
+8. Install mise, neovim and some programming languages
+```bash
+curl https://mise.run | sh
+~/.local/bin/mise plugin install neovim https://github.com/richin13/asdf-neovim
+~/.local/bin/mise install
+# then exit/reopen the shell or re-source fish config to have mise in path
 ```
