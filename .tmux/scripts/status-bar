@@ -1,0 +1,19 @@
+#!/bin/sh
+
+SCRIPT_PATH="$(dirname "$(realpath "$0")")"
+WIDTH=${1}
+
+LARGE=200
+
+printf "#{prefix_highlight}"
+if [ "$WIDTH" -gt "$LARGE" ]; then
+  printf " "
+  "$SCRIPT_PATH"/fear-and-greed
+  printf " "
+  "$SCRIPT_PATH"/crypto-price btc
+else
+  printf " "
+  "$SCRIPT_PATH"/fear-and-greed short
+  printf " "
+  "$SCRIPT_PATH"/crypto-price short btc
+fi

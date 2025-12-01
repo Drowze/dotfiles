@@ -2,6 +2,7 @@
   # NOTE: must create a file at ~/.gitconfig.user with the git credentials!
   path = .gitconfig.user
 [alias]
+  w = worktree
   st = status
   co = checkout
   sw = switch
@@ -33,3 +34,5 @@
   date = iso-local
 [safe]
 	directory = *
+[worktree]
+	useRelativePaths = true

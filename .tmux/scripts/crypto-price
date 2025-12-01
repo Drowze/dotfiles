@@ -2,60 +2,50 @@
 
 set -e
 
+SIZE=normal
+if test "$1" = "short"; then
+  SIZE=short
+  shift
+fi
+
 if ! command -v jq >/dev/null 2>&1; then
   echo "missing jq!"
   exit 1
 fi
 
 TMP_FILE=/tmp/tmux-crypto-price
-SECONDS_TO_CACHE=60
-
-ASSET="${1:-BTC}"
-ASSET_UPPER=$(echo "$ASSET" | awk '{print toupper($0)}')
-
-DECIMAL_PLACES="${2:-2}"
+ASSET_UPPER=$(echo "${1:-btc}" | awk '{print toupper($0)}')
+DECIMAL_PLACES="${2:-1}"
 
 is_cache_valid() {
-  if ! test -f $TMP_FILE; then
-    return 1 # false, cache does not exist
-  fi
-
-  current_ts=$(date +%s)
-  cached_ts=$(jq '.timestamp' < "$TMP_FILE")
-  seconds_past_since_cached=$((current_ts - cached_ts))
-
-  if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
-    return 0 # true, cache is valid
-  else
-    return 1 # false, cache is invalid
-  fi
-}
-
-fetch() {
-  curl -s "https://api.alternative.me/v2/ticker/"
+  # file exists and was last modified up to 1 minute ago
+  test -f "$TMP_FILE" && find "$TMP_FILE" -mmin -"1" | grep -q .
 }
 
 if ! is_cache_valid; then
-  response="$(fetch)"
+  response="$(curl -s "https://api.alternative.me/v2/ticker/")"
   if [ -n "$response" ]; then
-    echo "$response" | jq "{response: ., timestamp: $(date +%s)}" > "$TMP_FILE"
+    echo "$response" > "$TMP_FILE"
   else
     echo "internet?"
     exit 1
   fi
 fi
 
-response="$(jq --arg asset_upper "$ASSET_UPPER" '.response.data[] | first(select(.symbol == $asset_upper))' < "$TMP_FILE")"
-
-hour_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_1h' | awk '{printf "%.2f", $1}')"
-day_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_24h' | awk '{printf "%.2f", $1}')"
+response="$(jq --arg asset_upper "$ASSET_UPPER" '.data[] | first(select(.symbol == $asset_upper))' < "$TMP_FILE")"
 
 price=""
-if $(echo "$response" | jq -e '.quotes.USD.price > 1000' >/dev/null 2>&1); then
-  price="$(echo "$response" | jq '.quotes.USD.price / 1000' | awk '{printf "%.0f", $1}')K"
+if echo "$response" | jq -e '.quotes.USD.price > 1000' >/dev/null 2>&1; then
+  price="$(echo "$response" | jq '.quotes.USD.price / 1000' | awk '{printf "%.'$DECIMAL_PLACES'f", $1}')K"
 else
   price="$(echo "$response" | jq '.quotes.USD.price' | awk '{printf "%.'$DECIMAL_PLACES'f", $1}')"
 fi
 
+if test "$SIZE" = "normal"; then
+  hour_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_1h' | awk '{printf "%.2f", $1}')"
+  day_variation="$(echo "$response" | jq '.quotes.USD.percentage_change_24h' | awk '{printf "%.2f", $1}')"
 
-printf "%s: %s (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"
+  printf "%s: %s (H: %s%% | D: %s%%)" "$ASSET_UPPER" "$price" "$hour_variation" "$day_variation"
+else
+  printf "%s: %s" "$ASSET_UPPER" "$price"
+fi

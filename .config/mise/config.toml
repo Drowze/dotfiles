@@ -2,7 +2,7 @@
 go = "latest"
 neovim = "nightly"
 node = "latest"
-postgres = "14.8"
+postgres = "14.18"
 python = "latest"
 ruby = "latest"
 rust = "latest"

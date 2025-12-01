@@ -95,7 +95,11 @@ end
 if type -q fzf_configure_bindings
   fzf_configure_bindings --git_status=\cs --git_log=\cg --variables --directory=\co
 end
-set -x FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=40% --preview-window=wrap --marker="*" --bind "ctrl-j:preview-down,ctrl-k:preview-up"'
+set -x FZF_DEFAULT_OPTS --cycle --layout=reverse --border --height=40% --preview-window=wrap --marker="*" \
+  --bind ctrl-j:preview-down \
+  --bind ctrl-d:preview-page-down \
+  --bind ctrl-k:preview-up \
+  --bind ctrl-u:preview-page-up
 set fzf_fd_opts --hidden --no-ignore --exclude '.git' --exclude 'node_modules' --exclude '/public/' --exclude '/tmp/' --exclude '/coverage/'
 
 ############

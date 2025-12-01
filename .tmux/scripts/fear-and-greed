@@ -1,44 +1,36 @@
 #!/usr/bin/env sh
 
+set -e
+
+SIZE=normal
+if test "$1" = "short"; then
+  SIZE=short
+  shift
+fi
+
 if ! command -v jq >/dev/null 2>&1; then
   echo "missing jq!"
   exit 1
 fi
 
 TMP_FILE=/tmp/fear-and-greed
-SECONDS_TO_CACHE=3600
 
 is_cache_valid() {
-  if ! test -f $TMP_FILE; then
-    return 1 # false, cache does not exist
-  fi
-
-  current_ts=$(date +%s)
-  cached_ts=$(jq '.timestamp' < "$TMP_FILE")
-  seconds_past_since_cached=$((current_ts - cached_ts))
-
-  if [ $seconds_past_since_cached -lt $SECONDS_TO_CACHE ]; then
-    return 0 # true, cache is valid
-  else
-    return 1 # false, cache is invalid
-  fi
-}
-
-fetch() {
-  curl -s 'https://api.alternative.me/fng/?limit=2'
+  # file exists and was last modified up to 1 hour ago
+  test -f "$TMP_FILE" && find "$TMP_FILE" -mmin -"60" | grep -q .
 }
 
 if ! is_cache_valid; then
-  response="$(fetch)"
+  response="$(curl -s 'https://api.alternative.me/fng/?limit=2')"
   if [ -n "$response" ]; then
-    echo "$response" | jq "{response: ., timestamp: $(date +%s)}" > "$TMP_FILE"
+    echo "$response" > "$TMP_FILE"
   else
     echo "internet?"
     exit 1
   fi
 fi
 
-response="$(jq '.response' < "$TMP_FILE")"
+response="$(cat "$TMP_FILE")"
 
 today_value="$(echo "$response" | jq -r '.data[0].value')"
 yesterday_value="$(echo "$response" | jq -r '.data[1].value')"
@@ -58,4 +50,8 @@ else
   today_label=" $today_classification"
 fi
 
-printf "F&G: %s%s (%s%%)" "$today_value" "$today_label" "$change_percent"
+if test "$SIZE" = "normal"; then
+  printf "F&G: %s%s (%s%%)" "$today_value" "$today_label" "$change_percent"
+else
+  printf "F&G: %s" "$today_value"
+fi

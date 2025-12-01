@@ -22,7 +22,6 @@ return {
   { 'tpope/vim-rhubarb', event = 'VeryLazy', dependencies = 'tpope/vim-fugitive' },
   { 'tpope/vim-eunuch', event = 'VeryLazy', config = function () vim.cmd('cnoreabbrev rename Rename') end },
   { 'klen/nvim-config-local', opts = { lookup_parents = true } },
-  { 'tyru/capture.vim', cmd = 'Capture' },
   {
     "linrongbin16/gitlinker.nvim",
     cmd = "GitLink",
