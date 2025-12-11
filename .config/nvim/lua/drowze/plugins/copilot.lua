@@ -1,18 +1,10 @@
--- always run copilot with latest node (even if the project uses an older version)
-local copilot_node_command
-if vim.fn.executable("mise") == 1 then
-  copilot_node_command = { "mise", "exec", "node@latest", "--", "node" }
-else
-  copilot_node_command = "node"
-end
-
 return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
-      copilot_node_command = copilot_node_command,
+      copilot_node_command = require('drowze.utils').mise_cmd('node', { tool = 'node@latest' }),
       suggestion = {
         auto_trigger = true,
         keymap = {

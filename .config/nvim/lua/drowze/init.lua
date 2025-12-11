@@ -20,5 +20,6 @@ require('lazy').setup({
 
 require('drowze.remap')
 require('drowze.set')
+require('drowze.lsp')
 
 vim.cmd('runtime macros/matchit.vim')

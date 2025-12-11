@@ -28,6 +28,27 @@ function M.get_visual_selection()
   return selection
 end
 
+function M.mise_cmd(raw_cmd, opts)
+  if not (type(raw_cmd) == 'table') then
+    raw_cmd = { raw_cmd }
+  end
+
+  if not (vim.fn.executable('mise') == 1) then
+    return raw_cmd
+  end
+
+  local cmd = { 'mise', 'exec' }
+  if opts and opts.tool then
+    table.insert(cmd, opts.tool)
+  end
+  table.insert(cmd, '--')
+  for _, v in pairs(raw_cmd) do
+    table.insert(cmd, v)
+  end
+
+  return cmd
+end
+
 -- Get the current (relative) path of the file in the current buffer
 function M.get_current_path()
   local current_path

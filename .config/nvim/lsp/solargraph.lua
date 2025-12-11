@@ -1,4 +1,7 @@
 return {
+  cmd = require('drowze.utils').mise_cmd('solargraph'),
+  filetypes = { 'ruby', 'eruby' },
+  root_markers = { 'Gemfile.lock', '.git' },
   settings = {
     solargraph = {
       diagnostics = false, -- rely on rubocop LSP for diagnostics

@@ -1,3 +1,6 @@
+-- enable lsp handlers
+vim.lsp.enable({ 'ruby_lsp', 'lua_ls', 'bashls', 'vimls' })
+
 -- grey virtual text (same color as line numbers)
 for _, group_name in pairs({
   'DiagnosticVirtualTextError',
@@ -39,15 +42,10 @@ vim.api.nvim_create_user_command(
   function()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
   end,
-  { desc = 'Toggle LSP' }
+  { desc = 'Toggle diagnostics' }
 )
-vim.api.nvim_create_user_command(
-  'LspLog',
-  function()
-    vim.cmd('tabnew ' .. vim.lsp.get_log_path())
-  end,
-  { desc = 'Open LSP log' }
-)
+vim.api.nvim_create_user_command('LspLog', function() vim.cmd('tabnew ' .. vim.lsp.log.get_filename()) end, { desc = 'Open LSP log' })
+vim.api.nvim_create_user_command('LspInfo', ':checkhealth vim.lsp', { desc = 'Open LSP info' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
@@ -93,23 +91,6 @@ vim.api.nvim_create_autocmd(
 )
 
 -- vim.lsp.set_log_level('debug') -- comment out after debugging
-
-vim.lsp.config('*', {
-  capabilities = vim.lsp.protocol.make_client_capabilities()
-})
-
-require('mason').setup()
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'solargraph',
-    'rubocop',
-    'lua_ls',
-    'bashls',
-    'vimls',
-    -- 'ruby_ls',
-  }
-})
-
 
 require('luasnip.loaders.from_vscode').lazy_load()
 
