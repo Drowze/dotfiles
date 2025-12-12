@@ -1,10 +1,12 @@
 return {
-  cmd = require('drowze.utils').mise_cmd('ruby-lsp'),
+  cmd = require('drowze.utils').mise_cmd({'ruby-lsp', '--debug'}),
   filetypes = { 'ruby', 'eruby' },
   root_markers = { 'Gemfile.lock', '.git' },
   -- Reference: https://shopify.github.io/ruby-lsp/editors.html#all-initialization-options
   init_options = {
     formatter = 'auto',
+    linters = { 'rubocop_internal' },
+    experimentalFeaturesEnabled = false,
     enabledFeatures = {
       'codeActions',
       'codeLens',
@@ -24,6 +26,18 @@ return {
       'signatureHelp',
       'typeHierarchy',
       'workspaceSymbol',
-    }
+    },
+    featuresConfiguration = {
+      inlayHint = {
+        implicitHashValue = true,
+        implicitRescue = true,
+      },
+    },
+    -- indexing = {
+    --   excludedPatterns = { 'path/to/excluded/file.rb' },
+    --   includedPatterns = { 'path/to/included/file.rb' },
+    --   excludedGems = { 'gem1', 'gem2', 'etc.' },
+    --   excludedMagicComments = { 'compiled:true' },
+    -- },
   },
 }

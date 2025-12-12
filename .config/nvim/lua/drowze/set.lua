@@ -71,13 +71,21 @@ vim.g['netrw_preview'] = 1
 -- is used for the preview window
 vim.g['netrw_winsize'] = 30
 
+local api = vim.api
+
+api.nvim_create_user_command(
+  'RestartSession',
+  ':mksession! /tmp/nvim-session.vim | restart +qa source /tmp/nvim-session.vim',
+  { desc = 'Restart neovim and restore current session' }
+)
+
 local function set_custom_filetype(pattern, filetype)
-  vim.api.nvim_create_autocmd(
+  api.nvim_create_autocmd(
     { 'BufNewFile', 'BufRead' },
     {
       pattern = pattern,
       callback = function()
-        vim.api.nvim_set_option_value('filetype', filetype, { scope = 'local' })
+        api.nvim_set_option_value('filetype', filetype, { scope = 'local' })
       end
     }
   )
