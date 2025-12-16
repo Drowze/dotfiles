@@ -1,3 +1,4 @@
+# source: https://github.com/dracula/alacritty/blob/master/dracula.toml
 [colors.primary]
 background = "#282a36"
 foreground = "#f8f8f2"
