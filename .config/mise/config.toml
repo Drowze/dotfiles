@@ -2,8 +2,14 @@
 go = "latest"
 neovim = "nightly"
 node = "latest"
-postgres = "14.18"
 python = "latest"
 ruby = "latest"
 rust = "latest"
 usage = "latest"
+
+# required for nvim-treesitter
+"cargo:tree-sitter-cli" = "latest"
+
+# installing postgres 14 on MacOS:
+# MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)" POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-openssl --with-includes=$(brew --prefix openssl)/include --with-libraries=$(brew --prefix openssl)/lib" mise install postgres@14.18
+postgres = "14.18"
