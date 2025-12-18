@@ -1,4 +1,4 @@
--- Automatically delete lsp log if it's >10MB (value in bytes)
+-- Ask to delete lsp log if it's >10MB (value in bytes)
 if vim.fn.getfsize(vim.lsp.log.get_filename()) >= 10485760 then
   vim.ui.select({'yes', 'no'}, { prompt = 'LSP log file is >10MB, automatically delete it?' },
   function(choice)
@@ -6,8 +6,4 @@ if vim.fn.getfsize(vim.lsp.log.get_filename()) >= 10485760 then
   end)
 end
 
--- Leader key must be setup before Lazy
-vim.g.mapleader = ' '
-
 require('drowze')
-vim.opt.termguicolors = true

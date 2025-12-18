@@ -3,7 +3,16 @@ local lsp = vim.lsp
 local diagnostic = vim.diagnostic
 
 -- enable lsp handlers
-lsp.enable({ 'ruby_lsp', 'lua_ls', 'bashls', 'vimls' })
+lsp.enable({
+  'bashls',
+  'cssls',
+  'jsonls',
+  'lua_ls',
+  'quick_lint_js',
+  'ruby_lsp',
+  'vimls',
+  'yamlls',
+})
 
 -- grey virtual text (same color as line numbers)
 for _, group_name in pairs({

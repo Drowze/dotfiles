@@ -25,12 +25,12 @@ while IFS= read -r file; do
   target="$(echo "$file" | cut -d";" -f2 | xargs)"
 
   if test -z "$dotfiles_path/$source"; then
-    echo "ERROR: SOURCE FILE NOT FOUND - $dotfiles_path/$source" >/dev/stderr
+    echo "❌ ERROR: SOURCE FILE NOT FOUND - $dotfiles_path/$source" >/dev/stderr
     continue
   fi
 
   if test -e "$HOME/$target" && ! test -L "$HOME/$target"; then
-    echo "ERROR: TARGET FILE EXISTS AND IS NOT A SYMLINK - $HOME/$target" >/dev/stderr
+    echo "❌ ERROR: TARGET FILE EXISTS AND IS NOT A SYMLINK - $HOME/$target" >/dev/stderr
     continue
   fi
 
@@ -57,4 +57,5 @@ done << EOF # format: <source>/<target> (relative to "$HOME" and "dotfiles root"
   .config/alacritty;.config/alacritty
   .config/nvim;.config/nvim
   .config/mise;.config/mise
+  .default-gems;.default-gems
 EOF

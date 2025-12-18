@@ -1,5 +1,6 @@
+-- https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/lsp/lua_ls.lua
 return {
-  cmd = { 'lua-language-server' },
+  cmd = require('drowze.utils').mise_cmd('lua-language-server', { tool = 'github:LuaLS/lua-language-server@latest' }),
   filetypes = { 'lua' },
   root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
   on_init = function(client)

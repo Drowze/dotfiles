@@ -50,34 +50,6 @@ return {
   },
 
   -- lsp:
-  {
-    'mason-org/mason.nvim',
-    config = function(opts)
-      require('mason').setup(opts)
-      local installed_packages = require('mason-registry').get_installed_package_names()
-      local ensure_installed = { 'ruby-lsp', 'lua-language-server', 'bash-language-server', 'vim-language-server' }
-      local to_install = {}
-
-      for _, ensure_package in pairs(ensure_installed) do
-        local found = false
-        for _, installed_package in pairs(installed_packages) do
-          if ensure_package == installed_package then
-            found = true
-            break
-          end
-        end
-
-        if not found then
-          table.insert(to_install, ensure_package)
-        end
-      end
-
-      -- install packages if to_install is not empty
-      if not (next(to_install) == nil) then
-        vim.cmd('MasonInstall ' .. table.concat(to_install, ' '))
-      end
-    end,
-  },
   { 'L3MON4D3/LuaSnip' }, -- snippets
   { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
   { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)

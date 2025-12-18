@@ -1,5 +1,6 @@
+-- https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/lsp/bashls.lua
 return {
-  cmd = { 'bash-language-server', 'start' },
+  cmd = require('drowze.utils').mise_cmd({'bash-language-server', 'start'}, { tool = 'node@latest' }),
   filetypes = { 'bash', 'sh' },
   root_markers = { '.git' },
   settings = {

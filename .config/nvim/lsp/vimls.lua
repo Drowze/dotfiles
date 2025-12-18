@@ -1,5 +1,6 @@
+-- https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/lsp/vimls.lua
 return {
-  cmd = { 'vim-language-server', '--stdio' },
+  cmd = require('drowze.utils').mise_cmd({'vim-language-server', '--stdio'}, { tool = 'node@latest' }),
   filetypes = { 'vim' },
   root_markers = { '.git' },
   init_options = {

@@ -1,7 +1,12 @@
+-- https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/lsp/ruby_lsp.lua
 return {
-  cmd = require('drowze.utils').mise_cmd({'ruby-lsp', '--debug'}),
+  cmd = require('drowze.utils').mise_cmd('ruby-lsp', { tool = 'ruby' }),
   filetypes = { 'ruby', 'eruby' },
   root_markers = { 'Gemfile.lock', '.git' },
+  flags = {
+    allow_incremental_sync = true, -- diagnostics stuck? try changing to `false`, but check if dianostics still work after that
+    debounce_text_changes = 500,
+  },
   -- Reference: https://shopify.github.io/ruby-lsp/editors.html#all-initialization-options
   init_options = {
     formatter = 'auto',

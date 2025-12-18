@@ -10,6 +10,14 @@ usage = "latest"
 # required for nvim-treesitter
 "cargo:tree-sitter-cli" = "latest"
 
+# lsps:
+"github:LuaLS/lua-language-server" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:quick-lint-js" = "latest"
+"npm:vim-language-server" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:yaml-language-server" = "latest"
+
 # installing postgres 14 on MacOS:
 # MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)" POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-openssl --with-includes=$(brew --prefix openssl)/include --with-libraries=$(brew --prefix openssl)/lib" mise install postgres@14.18
 postgres = "14.18"
