@@ -1,6 +1,7 @@
 -- vim options remaps independent of installed plugins
 require('drowze.remap')
 require('drowze.set')
+require('drowze.lsp')
 
 -- bootstrap and setup lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -35,8 +36,5 @@ require('lazy').setup({
     },
   },
 })
-
--- load lsp configuration _after_ loading plugins (as it requires cmp/luasnip for now)
-require('drowze.lsp')
 
 vim.cmd('runtime macros/matchit.vim')

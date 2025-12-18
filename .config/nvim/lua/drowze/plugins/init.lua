@@ -48,11 +48,4 @@ return {
     ft = { 'markdown' },
     opts = {},
   },
-
-  -- lsp:
-  { 'L3MON4D3/LuaSnip' }, -- snippets
-  { 'hrsh7th/cmp-nvim-lsp', dependencies = { 'hrsh7th/nvim-cmp' } }, -- autocomplete (lsp)
-  { 'hrsh7th/cmp-nvim-lua' }, -- autocomplete (lsp)
-  { 'hrsh7th/nvim-cmp' }, -- autocomplete engine
-  { 'saadparwaiz1/cmp_luasnip' }, -- autocomplete lua thru luasnip (is needed, considering neodev?)
 }
