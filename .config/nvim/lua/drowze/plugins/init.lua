@@ -2,7 +2,7 @@ return {
   'wsdjeg/vim-fetch',
   { 'towolf/vim-helm', ft = 'helm' },
   {
-    'cuducos/yaml.nvim',
+    'https://tangled.org/cuducos.me/yaml.nvim',
     ft = { 'yaml' },
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-telescope/telescope.nvim' },
     config = function(opts) require('yaml_nvim').setup(opts) end
@@ -21,7 +21,7 @@ return {
   { 'tpope/vim-fugitive', event = 'VeryLazy' },
   { 'tpope/vim-rhubarb', event = 'VeryLazy', dependencies = 'tpope/vim-fugitive' },
   { 'tpope/vim-eunuch', event = 'VeryLazy', config = function () vim.cmd('cnoreabbrev rename Rename') end },
-  { 'klen/nvim-config-local', opts = { lookup_parents = true } },
+  { 'klen/nvim-config-local', opts = { lookup_parents = true, silent = true } },
   {
     "linrongbin16/gitlinker.nvim",
     cmd = "GitLink",
@@ -47,5 +47,13 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
     ft = { 'markdown' },
     opts = {},
+  },
+  {
+    'rachartier/tiny-code-action.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    event = 'LspAttach',
+    opts = {
+      picker = { "buffer", opts = { auto_preview = true } },
+    },
   },
 }

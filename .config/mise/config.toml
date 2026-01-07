@@ -11,7 +11,10 @@ usage = "latest"
 "cargo:tree-sitter-cli" = "latest"
 
 # lsps:
+"cargo:codebook-lsp" = "latest"
 "github:LuaLS/lua-language-server" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"npm:@actions/languageserver" = "latest"
 "npm:bash-language-server" = "latest"
 "npm:quick-lint-js" = "latest"
 "npm:vim-language-server" = "latest"

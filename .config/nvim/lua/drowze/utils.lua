@@ -49,6 +49,40 @@ function M.mise_cmd(raw_cmd, opts)
   return cmd
 end
 
+-- Meant to be used as a custom vim-test strategy, but may be used for e.g. running
+-- commands originated from LSP as well. Probably overly complicated but oh well.
+--
+-- Features:
+-- - disable line numbers
+-- - map enter to delete the buffer, so we can scroll the buffer or press enter to close it
+-- - map ctrl-c to send ctrl-c to the running job, so we can kill the test on normal mode
+-- - when the process finishes (TermClose), unmap ctrl-c to noop (so don't accidentally close the terminal if spam ctrl-c)
+-- - when buffer is deleted (BufDelete) switch back to last window before creating the buffer
+function M.run_test_in_split(cmd, opts)
+  opts = opts or {}
+  local term_position = opts.term_position or 'belowright 15'
+  vim.api.nvim_command(term_position .. ' new')
+
+  vim.fn.jobstart(cmd, { term = true, pty = true })
+  vim.keymap.set('n', '<CR>', function() vim.api.nvim_buf_delete(0, {}) end, { buffer = true })
+  vim.keymap.set('n', '<C-c>', function() vim.fn.feedkeys(vim.keycode('i<C-c><C-\\><C-N>G')) end, { buffer = true })
+
+  -- when the job finishes, re-map ctrl-c to scroll to the end of the buffer. So we don't accidentally close the terminal
+  -- but rather scroll to the end when pressing ctrl-c after the job has finished.
+  vim.api.nvim_create_autocmd('TermClose', {
+    buffer = 0,
+    callback = function()
+      vim.keymap.set('n', '<C-c>', function() vim.fn.feedkeys('G') end, { buffer = true })
+    end
+  })
+
+  vim.api.nvim_create_autocmd('BufDelete', {
+    buffer = 0,
+    callback = function() vim.api.nvim_command('wincmd p') end
+  })
+  vim.api.nvim_command('wincmd p')
+end
+
 -- Get the current (relative) path of the file in the current buffer
 function M.get_current_path()
   local current_path
@@ -59,7 +93,7 @@ function M.get_current_path()
   elseif current_filetype == "oil" then
     current_path = require('oil').get_current_dir()
   else
-    current_path = vim.fn.expand "%:p:h"
+    current_path = vim.fn.expand("%:p")
   end
 
   -- try to get a relative path

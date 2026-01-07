@@ -12,36 +12,7 @@ return {
     -- - when the process finishes (TermClose), unmap ctrl-c to noop (so don't accidentally close the terminal if spam ctrl-c)
     -- - when buffer is deleted (BufDelete) switch back to last window after creating the buffer
     -- - switch back to last window after creating the buffer
-    local neovim_enhanced = function (cmd)
-      local open_split_cmd = (vim.g['test#neovim#term_position'] or 'botright') .. ' new'
-      vim.api.nvim_command(open_split_cmd)
-      vim.fn.termopen(cmd)
-      vim.api.nvim_set_option_value('number', false, { scope = 'local' })
-      vim.api.nvim_set_option_value('relativenumber', false, { scope = 'local' })
-      vim.b['miniindentscope_disable'] = true
-
-      vim.keymap.set('n', '<CR>', function() vim.api.nvim_buf_delete(0, {}) end, { buffer = true })
-
-      vim.keymap.set('n', '<C-c>', function()
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('i<C-c><C-\\><C-N>G', true, true, true))
-      end, { buffer = true })
-
-      vim.api.nvim_create_autocmd('TermClose', {
-        buffer = 0,
-        callback = function()
-          vim.keymap.set('n', '<C-c>', function()
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('G', true, true, true))
-          end, { buffer = true })
-        end
-      })
-
-      vim.api.nvim_create_autocmd('BufDelete', {
-        buffer = 0,
-        callback = function() vim.api.nvim_command('wincmd p') end
-      })
-      vim.api.nvim_command('wincmd p')
-    end
-    vim.g['test#custom_strategies'] = { neovim_enhanced = neovim_enhanced }
+    vim.g['test#custom_strategies'] = { neovim_enhanced = require('drowze.utils').run_test_in_split }
 
     vim.g['test#strategy'] = 'neovim_enhanced'
     vim.g['test#neovim#term_position'] = 'belowright 15'

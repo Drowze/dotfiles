@@ -79,25 +79,37 @@ api.nvim_create_user_command(
   { desc = 'Restart neovim and restore current session' }
 )
 
-local function set_custom_filetype(pattern, filetype)
-  api.nvim_create_autocmd(
-    { 'BufNewFile', 'BufRead' },
-    {
-      pattern = pattern,
-      callback = function()
-        api.nvim_set_option_value('filetype', filetype, { scope = 'local' })
-      end
-    }
-  )
-end
+api.nvim_create_user_command(
+  'Inspect',
+  ':lua print(vim.inspect(<args>))',
+  { nargs = 1, complete = 'lua', desc = 'Run and inspect the return of some Lua code' }
+)
 
-set_custom_filetype('*.jbuilder', 'ruby')
-set_custom_filetype('Dangerfile', 'ruby')
-set_custom_filetype('.pryrc', 'ruby')
-set_custom_filetype('.simplecov', 'ruby')
+api.nvim_create_user_command(
+  'Messages',
+  ":vnew | put =execute('messages') | setlocal buftype=nofile bufhidden=wipe noswapfile",
+  { desc = 'Open a new tab with the output of :messages' }
+)
 
-set_custom_filetype('.env.test', 'sh')
-set_custom_filetype('.env.development', 'sh')
-set_custom_filetype('.env.local', 'sh')
-set_custom_filetype('.env.development.local', 'sh')
-set_custom_filetype('.env.test.local', 'sh')
+vim.filetype.add({ 
+  extension = {
+    jbuilder = 'ruby',
+    pryrc = 'ruby',
+    simplecov = 'ruby',
+  },
+  filename = {
+    Dangerfile = 'ruby',
+    -- Custom dotenv filetype, so we can disable LSP on such files and maintain tree-sitter highlighting
+    ['.env'] = 'sh.dotenv',
+    ['.env.test'] = 'sh.dotenv',
+    ['.env.development'] = 'sh.dotenv',
+    ['.env.production'] = 'sh.dotenv',
+    ['.env.local'] = 'sh.dotenv',
+    ['.env.development.local'] = 'sh.dotenv',
+    ['.env.test.local'] = 'sh.dotenv',
+  },
+  pattern = {
+    -- Custom filetype for GitHub Actions workflows, so we can use a separate LSP
+    [".*/%.github/workflows/.*%.ya?ml"] = "yaml.ghactions",
+  }
+})

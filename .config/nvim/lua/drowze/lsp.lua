@@ -4,8 +4,10 @@ local diagnostic = vim.diagnostic
 
 -- enable lsp handlers
 lsp.enable({
+  'actionsls',
   'bashls',
   'cssls',
+  'codebook',
   'jsonls',
   'lua_ls',
   'quick_lint_js',
@@ -125,8 +127,10 @@ api.nvim_create_autocmd('LspAttach', {
     -- CTRL-S (i): vim.lsp.buf.signature_help()
 
     local function lsp_definitions() require('telescope.builtin').lsp_definitions() end
-    local function lsp_definitions_alt() require('telescope.builtin').lsp_definitions({ jump_type="vsplit" }) end
+    local function lsp_definitions_alt() require('telescope.builtin').lsp_definitions({ jump_type="never" }) end
+    local function lsp_code_actions() require("tiny-code-action").code_action() end
     local function lsp_references() require('telescope.builtin').lsp_references() end
+    local function lsp_document_symbols() require('telescope.builtin').lsp_document_symbols() end
     local function workspace_symbols()
       require('telescope.builtin').lsp_workspace_symbols({
         fname_width = 50,
@@ -140,17 +144,15 @@ api.nvim_create_autocmd('LspAttach', {
     end
 
     keymap('n', 'gD', lsp_definitions, 'LSP: Definitions')
-    keymap('n', 'gd', lsp_definitions_alt, 'LSP: Definitions (vsplit)')
-    keymap('n', 'grr', lsp_references, 'LSP: References')
+    keymap('n', 'gd', lsp_definitions_alt, 'LSP: Definitions (vsplit)') -- overwrites a default (non-lsp) keymap
+    keymap({ 'n', 'x' }, 'gra', lsp_code_actions, 'LSP: Code actions') -- overwrites a default keymap
+    keymap('n', 'grr', lsp_references, 'LSP: References') -- overwrites a default keymap
+    keymap('n', 'gO', lsp_document_symbols, 'LSP: Document symbols') -- overwrites a default keymap
     keymap('n', '<leader>ws', workspace_symbols, 'LSP: Workspace symbols')
     keymap('n', 'go', lsp.buf.type_definition, 'LSP: Type definition')
     keymap({'n', 'x'}, '<F3>', lsp.buf.format, 'LSP: Format')
+    keymap('n', '<leader>cl', lsp.codelens.run, 'LSP: CodeLens run')
   end
 })
 
-api.nvim_create_autocmd(
-  { 'BufNewFile', 'BufRead' },
-  { desc = 'Disable LSP by filename', pattern = '.env,.env.*', command = 'LspToggle' }
-)
-
--- lsp.set_log_level('debug') -- comment out after debugging
+-- lsp.log.set_level('trace') -- comment out after debugging
