@@ -2,7 +2,7 @@ local ts_parsers = {}
 local ts_filetypes = {}
 for parser, filetypes in pairs({
   -- core parsers:
-  ['bash'] = { 'bash', 'sh' },
+  ['bash'] = { 'bash', 'sh', 'sh.dotenv' },
   ['comment'] = { 'comment' },
   ['css'] = { 'css' },
   ['diff'] = { 'diff', 'gitdiff' },
@@ -20,7 +20,6 @@ for parser, filetypes in pairs({
   ['make'] = { 'make', 'automake' },
   ['markdown'] = { 'markdown', 'pandoc' },
   ['markdown_inline'] = { 'markdown_inline' },
-  ['norg'] = { 'norg' },
   ['python'] = { 'python', 'py', 'gyp' },
   ['query'] = { 'query' },
   ['regex'] = { 'regex' },
@@ -31,11 +30,13 @@ for parser, filetypes in pairs({
   ['typescript'] = { 'typescript', 'ts' },
   ['typst'] = { 'typst', 'typ' },
   ['vim'] = { 'vim' },
-
   ['vimdoc'] = { 'vimdoc', 'checkhealth', 'help' },
   ['vue'] = { 'vue' },
   ['xml'] = { 'xml', 'xsd', 'xslt', 'svg' },
   -- additional parsers:
+  ['go'] = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  ['rust'] = { 'rust' },
+  ['yaml'] = { 'yaml', 'yml', 'yaml.ghactions' },
   ['ruby'] = { 'ruby' },
 }) do
   table.insert(ts_parsers, parser)

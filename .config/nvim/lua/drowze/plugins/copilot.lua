@@ -9,6 +9,8 @@ return {
         auto_trigger = true,
         keymap = {
           accept = "<Tab>",
+          next = "<M-]>",
+          prev = "<M-[>",
         }
       },
       -- logger = {

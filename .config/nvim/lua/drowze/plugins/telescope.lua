@@ -6,7 +6,7 @@ return {
     defaults = {
       prompt_prefix= "🔍 ",
       preview = {
-        timeout = 250,
+        timeout = 500,
       }
     },
     pickers = {
@@ -15,8 +15,12 @@ return {
           n = {
             ["dd"] = "delete_buffer",
           }
-        }
-      }
+        },
+      },
+      lsp_definitions = {
+        prompt_prefix= "",
+        initial_mode = "normal",
+      },
     }
   },
   config = function(_, opts)
@@ -27,7 +31,7 @@ return {
   cmd = 'Telescope',
   keys = {
     { '<leader>pf', function() require('telescope.builtin').find_files() end, desc = 'Telescope: all files' },
-    { '<leader>pb', function() require('telescope.builtin').buffers() end,  desc = 'Telescope: all buffers' },
+    { '<leader>pb', function() require('telescope.builtin').buffers({ ignore_current_buffer = true }) end,  desc = 'Telescope: all buffers' },
     {
       '<leader>pg',
       function()
