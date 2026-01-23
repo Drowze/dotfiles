@@ -70,9 +70,6 @@ end
 #########
 # $PATH #
 #########
-if test -d $HOME/.yarn/bin
-  fish_add_path $HOME/.yarn/bin
-end
 if test -d $HOME/.android/cmdline-tools
   fish_add_path $HOME/.android/cmdline-tools/tools/bin
   set -x ANDROID_SDK_ROOT $HOME/.android
@@ -81,15 +78,6 @@ end
 if test -d $HOME/.android/emulator
   fish_add_path $HOME/.android/emulator
   fish_add_path $HOME/.android/platform-tools
-end
-if test -d $HOME/go/bin
-  fish_add_path $HOME/go/bin
-end
-
-if test "$is_mac" = "yes"
-  if test -d $mac_brew_dir/opt/mongodb-community@4.2/bin
-    fish_add_path $mac_brew_dir/opt/mongodb-community@4.2/bin
-  end
 end
 
 ###########
