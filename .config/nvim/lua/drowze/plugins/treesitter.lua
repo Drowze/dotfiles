@@ -1,52 +1,3 @@
-local ts_parsers = {}
-local ts_filetypes = {}
-for parser, filetypes in pairs({
-  -- core parsers:
-  ['bash'] = { 'bash', 'sh', 'sh.dotenv' },
-  ['comment'] = { 'comment' },
-  ['css'] = { 'css' },
-  ['diff'] = { 'diff', 'gitdiff' },
-  ['fish'] = { 'fish' },
-  ['git_config'] = { 'git_config', 'gitconfig' },
-  ['git_rebase'] = { 'git_rebase', 'gitrebase' },
-  ['gitcommit'] = { 'gitcommit' },
-  ['gitignore'] = { 'gitignore' },
-  ['html'] = { 'html' },
-  ['javascript'] = { 'javascript', 'javascriptreact', 'ecma', 'ecmascript', 'jsx', 'js' },
-  ['json'] = { 'json' },
-  ['latex'] = { 'latex', 'tex' },
-  ['lua'] = { 'lua' },
-  ['luadoc'] = { 'luadoc' },
-  ['make'] = { 'make', 'automake' },
-  ['markdown'] = { 'markdown', 'pandoc' },
-  ['markdown_inline'] = { 'markdown_inline' },
-  ['python'] = { 'python', 'py', 'gyp' },
-  ['query'] = { 'query' },
-  ['regex'] = { 'regex' },
-  ['scss'] = { 'scss' },
-  ['svelte'] = { 'svelte' },
-  ['toml'] = { 'toml' },
-  ['tsx'] = { 'tsx', 'typescriptreact', 'typescript.tsx' },
-  ['typescript'] = { 'typescript', 'ts' },
-  ['typst'] = { 'typst', 'typ' },
-  ['vim'] = { 'vim' },
-  ['vimdoc'] = { 'vimdoc', 'checkhealth', 'help' },
-  ['vue'] = { 'vue' },
-  ['xml'] = { 'xml', 'xsd', 'xslt', 'svg' },
-  -- additional parsers:
-  ['go'] = { 'go', 'gomod', 'gowork', 'gotmpl' },
-  ['nginx'] = { 'nginx' },
-  ['ruby'] = { 'ruby' },
-  ['rust'] = { 'rust' },
-  ['terraform'] = { 'terraform', 'terraform-vars' },
-  ['yaml'] = { 'yaml', 'yml', 'yaml.ghactions' },
-}) do
-  table.insert(ts_parsers, parser)
-  for _, filetype in pairs(filetypes) do
-    table.insert(ts_filetypes, filetype)
-  end
-end
-
 return {
   {
     'nvim-treesitter/nvim-treesitter',
@@ -54,10 +5,29 @@ return {
     build = ':TSUpdate',
     branch = 'main',
     config = function()
-      require("nvim-treesitter").install(ts_parsers)
+      local ts = require("nvim-treesitter")
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = ts_filetypes,
-        callback = function() vim.treesitter.start() end,
+        callback = function(event)
+          local filetype = event.match
+          local lang = vim.treesitter.language.get_lang(filetype)
+          if not lang then return end
+
+          local is_installed, _ = vim.treesitter.language.add(lang)
+
+          if not is_installed then
+            local available_langs = ts.get_available()
+            local is_available = vim.tbl_contains(available_langs, lang)
+
+            if is_available then
+              vim.notify("Installing treesitter parser for " .. lang, vim.log.levels.INFO)
+              ts.install({ lang }):wait(30 * 1000)
+            else
+              return
+            end
+          end
+
+          vim.treesitter.start()
+        end,
       })
     end,
   },

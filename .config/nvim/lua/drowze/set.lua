@@ -103,6 +103,7 @@ vim.filetype.add({
     Appraisals = 'ruby',
     -- Custom dotenv filetype, so we can disable LSP on such files and maintain tree-sitter highlighting
     ['.env'] = 'sh.dotenv',
+    ['.env.sample'] = 'sh.dotenv',
     ['.env.test'] = 'sh.dotenv',
     ['.env.development'] = 'sh.dotenv',
     ['.env.production'] = 'sh.dotenv',
