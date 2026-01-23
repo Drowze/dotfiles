@@ -1,25 +1,29 @@
-local bundle_ruby_lsp = false
-local ruby_lsp_cmd = { cmd = { 'ruby-lsp' }, cmd_env = {} }
+local function resolve_ruby_lsp_cmd()
+  local bundle_ruby_lsp = false
+  local ruby_lsp_cmd = { cmd = { 'ruby-lsp' }, cmd_env = {} }
 
--- test if 'ruby-lsp' is in the Gemfile.lock, if so use 'bundle exec ruby-lsp', else use 'ruby-lsp' directly
-local f = io.open('Gemfile.lock', 'r')
-if f then
-  for line in f:lines() do
-    if line:find('ruby-lsp', 1, true) then bundle_ruby_lsp = true end
+  -- test if 'ruby-lsp' is in the Gemfile.lock, if so use 'bundle exec ruby-lsp', else use 'ruby-lsp' directly
+  local f = io.open('Gemfile.lock', 'r')
+  if f then
+    for line in f:lines() do
+      if line:find('ruby-lsp', 1, true) then bundle_ruby_lsp = true end
+    end
+    f:close()
+  else
+    -- if no Gemfile.lock, use a global gemfile in home directory to avoid creating a Gemfile.lock in every project
+    ruby_lsp_cmd.cmd_env.BUNDLE_GEMFILE = os.getenv('HOME') .. '/.ruby-lsp/Gemfile'
   end
-  f:close()
-else
-  -- if no Gemfile.lock, use a global gemfile in home directory to avoid creating a Gemfile.lock in every project
-  ruby_lsp_cmd.cmd_env.BUNDLE_GEMFILE = os.getenv('HOME') .. '/.ruby-lsp/Gemfile'
-end
 
-if bundle_ruby_lsp then
-  table.insert(ruby_lsp_cmd.cmd, 1, 'bundle')
-  table.insert(ruby_lsp_cmd.cmd, 2, 'exec')
-end
+  if bundle_ruby_lsp then
+    table.insert(ruby_lsp_cmd.cmd, 1, 'bundle')
+    table.insert(ruby_lsp_cmd.cmd, 2, 'exec')
+  end
 
--- finally, use mise if available
-ruby_lsp_cmd.cmd = require('drowze.utils').mise_cmd(ruby_lsp_cmd.cmd, { tool = 'ruby' })
+  -- finally, use mise if available
+  ruby_lsp_cmd.cmd = require('drowze.utils').mise_cmd(ruby_lsp_cmd.cmd, { tool = 'ruby' })
+  return ruby_lsp_cmd
+end
+local ruby_lsp_cmd = resolve_ruby_lsp_cmd()
 
 local function add_custom_commands(client, bufnr)
   -- Show Ruby dependencies in quickfix list
@@ -134,6 +138,9 @@ return {
         debug = true,
         rspecCommand = 'bundle exec rspec -f d',
       },
+      ['Ruby LSP I18n'] = {
+        enabled = false
+      },
     },
     formatter = 'auto',
     linters = { 'rubocop_internal' },
@@ -166,7 +173,10 @@ return {
     },
     indexing = {
       excludedPatterns = {},
-      includedPatterns = { '**/spec/**/*.rb' },
+      includedPatterns = {
+        '**/spec/**/*.rb',
+        'config/locales/**/*.yml',
+      },
       -- excludedMagicComments = { 'compiled:true' },
     },
   },

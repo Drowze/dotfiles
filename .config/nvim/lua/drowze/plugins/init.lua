@@ -4,7 +4,7 @@ return {
   {
     'https://tangled.org/cuducos.me/yaml.nvim',
     ft = { 'yaml' },
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-telescope/telescope.nvim' },
+    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function(opts) require('yaml_nvim').setup(opts) end
   },
   {

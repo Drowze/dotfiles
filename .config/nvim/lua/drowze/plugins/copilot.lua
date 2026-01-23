@@ -4,7 +4,7 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
-      copilot_node_command = require('drowze.utils').mise_cmd('node', { tool = 'node@latest' }),
+      copilot_node_command = require('drowze.utils').mise_cmd('node', { tool = 'node@25' }),
       suggestion = {
         auto_trigger = true,
         keymap = {

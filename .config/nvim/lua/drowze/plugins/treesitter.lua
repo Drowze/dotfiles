@@ -35,9 +35,11 @@ for parser, filetypes in pairs({
   ['xml'] = { 'xml', 'xsd', 'xslt', 'svg' },
   -- additional parsers:
   ['go'] = { 'go', 'gomod', 'gowork', 'gotmpl' },
-  ['rust'] = { 'rust' },
-  ['yaml'] = { 'yaml', 'yml', 'yaml.ghactions' },
+  ['nginx'] = { 'nginx' },
   ['ruby'] = { 'ruby' },
+  ['rust'] = { 'rust' },
+  ['terraform'] = { 'terraform', 'terraform-vars' },
+  ['yaml'] = { 'yaml', 'yml', 'yaml.ghactions' },
 }) do
   table.insert(ts_parsers, parser)
   for _, filetype in pairs(filetypes) do

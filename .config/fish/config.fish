@@ -24,7 +24,11 @@ end
 
 # source mise & setup shell completion
 if test "$is_interactive" = "yes" && test -f ~/.local/bin/mise
+  # NOTE: the default activation modifies $PATH with the bin directory for each installed tool, which results in a very long $PATH
+  # in future we may want to switch to using shims (in case the very long $PATH end up causing issues)
+  # ~/.local/bin/mise activate fish --shims | source
   ~/.local/bin/mise activate fish | source
+
   mise completion fish | source
 end
 

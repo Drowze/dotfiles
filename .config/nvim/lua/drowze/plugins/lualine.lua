@@ -1,7 +1,7 @@
 local function winbar_get_path()
   if vim.bo.filetype == 'yaml' then
     local path = require('yaml_nvim').get_yaml_key() or ''
-    return 'yq: ' .. path
+    return 'yq: .' .. path
   elseif vim.bo.filetype == 'json' then
     local path = require('jsonpath').get() or ''
     return 'jq: ' .. path
@@ -36,7 +36,7 @@ return {
       lualine_a = {'mode'},
       lualine_b = {'branch', 'diff', 'diagnostics'},
       lualine_c = {'filename'},
-      lualine_x = {'encoding', 'lsp_status', 'filetype'},
+      lualine_x = {'lsp_status', 'filetype'},
       lualine_y = {'progress'},
       lualine_z = {'location'}
     },

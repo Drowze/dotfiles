@@ -79,7 +79,7 @@ local function get_repos_config()
 end
 
 return {
-  cmd = { "actions-languageserver", "--stdio" },
+  cmd = require('drowze.utils').mise_cmd({ "actions-languageserver", "--stdio" }, { tool = "npm:@actions/languageserver" }),
   filetypes = { "yaml.ghactions" },
   root_markers = { ".git" },
   init_options = {}, -- Will be lazily populated in `before_init`

@@ -96,9 +96,11 @@ vim.filetype.add({
     jbuilder = 'ruby',
     pryrc = 'ruby',
     simplecov = 'ruby',
+    gemfile = 'ruby',
   },
   filename = {
     Dangerfile = 'ruby',
+    Appraisals = 'ruby',
     -- Custom dotenv filetype, so we can disable LSP on such files and maintain tree-sitter highlighting
     ['.env'] = 'sh.dotenv',
     ['.env.test'] = 'sh.dotenv',

@@ -1,26 +1,29 @@
+[settings]
+auto_install = false
+
 [tools]
 go = "latest"
-neovim = "nightly"
 node = "latest"
 python = "latest"
 ruby = "latest"
 rust = "latest"
-usage = "latest"
 
-# required for nvim-treesitter
-"cargo:tree-sitter-cli" = "latest"
+neovim = "nightly"
+tree-sitter = "latest" # required for nvim-treesitter (compiling parsers)
+usage = "latest" # requirement for some cli tools
 
-# lsps:
-"cargo:codebook-lsp" = "latest"
-"github:LuaLS/lua-language-server" = "latest"
-"go:golang.org/x/tools/gopls" = "latest"
-"npm:@actions/languageserver" = "latest"
-"npm:bash-language-server" = "latest"
-"npm:quick-lint-js" = "latest"
-"npm:vim-language-server" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:yaml-language-server" = "latest"
+bat = "latest"
+cloudflared = "latest"
+dive = "latest"
+fd = "latest"
+fzf = "latest"
+github-cli = "latest"
+jq = "latest"
+pipx = "latest"
+ripgrep = "latest"
+yq = "latest"
 
-# installing postgres 14 on MacOS:
-# MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)" POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-openssl --with-includes=$(brew --prefix openssl)/include --with-libraries=$(brew --prefix openssl)/lib" mise install postgres@14.18
-postgres = "14.18"
+"github:ankitpokhrel/jira-cli" = "latest"
+"pipx:pgcli" = "latest"
+"github:reviewdog/reviewdog" = "latest"
+# "go:github.com/reviewdog/reviewdog/cmd/reviewdog" = "latest" # master branch

@@ -1,5 +1,6 @@
 local api = vim.api
 local lsp = vim.lsp
+local log = vim.lsp.log
 local diagnostic = vim.diagnostic
 
 -- enable lsp handlers
@@ -112,47 +113,54 @@ end, {
   end,
 })
 
+local function set_lsp_keymaps(buf)
+  -- by default, omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
+  --
+  -- default keymaps:
+  -- K (n): vim.lsp.buf.hover()
+  -- grn (n): vim.lsp.buf.rename()
+  -- gra (n): vim.lsp.buf.code_action()
+  -- grr (n): vim.lsp.buf.references()
+  -- gri (n): vim.lsp.buf.implementation()
+  -- gO (n): vim.lsp.buf.document_symbol()
+  -- CTRL-S (i): vim.lsp.buf.signature_help()
+
+  local function lsp_definitions() require('telescope.builtin').lsp_definitions() end
+  local function lsp_definitions_alt() require('telescope.builtin').lsp_definitions({ jump_type="never" }) end
+  local function lsp_code_actions() require("tiny-code-action").code_action() end
+  local function lsp_references() require('telescope.builtin').lsp_references() end
+  local function lsp_document_symbols() require('telescope.builtin').lsp_document_symbols() end
+  local function workspace_symbols()
+    require('telescope.builtin').lsp_workspace_symbols({
+      fname_width = 50,
+      symbol_width = 50,
+      ignore_symbols = { "property" }
+    })
+  end
+
+  local map = vim.keymap.set
+  map('n', 'gD', lsp_definitions, { desc = 'LSP: Definitions', buffer = buf }) -- overwrites a default (non-lsp) keymap
+  map('n', 'gd', lsp_definitions_alt, { desc = 'LSP: Definitions (vsplit)' }) -- overwrites a default (non-lsp) keymap
+  map({ 'n', 'x' }, 'gra', lsp_code_actions, { desc = 'LSP: Code actions' }) -- overwrites a default keymap
+  map('n', 'grr', lsp_references, { desc = 'LSP: References' }) -- overwrites a default keymap
+  map('n', 'gO', lsp_document_symbols, { desc = 'LSP: Document symbols' }) -- overwrites a default keymap
+  map('n', '<leader>ws', workspace_symbols, { desc = 'LSP: Workspace symbols' })
+  map('n', 'go', lsp.buf.type_definition, { desc = 'LSP: Type definition' })
+  map({'n', 'x'}, '<F3>', lsp.buf.format, { desc = 'LSP: Format' })
+  map('n', '<leader>cl', lsp.codelens.run, { desc = 'LSP: CodeLens run' })
+end
+
 api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
-    -- by default, omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
-    --
-    -- default keymaps:
-    -- K (n): vim.lsp.buf.hover()
-    -- grn (n): vim.lsp.buf.rename()
-    -- gra (n): vim.lsp.buf.code_action()
-    -- grr (n): vim.lsp.buf.references()
-    -- gri (n): vim.lsp.buf.implementation()
-    -- gO (n): vim.lsp.buf.document_symbol()
-    -- CTRL-S (i): vim.lsp.buf.signature_help()
-
-    local function lsp_definitions() require('telescope.builtin').lsp_definitions() end
-    local function lsp_definitions_alt() require('telescope.builtin').lsp_definitions({ jump_type="never" }) end
-    local function lsp_code_actions() require("tiny-code-action").code_action() end
-    local function lsp_references() require('telescope.builtin').lsp_references() end
-    local function lsp_document_symbols() require('telescope.builtin').lsp_document_symbols() end
-    local function workspace_symbols()
-      require('telescope.builtin').lsp_workspace_symbols({
-        fname_width = 50,
-        symbol_width = 50,
-        ignore_symbols = { "property" }
-      })
-    end
-
-    local function keymap(mode, lhs, rhs, desc)
-      vim.keymap.set(mode, lhs, rhs, { desc = desc, buffer = event.buf })
-    end
-
-    keymap('n', 'gD', lsp_definitions, 'LSP: Definitions')
-    keymap('n', 'gd', lsp_definitions_alt, 'LSP: Definitions (vsplit)') -- overwrites a default (non-lsp) keymap
-    keymap({ 'n', 'x' }, 'gra', lsp_code_actions, 'LSP: Code actions') -- overwrites a default keymap
-    keymap('n', 'grr', lsp_references, 'LSP: References') -- overwrites a default keymap
-    keymap('n', 'gO', lsp_document_symbols, 'LSP: Document symbols') -- overwrites a default keymap
-    keymap('n', '<leader>ws', workspace_symbols, 'LSP: Workspace symbols')
-    keymap('n', 'go', lsp.buf.type_definition, 'LSP: Type definition')
-    keymap({'n', 'x'}, '<F3>', lsp.buf.format, 'LSP: Format')
-    keymap('n', '<leader>cl', lsp.codelens.run, 'LSP: CodeLens run')
+    set_lsp_keymaps(event.buf)
   end
 })
 
--- lsp.log.set_level('trace') -- comment out after debugging
+log.set_level('trace') -- comment out after debugging
+if log.get_level() < lsp.log.levels.INFO then -- only auto-delete if log level is verbose
+  api.nvim_create_autocmd('VimLeave', {
+    desc = 'Clear log file on exit',
+    callback = function() os.remove(log.get_filename()) end
+  })
+end
