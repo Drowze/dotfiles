@@ -5,7 +5,6 @@ WIDTH=${1}
 
 LARGE=200
 
-printf "#{prefix_highlight}"
 if [ "$WIDTH" -gt "$LARGE" ]; then
   printf " "
   "$SCRIPT_PATH"/fear-and-greed
