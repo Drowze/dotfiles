@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Copy one or more files to the Mac OS clipboard, so that they can be pasted
+# in e.g.: Finder or Slack
+#
+# NOTE: this is just a wrapper around the `pbcopy-file` binary. See `src.swift`
+#
+# Usage:
+# - `pbcopy-file file1.txt file2.txt` - copies the specified files to the clipboard
+# - `echo "file1.txt" | pbcopy-file` - copies the file specified
+# - `echo -e "file1.txt\nfile2.txt" | pbcopy-file` - copies multiple files specified in the input (newline-separated)
+
+set -euo pipefail
+
+SCRIPT_PATH="$(dirname "$(realpath "$0")")"
+
+files=()
+
+# read from stdin if no arguments are provided and stdin is not a tty
+if [[ $# -eq 0 && ! -t 0 ]]; then
+  while IFS= read -r line; do
+    files+=("$(realpath "$line")");
+  done
+else
+  for f in "$@"; do
+    files+=("$(realpath "$f")");
+  done
+fi
+
+"${SCRIPT_PATH}/bin/pbcopy-file" "${files[@]}"
