@@ -1,7 +1,26 @@
+function run_tests_in_path()
+  local args = vim.fn['test#base#options'](
+    'ruby#rspec',
+    { require('drowze.utils').get_current_path() },
+    'file'
+  )
+  vim.fn['test#execute']('ruby#rspec', args)
+end
+
 return {
   'vim-test/vim-test',
   keys = {
-    { '<leader>t', vim.cmd.TestFile, desc = 'vim-test: Test file' },
+    {
+      '<leader>t',
+      function()
+        if vim.bo.filetype == 'oil' then
+          run_tests_in_path()
+        else
+          vim.cmd.TestFile()
+        end
+      end,
+      desc = 'vim-test: Test file',
+    },
     { '<leader>T', vim.cmd.TestNearest, desc = 'vim-test: Test nearest' }
   },
   config = function()

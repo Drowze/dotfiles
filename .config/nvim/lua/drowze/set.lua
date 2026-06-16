@@ -80,16 +80,11 @@ api.nvim_create_user_command(
 )
 
 api.nvim_create_user_command(
-  'Inspect',
-  ':lua print(vim.inspect(<args>))',
-  { nargs = 1, complete = 'lua', desc = 'Run and inspect the return of some Lua code' }
-)
-
-api.nvim_create_user_command(
   'Messages',
   ":vnew | put =execute('messages') | setlocal buftype=nofile bufhidden=wipe noswapfile",
   { desc = 'Open a new tab with the output of :messages' }
 )
+api.nvim_create_user_command('Keymaps', "Telescope keymaps", {})
 
 vim.filetype.add({ 
   extension = {
@@ -97,6 +92,7 @@ vim.filetype.add({
     pryrc = 'ruby',
     simplecov = 'ruby',
     gemfile = 'ruby',
+    tigrc = 'tig',
   },
   filename = {
     Dangerfile = 'ruby',

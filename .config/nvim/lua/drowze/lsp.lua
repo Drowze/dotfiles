@@ -17,17 +17,6 @@ lsp.enable({
   'yamlls',
 })
 
--- grey virtual text (same color as line numbers)
-for _, group_name in pairs({
-  'DiagnosticVirtualTextError',
-  'DiagnosticVirtualTextWarn',
-  'DiagnosticVirtualTextInfo',
-  'DiagnosticVirtualTextHint',
-  'DiagnosticVirtualTextOk',
-}) do
-  api.nvim_set_hl(0, group_name, { link = 'LineNr' })
-end
-
 diagnostic.config({
   severity_sort = true,
   -- virtual_text = true, -- TODO: add some way to toggle virtual_text
@@ -39,8 +28,9 @@ diagnostic.config({
   },
   signs = {
     text = {
-      [diagnostic.severity.ERROR] = '❌',
-      [diagnostic.severity.WARN] = '🟡',
+      -- NOTE: using the same icon, but different colors
+      [diagnostic.severity.ERROR] = '',
+      [diagnostic.severity.WARN] = '',
       [diagnostic.severity.INFO] = '',
       [diagnostic.severity.HINT] = '',
     },
@@ -157,7 +147,7 @@ api.nvim_create_autocmd('LspAttach', {
   end
 })
 
-log.set_level('trace') -- comment out after debugging
+-- log.set_level('trace') -- comment out after debugging
 if log.get_level() < lsp.log.levels.INFO then -- only auto-delete if log level is verbose
   api.nvim_create_autocmd('VimLeave', {
     desc = 'Clear log file on exit',

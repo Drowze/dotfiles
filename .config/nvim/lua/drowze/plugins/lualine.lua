@@ -1,13 +1,21 @@
-local function winbar_get_path()
-  if vim.bo.filetype == 'yaml' then
-    local path = require('yaml_nvim').get_yaml_key() or ''
-    return 'yq: .' .. path
-  elseif vim.bo.filetype == 'json' then
-    local path = require('jsonpath').get() or ''
-    return 'jq: ' .. path
-  else
-    return ''
-  end
+local function winbar_json_path()
+  local path = require('jsonpath').get() or ''
+  return 'jq: ' .. path
+end
+
+local function winbar_yaml_path()
+  local path = require('yaml_nvim').get_yaml_key() or ''
+  return 'yq: .' .. path
+end
+
+local function winbar_get_path_build_extension(get_path_func, filetypes)
+  return {
+    winbar = { lualine_x = { get_path_func } },
+    inactive_winbar = {
+      lualine_x = { { get_path_func, color = { fg = 'NonText', gui='italic' } } },
+    },
+    filetypes = filetypes
+  }
 end
 
 return {
@@ -16,7 +24,7 @@ return {
   opts = {
     options = {
       icons_enabled = true,
-      theme = 'auto',
+      theme = 'dracula', -- NOTE: this is the built-in dracula theme, not the dracula.nvim plugin
       component_separators = { left = '', right = ''},
       section_separators = { left = '', right = ''},
       disabled_filetypes = {
@@ -50,9 +58,11 @@ return {
     },
     tabline = {},
     winbar = {
-      lualine_x = { winbar_get_path },
+      lualine_x = {} -- populated by extensions below
     },
-    inactive_winbar = {},
-    extensions = {}
+    extensions = {
+      winbar_get_path_build_extension(winbar_yaml_path, { 'yaml' }),
+      winbar_get_path_build_extension(winbar_json_path, { 'json' }),
+    }
   }
 }

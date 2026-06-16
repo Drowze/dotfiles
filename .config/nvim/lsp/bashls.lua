@@ -13,8 +13,15 @@ return {
       --
       -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
       globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.command)',
-
-      shellcheckPath = require('drowze.utils').mise_cmd('shellcheck', { tool = 'shellcheck' }),
+      shellcheckPath = 'shellcheck',
     },
   },
+  on_init = function(client)
+    -- it's not possible to pass shellcheckPath in the `mise exec ...` format, so
+    -- we lazily resolve it during initialization
+    local shellcheckPath = vim.fn.system('mise which shellcheck --tool=shellcheck@latest')
+    if vim.v.shell_error == 0 then
+      client.config.settings.bashIde.shellcheckPath = shellcheckPath:gsub('\n$', '')
+    end
+  end,
 }

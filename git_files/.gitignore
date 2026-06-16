@@ -9,11 +9,13 @@
 
 # solargraph overrides
 /.solargraph_definitions.rb
-/a.rb
 
 # secrets
 /.azure_federated_token
 /bin/fetch-azure-token
+
+# misc/random stuff
+/.private
 
 # ripgrep rc
 /.ripgreprc

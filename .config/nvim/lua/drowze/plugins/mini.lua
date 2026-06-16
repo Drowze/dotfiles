@@ -9,7 +9,7 @@ return {
     'echasnovski/mini.surround',
     version = false,
     event = 'VeryLazy',
-    config = {
+    opts = {
       search_method = 'cover_or_nearest',
     }
   },
@@ -26,9 +26,22 @@ return {
     'echasnovski/mini.clue',
     version = false,
     event = 'VeryLazy',
-    config = function()
+    config = function(_, opts)
       local miniclue = require('mini.clue')
-      miniclue.setup({
+
+      -- Enhance this by adding descriptions for <Leader> mapping groups
+      opts.clues = {
+        miniclue.gen_clues.builtin_completion(),
+        miniclue.gen_clues.g(),
+        miniclue.gen_clues.marks(),
+        miniclue.gen_clues.registers(),
+        miniclue.gen_clues.windows(),
+        miniclue.gen_clues.z(),
+      }
+      miniclue.setup(opts)
+    end,
+    opts = function()
+      return {
         triggers = {
           -- Leader triggers
           { mode = 'n', keys = '<Leader>' },
@@ -37,7 +50,7 @@ return {
           -- Built-in completion
           { mode = 'i', keys = '<C-x>' },
 
-          -- mini.surrond
+          -- mini.surround
           { mode = 'n', keys = 's' },
           { mode = 'x', keys = 's' },
 
@@ -69,27 +82,18 @@ return {
           { mode = 'n', keys = ']' },
         },
 
-        clues = {
-          -- Enhance this by adding descriptions for <Leader> mapping groups
-          miniclue.gen_clues.builtin_completion(),
-          miniclue.gen_clues.g(),
-          miniclue.gen_clues.marks(),
-          miniclue.gen_clues.registers(),
-          miniclue.gen_clues.windows(),
-          miniclue.gen_clues.z(),
+        window = {
+          -- Floating window config
+          config = {},
+
+          -- Delay before showing clue window
+          delay = 200,
+
+          -- Keys to scroll inside the clue window
+          scroll_down = '<C-d>',
+          scroll_up = '<C-u>',
         },
-          window = {
-            -- Floating window config
-            config = {},
-
-            -- Delay before showing clue window
-            delay = 200,
-
-            -- Keys to scroll inside the clue window
-            scroll_down = '<C-d>',
-            scroll_up = '<C-u>',
-          },
-      })
+      }
     end,
   },
 }

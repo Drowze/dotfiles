@@ -7,3 +7,6 @@ keymap('t', '<ESC>', '<C-\\><C-n>', { silent = true })
 
 keymap('n', '<leader>bn', ':bn<CR>', { desc = 'Next buffer', silent = true })
 keymap('n', '<leader>bp', ':bp<CR>', { desc = 'Previous buffer', silent = true })
+
+keymap('n', '<M-j>', ':cnext<CR>', { desc = 'Next quickfix item', silent = true })
+keymap('n', '<M-k>', ':cprev<CR>', { desc = 'Previous quickfix item', silent = true })

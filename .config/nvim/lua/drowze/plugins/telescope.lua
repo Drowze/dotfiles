@@ -65,6 +65,8 @@ return {
       '<leader>pS',
       function()
         local current_path = require('drowze.utils').get_current_path()
+        -- removes the filename from the path (or the trailing slash if a directory)
+        current_path = vim.fn.fnamemodify(current_path, ':h')
 
         local input = vim.fn.input('(' .. current_path .. ') ' .. 'grep > ')
         if input == "" then return end

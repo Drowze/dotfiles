@@ -61,6 +61,12 @@ if type -q kubectl
   alias k kubectl
 end
 
+if type -q bat
+  set -x BAT_PAGER 'less --silent --raw-control-chars' # disable bell & preserve colors
+  set -x MANPAGER 'col -bx | bat --language=man --plain' # NOTE: `col -bx` is needed to remove legacy unix formatting chars (which confuses bat)
+  # set -x MANROFFOPT '-c'
+end
+
 if type -q fzf && type -q bat && type -q rg && type -q nvim
   function rgopen
     rg --no-heading --line-number $argv | cut -d':' -f1-2 | sort | fzf --multi --delimiter=: --preview "bat --color=always {1}" | xargs nvim -
@@ -101,8 +107,13 @@ set -x VISUAL nvim
 set -x EDITOR $VISUAL
 set -x LC_CTYPE en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
-# mssql-cli
-set -x MSSQL_CLI_TELEMETRY_OPTOUT 1
+if type -q mssql-cli
+  set -x MSSQL_CLI_TELEMETRY_OPTOUT 1
+end
+if type -q copilot
+  # data can be viewed with `npx tokscale@latest`
+  set -x COPILOT_OTEL_FILE_EXPORTER_PATH "$HOME/.copilot/otel/copilot-otel-$(date +%Y%m%d-%H%M%S).jsonl"
+end
 # ruby/rails
 set -x DISABLE_SPRING true
 set -x RUBY_DEBUG_IRB_CONSOLE true

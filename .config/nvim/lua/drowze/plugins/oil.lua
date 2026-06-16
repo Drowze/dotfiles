@@ -1,3 +1,5 @@
+local always_hidden_entries = { ".DS_Store",  "node_modules", ".git" }
+
 return {
   'stevearc/oil.nvim',
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -120,6 +122,11 @@ return {
       end,
       -- This function defines what will never be shown, even when `show_hidden` is set
       is_always_hidden = function(name, bufnr)
+        for _, value in ipairs(always_hidden_entries) do
+          if value == name then
+            return true
+          end
+        end
         return false
       end,
       -- Sort file names with numbers in a more intuitive order for humans.
@@ -149,7 +156,7 @@ return {
         return false
       end,
       mv = function(src_path, dest_path)
-        return false
+        return true
       end,
       rm = function(path)
         return false

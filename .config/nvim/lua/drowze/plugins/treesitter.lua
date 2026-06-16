@@ -6,6 +6,7 @@ return {
     branch = 'main',
     config = function()
       local ts = require("nvim-treesitter")
+      vim.treesitter.language.register("tmux", "tig") -- .tigrc has a similar syntax to tmux.conf
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(event)
           local filetype = event.match
@@ -20,6 +21,7 @@ return {
 
             if is_available then
               vim.notify("Installing treesitter parser for " .. lang, vim.log.levels.INFO)
+              -- Install parser synchronously, waiting up to 30 seconds
               ts.install({ lang }):wait(30 * 1000)
             else
               return
