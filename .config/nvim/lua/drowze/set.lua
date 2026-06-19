@@ -86,7 +86,7 @@ api.nvim_create_user_command(
 )
 api.nvim_create_user_command('Keymaps', "Telescope keymaps", {})
 
-vim.filetype.add({ 
+vim.filetype.add({
   extension = {
     jbuilder = 'ruby',
     pryrc = 'ruby',
@@ -111,4 +111,16 @@ vim.filetype.add({
     -- Custom filetype for GitHub Actions workflows, so we can use a separate LSP
     [".*/%.github/workflows/.*%.ya?ml"] = "yaml.ghactions",
   }
+})
+
+vim.treesitter.language.register("tmux", "tig") -- .tigrc has a similar syntax to tmux.conf
+
+-- automatically enable treesitter on our custom filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'yaml.ghactions', 'sh.dotenv', 'tig' },
+  callback = function(event)
+    local lang = vim.treesitter.language.get_lang(event.match)
+    local is_installed, _ = vim.treesitter.language.add(lang)
+    if is_installed then vim.treesitter.start() end
+  end,
 })

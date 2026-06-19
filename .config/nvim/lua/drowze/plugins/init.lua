@@ -10,7 +10,6 @@ return {
   {
     'phelipetls/jsonpath.nvim',
     ft = { 'json' },
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       local jsonpath = require('jsonpath')
       vim.api.nvim_create_user_command('JSONView', function() vim.print(jsonpath.get()) end, {})
@@ -33,6 +32,21 @@ return {
       { "<leader>glO", "<cmd>GitLink! default_branch<cr>", mode = { "n", "v" }, desc = "gitlinker: Open git link (default branch)" },
     },
   },
+  {
+    'RRethy/nvim-treesitter-endwise',
+    ft = { 'ruby', 'lua', 'elixir', 'vim', 'bash', 'fish', 'julia' },
+  },
+  {
+    'Wansmer/treesj',
+    keys = {
+      { '<space>m', desc = 'treesj: Toggle join' },
+      { '<space>j', desc = 'treesj: Join lines' },
+      { '<space>s', desc = 'treesj: Split lines' },
+    },
+    opts = {
+      max_join_length = 240,
+    }
+  },
   { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
 
   {
@@ -44,7 +58,7 @@ return {
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     ft = { 'markdown' },
     opts = {},
   },

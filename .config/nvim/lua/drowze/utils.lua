@@ -106,4 +106,30 @@ function M.get_current_path()
   end
 end
 
+function M.treesitter_state(raw_opts)
+  local opts = raw_opts or {}
+  local buf = opts.buf or vim.api.nvim_get_current_buf()
+
+  local ts_state = { installed = false, available = false }
+  if vim.bo[buf].buftype ~= "" then return ts_state end
+
+  local filename = vim.api.nvim_buf_get_name(buf)
+  local file_stat = vim.uv.fs_stat(filename)
+
+  if not file_stat or file_stat.type ~= 'file' then return ts_state end
+  if not vim.uv.fs_access(filename, 'r') then return ts_state end
+
+  local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
+  local lang = vim.treesitter.language.get_lang(filetype)
+  if not lang then return ts_state end
+
+  ts_state.available = true
+  local is_installed, _ = vim.treesitter.language.add(lang)
+  if is_installed then
+    ts_state.installed = true
+  end
+
+  return ts_state
+end
+
 return M

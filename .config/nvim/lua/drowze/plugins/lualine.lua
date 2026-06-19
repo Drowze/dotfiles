@@ -18,6 +18,16 @@ local function winbar_get_path_build_extension(get_path_func, filetypes)
   }
 end
 
+local function treesitter_status()
+  local ts_state = require('drowze.utils').treesitter_state()
+
+  if ts_state.available and not ts_state.installed then
+    return '⚠️ No treesitter'
+  else
+    return ''
+  end
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -44,7 +54,11 @@ return {
       lualine_a = {'mode'},
       lualine_b = {'branch', 'diff', 'diagnostics'},
       lualine_c = {'filename'},
-      lualine_x = {'lsp_status', 'filetype'},
+      lualine_x = {
+        'lsp_status',
+        'filetype',
+        { treesitter_status, color = { fg = 'DiagnosticWarn', gui = 'bold' } },
+      },
       lualine_y = {'progress'},
       lualine_z = {'location'}
     },
