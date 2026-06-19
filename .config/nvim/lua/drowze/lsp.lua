@@ -51,57 +51,12 @@ api.nvim_create_user_command('LspToggle', function()
 
 -- util LSP commands, as extracted from lspconfig
 -- see: https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/plugin/lspconfig.lua
--- TODO: remove `LspRestart` if new `:lsp restart` gets upstream. See: https://github.com/neovim/neovim/pull/35078/changes
 api.nvim_create_user_command('LspInfo', ':checkhealth vim.lsp', { desc = 'Open LSP info' })
 api.nvim_create_user_command('LspLog', function()
     vim.cmd(string.format('tabnew %s', lsp.log.get_filename()))
   end,
   { desc = 'Open LSP log' }
 )
-api.nvim_create_user_command('LspRestart', function(info)
-  local clients = info.fargs
-
-  -- Default to restarting all active servers
-  if #clients == 0 then
-    clients = vim
-      .iter(lsp.get_clients())
-      :map(function(client)
-        return client.name
-      end)
-      :totable()
-  end
-
-  for _, name in ipairs(clients) do
-    if lsp.config[name] == nil then
-      vim.notify(("Invalid server name '%s'"):format(name))
-    else
-      lsp.enable(name, false)
-    end
-  end
-
-  local timer = assert(vim.uv.new_timer())
-  timer:start(500, 0, function()
-    for _, name in ipairs(clients) do
-      vim.schedule_wrap(function(x)
-        lsp.enable(x)
-      end)(name)
-    end
-  end)
-end, {
-  desc = 'Restart the given client',
-  nargs = '?',
-  complete = function(arg)
-    return vim
-      .iter(lsp.get_clients())
-      :map(function(client)
-        return client.name
-      end)
-      :filter(function(name)
-        return name:sub(1, #arg) == arg
-      end)
-      :totable()
-  end,
-})
 
 local function set_lsp_keymaps(buf)
   -- by default, omnifunc is set to vim.lsp.omnifunc() - use CTRL-X CTRL-O to trigger completion
@@ -129,15 +84,17 @@ local function set_lsp_keymaps(buf)
   end
 
   local map = vim.keymap.set
-  map('n', 'gD', lsp_definitions, { desc = 'LSP: Definitions', buffer = buf }) -- overwrites a default (non-lsp) keymap
-  map('n', 'gd', lsp_definitions_alt, { desc = 'LSP: Definitions (vsplit)' }) -- overwrites a default (non-lsp) keymap
-  map({ 'n', 'x' }, 'gra', lsp_code_actions, { desc = 'LSP: Code actions' }) -- overwrites a default keymap
-  map('n', 'grr', lsp_references, { desc = 'LSP: References' }) -- overwrites a default keymap
-  map('n', 'gO', lsp_document_symbols, { desc = 'LSP: Document symbols' }) -- overwrites a default keymap
-  map('n', '<leader>ws', workspace_symbols, { desc = 'LSP: Workspace symbols' })
-  map('n', 'go', lsp.buf.type_definition, { desc = 'LSP: Type definition' })
-  map({'n', 'x'}, '<F3>', lsp.buf.format, { desc = 'LSP: Format' })
-  map('n', '<leader>cl', lsp.codelens.run, { desc = 'LSP: CodeLens run' })
+  local function build_options(desc) return { desc = 'LSP: ' .. desc, buffer = buf } end
+
+  map('n', 'gD', lsp_definitions, build_options('Definitions')) -- overwrites a default (non-lsp) keymap
+  map('n', 'gd', lsp_definitions_alt, build_options('LSP: Definitions (vsplit)')) -- overwrites a default (non-lsp) keymap
+  map({ 'n', 'x' }, 'gra', lsp_code_actions, build_options('Code actions')) -- overwrites a default keymap
+  map('n', 'grr', lsp_references, build_options('References')) -- overwrites a default keymap
+  map('n', 'gO', lsp_document_symbols, build_options('Document symbols')) -- overwrites a default keymap
+  map('n', '<leader>ws', workspace_symbols, build_options('Workspace symbols'))
+  map('n', 'go', lsp.buf.type_definition, build_options('Type definition'))
+  map({'n', 'x'}, '<F3>', lsp.buf.format, build_options('Format'))
+  map('n', '<leader>cl', lsp.codelens.run, build_options('CodeLens run'))
 end
 
 api.nvim_create_autocmd('LspAttach', {

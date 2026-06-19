@@ -16,7 +16,7 @@ return {
     end
   },
   { 'pocke/rbs.vim', ft = { 'rbs'} },
-  { 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { names = false } } },
+  { 'catgoose/nvim-colorizer.lua', opts = { user_default_options = { names = false } } },
   { 'tpope/vim-fugitive', event = 'VeryLazy' },
   { 'tpope/vim-rhubarb', event = 'VeryLazy', dependencies = 'tpope/vim-fugitive' },
   { 'tpope/vim-eunuch', event = 'VeryLazy', config = function () vim.cmd('cnoreabbrev rename Rename') end },

@@ -30,14 +30,15 @@ return {
       local miniclue = require('mini.clue')
 
       -- Enhance this by adding descriptions for <Leader> mapping groups
-      opts.clues = {
+      vim.tbl_extend('force', opts, {
         miniclue.gen_clues.builtin_completion(),
         miniclue.gen_clues.g(),
         miniclue.gen_clues.marks(),
         miniclue.gen_clues.registers(),
         miniclue.gen_clues.windows(),
         miniclue.gen_clues.z(),
-      }
+        miniclue.gen_clues.square_brackets()
+      })
       miniclue.setup(opts)
     end,
     opts = function()
@@ -80,6 +81,13 @@ return {
           -- '[ and ']'
           { mode = 'n', keys = '[' },
           { mode = 'n', keys = ']' },
+        },
+
+        -- Descriptions for the clue groups
+        clues = {
+          { mode = 'n', keys = '<Leader>b', desc = '+Buffers' },
+          { mode = 'n', keys = '<Leader>g', desc = '+Git' },
+          { mode = 'n', keys = '<Leader>gl', desc = '+GitLinker' },
         },
 
         window = {
