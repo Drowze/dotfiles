@@ -16,7 +16,9 @@ return {
       },
       filetypes = {
         ["yaml.ghactions"] = true,
+        ["yaml"] = true,
         ["markdown"] = true,
+        ["gitcommit"] = true,
       },
       -- logger = {
       --   file = vim.fn.stdpath("log") .. "/copilot-lua.log",

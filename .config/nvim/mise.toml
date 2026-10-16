@@ -1,6 +1,6 @@
 [tools]
 # lsps:
-taplo = "latest"
+taplo = "latest" # toml lsp
 lua-language-server = "latest"
 "aqua:blopker/codebook" = "latest"
 "go:golang.org/x/tools/gopls" = "latest"

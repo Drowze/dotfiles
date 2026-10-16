@@ -7,9 +7,10 @@ local diagnostic = vim.diagnostic
 lsp.enable({
   'actionsls',
   'bashls',
-  'cssls',
   'codebook',
+  'cssls',
   'jsonls',
+  'html',
   'lua_ls',
   'quick_lint_js',
   'ruby_lsp',
@@ -104,6 +105,7 @@ api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+log.set_level('info')
 -- log.set_level('trace') -- comment out after debugging
 if log.get_level() < lsp.log.levels.INFO then -- only auto-delete if log level is verbose
   api.nvim_create_autocmd('VimLeave', {

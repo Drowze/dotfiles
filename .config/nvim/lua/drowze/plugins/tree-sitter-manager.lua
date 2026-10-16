@@ -1,5 +1,22 @@
 -- NOTE: this plugin handles calling `vim.treesitter.start()` on files with installed parsers
 
+-- vim.treesitter.start() automatically disables regex-based syntax highlighting,
+-- which is required for some ftplugins (especially for indentation).
+-- This autocmd forces loading regex-based syntax highlighting.
+-- See: `:help vim.treesitter.start()`
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'ruby',
+  callback = function(args)
+    -- on vim.schedule to guarantee execution AFTER tree-sitter-manager FileType autocmd
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(args.buf) then
+        vim.bo[args.buf].syntax = 'ON' -- uppercase does matter, see `:help 'syntax'`
+      end
+    end)
+  end,
+  desc = 'Enable regex-based syntax highlighting after vim.treesitter.start() disables it',
+})
+
 return {
   'romus204/tree-sitter-manager.nvim',
   config = function(_, options)

@@ -28,6 +28,15 @@ local function treesitter_status()
   end
 end
 
+local function bigfile_status()
+  if vim.b.bigfile_detected == 1 then
+    -- Let the user know that bigfile.nvim has detected a big file and disabled certain features
+    return '⚠️ Bigfile'
+  else
+    return ''
+  end
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -58,6 +67,7 @@ return {
         'lsp_status',
         'filetype',
         { treesitter_status, color = { fg = 'DiagnosticWarn', gui = 'bold' } },
+        { bigfile_status, color = { fg = 'DiagnosticWarn', gui = 'bold' } }
       },
       lualine_y = {'progress'},
       lualine_z = {'location'}

@@ -1,29 +1,30 @@
-local function resolve_ruby_lsp_cmd()
-  local bundle_ruby_lsp = false
-  local ruby_lsp_cmd = { cmd = { 'ruby-lsp' }, cmd_env = {} }
+local function resolve_ruby_lsp_cmd(dispatchers)
+  local bundle_check_ok = vim.system({ "bundle", "check" })
+  local bundle_info_ruby_lsp_ok = vim.system({ "bundle", "info", "ruby-lsp" })
 
-  -- test if 'ruby-lsp' is in the Gemfile.lock, if so use 'bundle exec ruby-lsp', else use 'ruby-lsp' directly
-  local f = io.open('Gemfile.lock', 'r')
-  if f then
-    for line in f:lines() do
-      if line:find('ruby-lsp', 1, true) then bundle_ruby_lsp = true end
+  local cmd = require('drowze.utils').mise_cmd({ "bundle", "exec", "ruby-lsp" }, { tool = 'ruby' })
+  local fallback_env = { BUNDLE_GEMFILE = vim.fs.joinpath(vim.env.HOME, ".ruby-lsp", "Gemfile") }
+
+  if vim.uv.fs_stat(vim.env.BUNDLE_GEMFILE or "Gemfile") then
+    if bundle_check_ok:wait().code == 0 then
+      if bundle_info_ruby_lsp_ok:wait().code == 0 then
+        -- Project uses bundler and ruby-lsp is installed
+        return vim.lsp.rpc.start(cmd, dispatchers)
+      else
+        -- Project uses bundler but ruby-lsp is not installed
+        -- NOTE: ruby-lsp won't have the context of the project gems. Will fix this later.
+        return vim.lsp.rpc.start(cmd, dispatchers, { env = fallback_env })
+      end
+    else
+      -- Project uses bundler but local gems are out of date
+      vim.notify("Your local gems are out of date. Please run `bundle install` to update them.", vim.log.levels.WARN)
+      return vim.lsp.rpc.start(cmd, dispatchers, { env = fallback_env })
     end
-    f:close()
   else
-    -- if no Gemfile.lock, use a global gemfile in home directory to avoid creating a Gemfile.lock in every project
-    ruby_lsp_cmd.cmd_env.BUNDLE_GEMFILE = os.getenv('HOME') .. '/.ruby-lsp/Gemfile'
+    -- Project does not use bundler
+    return vim.lsp.rpc.start(cmd, dispatchers, { env = fallback_env })
   end
-
-  if bundle_ruby_lsp then
-    table.insert(ruby_lsp_cmd.cmd, 1, 'bundle')
-    table.insert(ruby_lsp_cmd.cmd, 2, 'exec')
-  end
-
-  -- finally, use mise if available
-  ruby_lsp_cmd.cmd = require('drowze.utils').mise_cmd(ruby_lsp_cmd.cmd, { tool = 'ruby' })
-  return ruby_lsp_cmd
 end
-local ruby_lsp_cmd = resolve_ruby_lsp_cmd()
 
 local function add_custom_commands(client, bufnr)
   -- Show Ruby dependencies in quickfix list
@@ -120,8 +121,7 @@ end
 
 -- https://github.com/neovim/nvim-lspconfig/blob/v2.5.0/lsp/ruby_lsp.lua
 return {
-  cmd = ruby_lsp_cmd.cmd,
-  cmd_env = ruby_lsp_cmd.cmd_env,
+  cmd = resolve_ruby_lsp_cmd,
   filetypes = { 'ruby', 'eruby' },
   root_markers = { 'Gemfile.lock', '.git' },
   flags = {
@@ -138,9 +138,9 @@ return {
         debug = true,
         rspecCommand = 'bundle exec rspec -f d',
       },
-      ['Ruby LSP I18n'] = {
-        enabled = false
-      },
+      -- ['Ruby LSP I18n'] = {
+      --   enabled = false
+      -- },
     },
     formatter = 'auto',
     linters = { 'rubocop_internal' },
@@ -160,7 +160,7 @@ return {
       'inlayHint',
       'onTypeFormatting',
       'selectionRanges',
-      -- 'semanticHighlighting', # leave highlighting to treesitter
+      -- 'semanticHighlighting', -- leave highlighting to treesitter
       'signatureHelp',
       'typeHierarchy',
       'workspaceSymbol',

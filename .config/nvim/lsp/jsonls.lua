@@ -6,4 +6,13 @@ return {
     provideFormatter = true,
   },
   root_markers = { '.git' },
+  before_init = function(_, new_config)
+    new_config.settings.json.schemas = require('schemastore').json.schemas()
+  end,
+  settings = {
+    json = {
+      schemas = {},
+      validate = { enable = true },
+    },
+  },
 }

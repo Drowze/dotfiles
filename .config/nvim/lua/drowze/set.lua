@@ -1,4 +1,3 @@
-vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 250
 
@@ -9,18 +8,15 @@ vim.opt.wildoptions:append { 'fuzzy' }
 -- see neovim/neovim#14537 for more about line-match
 vim.opt.diffopt:append { 'iwhiteall', 'linematch:50' }
 
--- hide current mode, show partial command
+-- hide current mode
 vim.opt.showmode = false
-vim.opt.showcmd = true
 
 -- decent wrapping/scrolling
-vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.scrolloff = 4
 
 -- buffer management
 vim.opt.equalalways = false
-vim.opt.hidden = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
@@ -29,12 +25,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.colorcolumn = '80'
 
--- search
-vim.opt.incsearch = true
-vim.opt.hlsearch = true
-
 -- tabs/indentation
-vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.expandtab = true
@@ -88,11 +79,14 @@ api.nvim_create_user_command('Keymaps', "Telescope keymaps", {})
 
 vim.filetype.add({
   extension = {
+    avsc = 'json',
+    gemfile = 'ruby',
     jbuilder = 'ruby',
+    mdx = 'markdown',
     pryrc = 'ruby',
     simplecov = 'ruby',
-    gemfile = 'ruby',
     tigrc = 'tig',
+    jsonl = 'json.jsonl', -- the lsp (jsonls) doesn't support jsonl (see microsoft/vscode-json-languageservice#285)
   },
   filename = {
     Dangerfile = 'ruby',
@@ -117,7 +111,12 @@ vim.treesitter.language.register("tmux", "tig") -- .tigrc has a similar syntax t
 
 -- automatically enable treesitter on our custom filetypes
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'yaml.ghactions', 'sh.dotenv', 'tig' },
+  pattern = {
+    'json.jsonl',
+    'sh.dotenv',
+    'tig',
+    'yaml.ghactions',
+  },
   callback = function(event)
     local lang = vim.treesitter.language.get_lang(event.match)
     local is_installed, _ = vim.treesitter.language.add(lang)

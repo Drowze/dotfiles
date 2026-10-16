@@ -23,7 +23,7 @@
   instructionFormat = "(%an <%ae>) %s"
 [rerere]
   # REuse REcorded REsolution - i.e.: remember rebase conflict resolutions
-  enabled = true
+  enabled = false
 [push]
 	autoSetupRemote = true
 [pull]

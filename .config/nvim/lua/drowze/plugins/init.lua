@@ -15,6 +15,7 @@ return {
       vim.api.nvim_create_user_command('JSONView', function() vim.print(jsonpath.get()) end, {})
     end
   },
+  { 'b0o/SchemaStore.nvim' }, -- for schema validation on json files
   { 'pocke/rbs.vim', ft = { 'rbs'} },
   { 'catgoose/nvim-colorizer.lua', opts = { user_default_options = { names = false } } },
   { 'tpope/vim-fugitive', event = 'VeryLazy' },
@@ -47,8 +48,13 @@ return {
       max_join_length = 240,
     }
   },
-  { "LunarVim/bigfile.nvim", ft = { "javascript", "json", "html", "css" } },
-
+  {
+    "LunarVim/bigfile.nvim",
+    ft = { "javascript", "json", "html", "css" },
+    opts = {
+      filesize = 10 -- disable editor features on files larger than 10 MiB
+    },
+  },
   {
     "kndndrj/nvim-dbee",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -60,7 +66,11 @@ return {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     ft = { 'markdown' },
-    opts = {},
+    opts = {
+      sign = {
+        enabled = false,
+      },
+    }
   },
   {
     'rachartier/tiny-code-action.nvim',

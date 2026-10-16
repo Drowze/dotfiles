@@ -3,6 +3,7 @@
 /.pryrc
 /.irbrc
 /.draft
+/.ai-jail
 
 # project-specific custom nvim config
 /.nvim.lua
@@ -22,3 +23,5 @@
 
 # https://github.com/tpope/vim-projectionist
 .projections.json
+
+.codebook.toml

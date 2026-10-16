@@ -59,6 +59,7 @@ create_symlinks << EOF
   git_files/.gitignore;.gitignore
   git_files/.gitconfig;.gitconfig
   .config/fish/config.fish;.config/fish/config.fish
+  .config/fish/functions/fish_prompt.fish;.config/fish/functions/fish_prompt.fish
   .config/fish/fish_plugins;.config/fish/fish_plugins
   .config/alacritty;.config/alacritty
   .config/nvim;.config/nvim

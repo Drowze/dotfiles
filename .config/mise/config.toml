@@ -12,18 +12,16 @@ neovim = "nightly"
 tree-sitter = "latest" # required for nvim-treesitter (compiling parsers)
 usage = "latest" # requirement for some cli tools
 
-bat = "latest"
-cloudflared = "latest"
 dive = "latest"
-fd = "latest"
-fzf = "latest"
-github-cli = "latest"
-jq = "latest"
 pipx = "latest"
-ripgrep = "latest"
-yq = "latest"
 
-"github:ankitpokhrel/jira-cli" = "latest"
-"pipx:pgcli" = "latest"
+"aqua:datadog-labs/pup" = "latest"
+
+"pipx:pgcli" = "latest" # NOTE: can't be installed via homebrew as it depends on libpq (and we install postgres via mise)
+"github:akitaonrails/ai-jail" = "latest"
+"github:JFryy/qq" = "latest" # universal jq-like tool (notably compatible with terraform files)
+"github:k1LoW/mo" = "latest" # previewing markdown files
+
 "github:reviewdog/reviewdog" = "latest"
 # "go:github.com/reviewdog/reviewdog/cmd/reviewdog" = "latest" # master branch
+# "github:reviewdog/nightly" = "latest" # reviewdog nightly repository
