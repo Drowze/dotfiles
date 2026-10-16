@@ -1,0 +1,1 @@
+-- empty so neovim "knows" yaml.ghactions is a filetype (suppressing some warnings)

@@ -8,13 +8,8 @@
 2. Install utilities
 ```bash
 # if on MacOS
-brew tap homebrew/cask-fonts
-brew tap ankitpokhrel/jira-cli # work specific
-brew install fish
-fish # enter in fish, so brew setup shell-specific stuff for fish
-brew install gpg rg fd fzf tmux font-hack-nerd-font jq yq gh htop bat tree axel tig wget docker docker-buildx docker-compose colima kubectl gsed shellcheck coreutils
-brew install az jira-cli cloudflared Azure/kubelogin/kubelogin # work specific
-brew install --cask --no-quarantine font-hack-nerd-font brave-browser keepassxc alacritty spotify slack zoom rectangle alt-tab
+brew bundle
+# if e.g. Slack installation is company managed: HOMEBREW_BUNDLE_CASK_SKIP=slack brew bundle
 
 mkdir -p ~/.docker/cli-plugins
 ln $(brew --prefix docker-compose)/bin/docker-compose ~/.docker/cli-plugins/docker-compose
