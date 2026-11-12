@@ -11,6 +11,8 @@ if ! test -e "$HOME/.gitconfig.user"; then
   name = ${DOTFILES_GIT_USER:?}
   email = ${DOTFILES_GIT_EMAIL:?}
   signingkey = ${DOTFILES_GIT_SIGNING_KEY:?}
+[url "git@github-myorg:MyOrg/"]
+  insteadOf = git@github.com:MyOrg/
 EOF
 else
   echo "✅ '.gitconfig.user' (already exists)"

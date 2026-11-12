@@ -4,7 +4,10 @@ auto_install = false
 [tools]
 go = "latest"
 node = "latest"
+bun = "latest"
+pnpm = "latest"
 python = "latest"
+uv = "latest"
 ruby = "latest"
 rust = "latest"
 

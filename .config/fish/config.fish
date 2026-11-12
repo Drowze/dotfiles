@@ -54,33 +54,17 @@ if type -q kubectl
 end
 
 if type -q bat
-  set -x BAT_PAGER 'less --silent --raw-control-chars' # disable bell & preserve colors
   set -x MANPAGER 'col -bx | bat --language=man --plain' # NOTE: `col -bx` is needed to remove legacy unix formatting chars (which confuses bat)
-  # set -x MANROFFOPT '-c'
 end
 
 if type -q eza
   alias exa eza
 end
 
-if type -q fzf && type -q bat && type -q rg && type -q nvim
-  function rgopen
-    rg --no-heading --line-number $argv | cut -d':' -f1-2 | sort | fzf --multi --delimiter=: --preview "bat --color=always {1}" | xargs nvim -
-  end
-end
-
 #########
 # $PATH #
 #########
-if test -d $HOME/.android/cmdline-tools
-  fish_add_path $HOME/.android/cmdline-tools/tools/bin
-  set -x ANDROID_SDK_ROOT $HOME/.android
-  set -x ANDROID_HOME $HOME/.android
-end
-if test -d $HOME/.android/emulator
-  fish_add_path $HOME/.android/emulator
-  fish_add_path $HOME/.android/platform-tools
-end
+# nobody here but us chickens
 
 ###########
 # PLUGINS #
@@ -93,7 +77,8 @@ set -x FZF_DEFAULT_OPTS --cycle --layout=reverse --border --height=40% --preview
   --bind ctrl-u:preview-page-up
 
 # configurations for `fzf.fish` (fish plugin)
-set fzf_fd_opts --hidden --no-ignore --exclude '{.git,.ruby-lsp,node_modules,/tmp/,/coverage/}'
+set fzf_fd_opts --hidden --no-ignore "--exclude="{.git,doc,.ruby-lsp,node_modules,/tmp/,/coverage/}
+# set fzf_fd_opts $fzf_fd_opts --exclude '/public'
 if status is-interactive && type -q fzf_configure_bindings
   # keybindings:
   # - ctrl-s for searching files on `git status`
@@ -129,11 +114,19 @@ set -x BAT_THEME Dracula
 set -x FZF_DEFAULT_COMMAND "fd --type=file --strip-cwd-prefix $fzf_fd_opts"
 # mac specific
 if test "$is_mac" = yes
+  set -l brew_prefix
+  which -s brew && set brew_prefix "$(brew --prefix)"
+
   set -x OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
   set -x HOMEBREW_NO_AUTO_UPDATE 1
 
   if isatty stdin
     set -x GPG_TTY (tty) # fix gpg in mac-os
+  end
+  if test -n "$brew_prefix"
+    if test -d "$brew_prefix/opt/curl/bin"
+      # fish_add_path "$brew_prefix/opt/curl/bin"
+    end
   end
 end
 # credentials

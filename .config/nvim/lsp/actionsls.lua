@@ -51,8 +51,8 @@ return {
           cb = function(remote_url)
             -- SSH format:
             -- - git@github.com:owner/repo.git
-            -- - git@github-foobar:owner/repo.git
-            local owner, repo = remote_url:match("git@github[%w%.-]+:([^/]+)/([^/%.]+)")
+            -- - git@foobar.github.com:owner/repo.git
+            local owner, repo = remote_url:match("git@[%w%-%.]*github%.com:([^/]+)/([^/%.]+)")
 
             -- HTTPS format: https://github.com/owner/repo.git
             if not owner or not repo then

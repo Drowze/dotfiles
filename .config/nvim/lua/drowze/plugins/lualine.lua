@@ -8,6 +8,15 @@ local function winbar_yaml_path()
   return 'yq: .' .. path
 end
 
+local function fugitive_blame_dummy_path()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local origin_win = vim.fn.FugitiveResult(bufnr).origin_winid
+  local winbar = vim.api.nvim_get_option_value("winbar", { win = origin_win })
+  if not winbar or winbar == '' then return '' end
+
+  return 'fugitive'
+end
+
 local function winbar_get_path_build_extension(get_path_func, filetypes)
   return {
     winbar = { lualine_x = { get_path_func } },
@@ -87,6 +96,7 @@ return {
     extensions = {
       winbar_get_path_build_extension(winbar_yaml_path, { 'yaml' }),
       winbar_get_path_build_extension(winbar_json_path, { 'json' }),
+      winbar_get_path_build_extension(fugitive_blame_dummy_path, { 'fugitiveblame' }),
     }
   }
 }
