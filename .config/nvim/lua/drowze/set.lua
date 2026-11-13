@@ -77,6 +77,11 @@ api.nvim_create_user_command(
 )
 api.nvim_create_user_command('Keymaps', "Telescope keymaps", {})
 
+local function resolve_jinja_filetype(_, _, ext)
+  local inner_filetype = vim.filetype.match({ filename = "dummy." .. ext }) or ext
+  return "jinja." .. inner_filetype
+end
+
 vim.filetype.add({
   extension = {
     avsc = 'json',
@@ -86,40 +91,39 @@ vim.filetype.add({
     pryrc = 'ruby',
     simplecov = 'ruby',
     tigrc = 'tig',
-    jsonl = 'json.jsonl', -- the lsp (jsonls) doesn't support jsonl (see microsoft/vscode-json-languageservice#285)
+    jsonl = 'json.jsonl', -- custom filetype as the lsp (jsonls) doesn't support jsonl (see microsoft/vscode-json-languageservice#285)
   },
   filename = {
     Dangerfile = 'ruby',
     Appraisals = 'ruby',
-    -- Custom dotenv filetype, so we can disable LSP on such files and maintain tree-sitter highlighting
-    ['.env'] = 'sh.dotenv',
-    ['.env.sample'] = 'sh.dotenv',
-    ['.env.test'] = 'sh.dotenv',
-    ['.env.development'] = 'sh.dotenv',
-    ['.env.production'] = 'sh.dotenv',
-    ['.env.local'] = 'sh.dotenv',
-    ['.env.development.local'] = 'sh.dotenv',
-    ['.env.test.local'] = 'sh.dotenv',
   },
   pattern = {
-    -- Custom filetype for GitHub Actions workflows, so we can use a separate LSP
+    -- GitHub Actions workflows: custom filetype so we can use a separate LSP
     [".*/%.github/workflows/.*%.ya?ml"] = "yaml.ghactions",
+    -- Jinja templates: custom filetypes so we can derive the sub-language from it and inject into the Treesitter query
+    [".*%.jinja%.([%w_]+)"] = resolve_jinja_filetype,
+    [".*%.([%w_]+)%.j2"] = resolve_jinja_filetype,
+    [".*%.([%w_]+)%.jinja2?"] = resolve_jinja_filetype,
+    -- Jinja templates: handle YAML files with `## template: jinja` at the top (common on cloud-init files)
+    [".*%.ya?ml"] = {
+      function(_, bufnr)
+        local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ""
+        if first_line:match("^##%s*template:%s*jinja") then
+          return "jinja.yaml"
+        end
+      end,
+    },
   }
 })
 
 vim.treesitter.language.register("tmux", "tig") -- .tigrc has a similar syntax to tmux.conf
+vim.treesitter.language.register("bash", "env") -- bash parser for dotenv files
 
--- automatically enable treesitter on our custom filetypes
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = {
-    'json.jsonl',
-    'sh.dotenv',
-    'tig',
-    'yaml.ghactions',
-  },
-  callback = function(event)
-    local lang = vim.treesitter.language.get_lang(event.match)
-    local is_installed, _ = vim.treesitter.language.add(lang)
-    if is_installed then vim.treesitter.start() end
-  end,
-})
+-- Jinja templates: derive the sub-language from the filetype (e.g. `jinja.yaml` -> `yaml`) and inject it into the Treesitter query
+-- This is used at our custom TS query at `after/queries/jinja/injections.scm`
+vim.treesitter.query.add_directive("inject-jinja-sublang!", function(_, _, bufnr, _, metadata)
+  local sub_filetype = vim.bo[bufnr].filetype:match("^jinja%.(.+)$")
+  if sub_filetype then
+    metadata["injection.language"] = vim.treesitter.language.get_lang(sub_filetype) or sub_filetype
+  end
+end, { force = true})
